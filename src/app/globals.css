@@ -1,33 +1,49 @@
+@import "~@flaticon/flaticon-uicons/css/all/all";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+i {
+  @apply flex flex-col justify-center items-center;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply dark:bg-[#181a20] dark:text-white h-screen transition-all scroll-smooth;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* body::-webkit-scrollbar{
+  @apply w-0 h-0;
+} */
+
+.anime-image{
+  @apply h-full w-full rounded-lg object-cover object-center;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  @apply w-0 h-0;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-[1px] h-[1px];
+}
+
+/* .custom-scrollbar::-webkit-scrollbar-thumb{
+  @apply bg-slate-400;
+} */
+
+.btn {
+  @apply bg-[#06c149] hover:bg-[#06b149] flex text-sm items-center gap-2 w-fit font-medium leading-6 rounded-full border-2 border-[#06b149] py-[5px] px-[20px];
+}
+
+.de-btn {
+  @apply flex items-center gap-2 w-fit font-medium text-sm leading-6 rounded-full border-2 py-[5px] px-[20px];
 }

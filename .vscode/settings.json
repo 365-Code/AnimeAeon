@@ -1,0 +1,10 @@
+{
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "off",
+        "strings": "on"
+    },
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
+}
