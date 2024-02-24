@@ -7,18 +7,18 @@ export type animeListType = {
   image: string;
 };
 
-export type animeListContextType = {
+export type AnimeListContextType = {
   animeList: Array<animeListType>;
   setAnimeList: any;
   addToAnimeList: any;
   removeFromAnimeList: any;
 };
 
-export const animeListContext = createContext<animeListContextType | null>(
+export const AnimeListContext = createContext<AnimeListContextType | null>(
   null
 );
 
-export const animeListState = ({ children }: { children: React.ReactNode }) => {
+export const AnimeListState = ({ children }: { children: React.ReactNode }) => {
   const [animeList, setAnimeList] = useState([] as Array<animeListType>);
 
   const [topHits, setTopHits] = useState<Array<animeListCardType>>([]);
@@ -63,13 +63,13 @@ export const animeListState = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <animeListContext.Provider
+    <AnimeListContext.Provider
       value={{ animeList, setAnimeList, addToAnimeList, removeFromAnimeList }}
     >
       {children}
-    </animeListContext.Provider>
+    </AnimeListContext.Provider>
   );
 };
 
-export const useanimeList = () =>
-  useContext(animeListContext) as animeListContextType;
+export const useAnimeList = () =>
+  useContext(AnimeListContext) as AnimeListContextType;
