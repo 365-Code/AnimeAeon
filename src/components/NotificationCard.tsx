@@ -13,7 +13,7 @@ const NotificationCard = ({
   return (
     <div className="flex items-start gap-4 h-[140px]">
       <div className="w-full max-w-[140px] h-[140px]">
-        <AnimePreview image={anime.thumbnail} title={anime.title} />
+        <AnimePreview id={anime.id} image={anime.image} title={anime.title} />
       </div>
       <div className="flex flex-col justify-between h-full w-full">
         <h3 className="flex items-center justify-between text-base font-medium">

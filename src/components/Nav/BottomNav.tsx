@@ -6,7 +6,7 @@ import React from "react";
 const BottomNav = () => {
   const pathname = usePathname();
   return (
-    <div className="relative">
+    <div className="">
       <div className="w-full py-10" />
       <nav className="fixed dark:bg-[#181a20]/80 backdrop-blur-sm z-10 bottom-0 left-0 w-full px-6 pb-6 pt-4 flex justify-between items-center">
         <Link
@@ -16,7 +16,7 @@ const BottomNav = () => {
           } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
         >
           <i className="fi fi-ss-home text-base" />
-          <span className="text-xs font-medium capitalize">Home</span>
+          <span className="text-[10px] font-medium capitalize">Home</span>
         </Link>
         <Link
           href={"/release-calendar"}
@@ -25,7 +25,7 @@ const BottomNav = () => {
           } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
         >
           <i className="fi fi-rr-calendar text-base" />
-          <span className="text-xs font-medium capitalize">Release Ca..</span>
+          <span className="text-[10px] font-medium capitalize">Release Ca..</span>
         </Link>
         <Link
           href={"/my-list"}
@@ -34,7 +34,7 @@ const BottomNav = () => {
           } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
         >
           <i className="fi fi-ss-bookmark text-base" />
-          <span className="text-xs font-medium capitalize">my list</span>
+          <span className="text-[10px] font-medium capitalize">my list</span>
         </Link>
         <Link
           href={"/downloads"}
@@ -43,7 +43,7 @@ const BottomNav = () => {
           } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
         >
           <i className="fi fi-rr-download text-base" />
-          <span className="text-xs font-medium capitalize">downloads</span>
+          <span className="text-[10px] font-medium capitalize">downloads</span>
         </Link>
         <Link
           href={"/profile"}
@@ -52,7 +52,7 @@ const BottomNav = () => {
           } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
         >
           <i className="fi fi-rr-user text-base" />
-          <span className="text-xs font-medium capitalize">profile</span>
+          <span className="text-[10px] font-medium capitalize">profile</span>
         </Link>
       </nav>
     </div>

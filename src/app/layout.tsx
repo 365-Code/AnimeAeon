@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { MyListState } from "@/context/MyListState";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
+// AstraAnime
 export const metadata: Metadata = {
-  title: "Anos.to",
+  title: "AnimeAeon",
   description: "An anime streaming app",
 };
 
@@ -16,14 +18,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <MyListState>
+        <body className={poppins.className}>
         <main
-          id="main-screen"
-          className="h-full overflow-y-scroll no-scrollbar p-4 relative shadow-sm shadow-white/60 sm:shadow-none max-w-screen-sm mx-auto"
-        >
-          {children}
-        </main>
-      </body>
+            id="main-screen"
+            className="h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none"
+          >
+            {children}
+          </main>
+        </body>
+      </MyListState>
     </html>
   );
 }

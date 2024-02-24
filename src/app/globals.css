@@ -45,5 +45,14 @@ body {
 }
 
 .de-btn {
-  @apply flex items-center gap-2 w-fit font-medium text-sm leading-6 rounded-full border-2 py-[5px] px-[20px];
+  @apply flex items-center gap-2 w-fit font-medium text-sm leading-6 rounded-full border-2 border-[#06c149] py-[5px] px-[20px];
+}
+
+.grid-cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.neon{
+  box-shadow: 0 0 20px 1px #06b149;
 }

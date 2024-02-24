@@ -1,4 +1,4 @@
-import NavTop from "@/components/NavTop";
+import NavTop from "@/components/Nav/NavTop";
 import NotificationCard from "@/components/NotificationCard";
 import { getAnime } from "@/utils";
 import React from "react";
