@@ -1,3 +1,32 @@
+export type animeUpcomingType = {
+  airingAt: string;
+  episode: number;
+  media: {
+    id: number;
+    description: string;
+    idMal: number;
+    title: {
+      romaji: string;
+      english: string;
+      userPreferred: string;
+      native: string;
+    };
+    countryOfOrigin: string;
+    popularity: number;
+    bannerImage: string;
+    coverImage: {
+      extraLarge: string;
+      large: string;
+      medium: string;
+      color: string;
+    };
+    genres: Array<string>;
+    averageScore: number;
+    seasonYear: number;
+    format: string;
+  };
+};
+
 export type animeListCardType = {
   id: string;
   image : string;

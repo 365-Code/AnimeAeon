@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Turret+Road:wght@200;300;400;500;700;800&display=swap");
 @import "~@flaticon/flaticon-uicons/css/all/all";
 @tailwind base;
 @tailwind components;
@@ -10,30 +11,34 @@
 }
 
 i {
-  @apply flex flex-col justify-center items-center;
+  @apply flex flex-col items-center justify-center;
 }
 
 body {
-  @apply dark:bg-[#181a20] dark:text-white h-screen transition-all scroll-smooth;
+  @apply h-screen scroll-smooth transition-all dark:bg-[#181a20] dark:text-white;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-style: normal;
 }
 
+
+#main-screen{
+  @apply md:p-8 max-w-screen-lg mx-auto h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none;
+}
 /* body::-webkit-scrollbar{
   @apply w-0 h-0;
 } */
 
-.anime-image{
+.anime-image {
   @apply h-full w-full rounded-lg object-cover object-center;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  @apply w-0 h-0;
+  @apply h-0 w-0;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply w-[1px] h-[1px];
+  @apply h-[1px] w-[1px];
 }
 
 /* .custom-scrollbar::-webkit-scrollbar-thumb{
@@ -41,18 +46,23 @@ body {
 } */
 
 .btn {
-  @apply bg-[#06c149] hover:bg-[#06b149] flex text-sm items-center gap-2 w-fit font-medium leading-6 rounded-full border-2 border-[#06b149] py-[5px] px-[20px];
+  @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06b149] bg-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6 hover:bg-[#06b149];
 }
 
 .de-btn {
-  @apply flex items-center gap-2 w-fit font-medium text-sm leading-6 rounded-full border-2 border-[#06c149] py-[5px] px-[20px];
+  @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6;
 }
 
-.grid-cards{
+.grid-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-.neon{
+.neon {
   box-shadow: 0 0 20px 1px #06b149;
+}
+
+.logo {
+  font-family: "Turret Road", sans-serif;
+  font-style: normal;
 }

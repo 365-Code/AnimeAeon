@@ -36,8 +36,8 @@ const HomeTopHits = () => {
         </Link>
       </div>
       <div className="w-full overflow-x-scroll flex gap-4 items-center custom-scrollbar">
-        {topHits.map((anime) => (
-          <div key={anime.id} className=" min-w-[140px]">
+        {topHits.map((anime, ind) => (
+          <div key={anime.id + ind} className=" min-w-[140px]">
             <AnimePreview
             id={anime.id}
               title={anime.title}

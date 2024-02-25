@@ -47,8 +47,8 @@ const MoreLikeThis = ({ like }: { like: string }) => {
 
   return (
     <div className="w-full grid-cards gap-4">
-      {more?.map(({ bannerImage, coverImage, id, title }) => (
-        <div key={id} className="min-w-[150px]">
+      {more?.map(({ bannerImage, coverImage, id, title }, ind) => (
+        <div key={id + ind} className="min-w-[150px]">
           <AnimePreview
             image={bannerImage || coverImage.large || coverImage.medium}
             id={title.english || title.userPreferred}

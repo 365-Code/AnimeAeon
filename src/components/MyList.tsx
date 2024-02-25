@@ -13,8 +13,8 @@ const MyList = () => {
         <NavTop title="my list" />
       {myList.length > 0 ? (
         <div className="flex-1 overflow-y-scroll custom-scrollbar grid-cards gap-2">
-          {myList.map((l) => (
-            <div key={l.id} className="w-full h-[280px] ">
+          {myList.map((l, ind) => (
+            <div key={l.id + ind} className="w-full h-[280px] ">
               <AnimePreview id={l.id} image={l.image} title={l.id} />
             </div>
           ))}

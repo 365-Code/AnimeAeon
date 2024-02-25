@@ -47,8 +47,8 @@ const HomeAnimeList = ({
         </Link>
       </div>
       <div className="w-full custom-scrollbar overflow-x-scroll flex gap-4 items-start">
-        {animeList?.map((anime) => (
-          <div key={anime.id} className="min-w-[160px]">
+        {animeList?.map((anime, ind) => (
+          <div key={anime.id + ind} className="min-w-[160px]">
             <AnimePreview
               id={anime.id}
               title={anime.title}

@@ -42,7 +42,7 @@ const AnimeListCard = ({ anime }: { anime: animeListCardType }) => {
   }, []);
 
   return (
-    <div className="flex h-[200px] items-start gap-4 min-w-fit">
+    <div className="flex h-[200px] items-start gap-4 w-full">
       <div className="w-[160px]">
         <AnimePreview id={anime.id} image={animeDet.image} />
       </div>
@@ -62,7 +62,7 @@ const AnimeListCard = ({ anime }: { anime: animeListCardType }) => {
               (animeDet?.genre?.length > 50 ? "..." : "")}
           </span>
         </p>
-      <MyListButton id={anime.id} image={animeDet.image} />
+        <MyListButton id={anime.id} image={animeDet.image} />
       </div>
     </div>
   );

@@ -8,12 +8,12 @@ const BottomNav = () => {
   return (
     <div className="">
       <div className="w-full py-10" />
-      <nav className="fixed dark:bg-[#181a20]/80 backdrop-blur-sm z-10 bottom-0 left-0 w-full px-6 pb-6 pt-4 flex justify-between items-center">
+      <nav className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between px-6 pb-6 pt-4 backdrop-blur-sm dark:bg-[#181a20]/80">
         <Link
           href={"/"}
           className={`${
             pathname == "/" && "text-[#06c149]"
-          } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
+          } flex flex-col items-center justify-center gap-1 hover:text-[#06c149]`}
         >
           <i className="fi fi-ss-home text-base" />
           <span className="text-[10px] font-medium capitalize">Home</span>
@@ -22,16 +22,18 @@ const BottomNav = () => {
           href={"/release-calendar"}
           className={`${
             pathname == "/release-calender" && "text-[#06c149]"
-          } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
+          } flex flex-col items-center justify-center gap-1 hover:text-[#06c149]`}
         >
           <i className="fi fi-rr-calendar text-base" />
-          <span className="text-[10px] font-medium capitalize">Release Ca..</span>
+          <span className="text-[10px] font-medium capitalize">
+            Release Ca..
+          </span>
         </Link>
         <Link
           href={"/my-list"}
           className={`${
             pathname == "/my-list" && "text-[#06c149]"
-          } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
+          } flex flex-col items-center justify-center gap-1 hover:text-[#06c149]`}
         >
           <i className="fi fi-ss-bookmark text-base" />
           <span className="text-[10px] font-medium capitalize">my list</span>
@@ -40,7 +42,7 @@ const BottomNav = () => {
           href={"/downloads"}
           className={`${
             pathname == "/downloads" && "text-[#06c149]"
-          } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
+          } flex flex-col items-center justify-center gap-1 hover:text-[#06c149]`}
         >
           <i className="fi fi-rr-download text-base" />
           <span className="text-[10px] font-medium capitalize">downloads</span>
@@ -49,7 +51,7 @@ const BottomNav = () => {
           href={"/profile"}
           className={`${
             pathname == "/profile" && "text-[#06c149]"
-          } hover:text-[#06c149] flex flex-col justify-center items-center gap-1`}
+          } flex flex-col items-center justify-center gap-1 hover:text-[#06c149]`}
         >
           <i className="fi fi-rr-user text-base" />
           <span className="text-[10px] font-medium capitalize">profile</span>

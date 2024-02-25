@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { MyListState } from "@/context/MyListState";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
@@ -20,9 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <MyListState>
         <body className={poppins.className}>
-        <main
+          <main
             id="main-screen"
-            className="h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none"
+            className=""
           >
             {children}
           </main>
