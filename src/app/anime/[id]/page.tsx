@@ -35,15 +35,18 @@ const Page = () => {
     return () => clearTimeout(debounce);
   }, [animeId]);
 
-  
-  const searchParams = useSearchParams()
-  const playing = searchParams.get("episode") as string
+  const searchParams = useSearchParams();
+  const playing = searchParams.get("episode") as string;
   const [watch, setWatch] = useState(playing ? true : false);
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-6 overflow-y-scroll no-scrollbar">
       {/* <AnimeInfo anime={animeInfo} /> */}
-      {watch ? <Watch anime={animeInfo} setWatch={setWatch} /> : <AnimeInfoCard setWatch={setWatch} anime={animeInfo} />}
+      {watch ? (
+        <Watch anime={animeInfo} setWatch={setWatch} />
+      ) : (
+        <AnimeInfoCard setWatch={setWatch} anime={animeInfo} />
+      )}
       <DisplayCharacters characterList={animeInfo?.characters || []} />
       <DisplayAnimeCards
         title="You Might Like"

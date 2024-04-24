@@ -1,9 +1,9 @@
-import { IAnimeInfoAnilit } from '@/utils'
-import React from 'react'
-import AnimeInfoCard from '../cards/AnimeInfoCard'
-import AnimeEpisodes from '../list/AnimeEpisodes'
+import { IAnimeInfoAnilit } from "@/utils";
+import React from "react";
+import AnimeInfoCard from "../cards/AnimeInfoCard";
+import AnimeEpisodes from "../list/AnimeEpisodes";
 
-const AnimeInfo = ({anime}: {anime: IAnimeInfoAnilit}) => {
+const AnimeInfo = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   return (
     <section
       style={{
@@ -13,12 +13,12 @@ const AnimeInfo = ({anime}: {anime: IAnimeInfoAnilit}) => {
         // gridTemplateColumns: "70% 28%",
         gridTemplateColumns: "minmax(70%,1fr) minmax(0%, 28%)",
       }}
-      className="relative h-[70vh] w-full"
+      className="relative h-[70vh] w-full border"
     >
-        {/* <AnimeInfoCard anime={anime} /> */}
-        <AnimeEpisodes episodeList={anime?.episodes || []} />
+      {/* <AnimeInfoCard anime={anime} /> */}
+      <AnimeEpisodes episodeList={anime?.episodes || []} />
     </section>
-  )
-}
+  );
+};
 
-export default AnimeInfo
+export default AnimeInfo;

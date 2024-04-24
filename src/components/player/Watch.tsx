@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Player from "./Player";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -9,7 +9,13 @@ import { IAnimeInfoAnilit, episodeInfo, infoAnime } from "@/utils";
 import VideoPlayer from "./VideoPlayer";
 import AnimeEpisodes from "../list/AnimeEpisodes";
 
-const Watch = ({anime, setWatch}: {anime: IAnimeInfoAnilit, setWatch: Dispatch<SetStateAction<boolean>>}) => {
+const Watch = ({
+  anime,
+  setWatch,
+}: {
+  anime: IAnimeInfoAnilit;
+  setWatch: Dispatch<SetStateAction<boolean>>;
+}) => {
   // React
   const params = useParams();
   const nav = useRouter();
@@ -17,8 +23,6 @@ const Watch = ({anime, setWatch}: {anime: IAnimeInfoAnilit, setWatch: Dispatch<S
   const paramsEpId = (searchParams.get("episode") || 0) as number;
   const paramsSubDub = (searchParams.get("subDub") || false) as boolean;
 
-  console.log(paramsEpId);
-  
 
   // UseStates Variables
   const [ep, setEp] = useState<number>(0);
@@ -153,7 +157,7 @@ const Watch = ({anime, setWatch}: {anime: IAnimeInfoAnilit, setWatch: Dispatch<S
   // useEffect(() => {
   //   fetchEpisode()
   // }, [])
-  
+
   return (
     <section
       style={{

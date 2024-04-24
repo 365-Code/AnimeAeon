@@ -3,7 +3,13 @@ import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const AnimeInfoCard = ({ anime, setWatch }: { anime: IAnimeInfoAnilit, setWatch: Dispatch<SetStateAction<boolean>> }) => {
+const AnimeInfoCard = ({
+  anime,
+  setWatch,
+}: {
+  anime: IAnimeInfoAnilit;
+  setWatch: Dispatch<SetStateAction<boolean>>;
+}) => {
   const banner = anime.artwork
     ? anime.artwork.filter((art) => art.type == "banner" && art.img)
     : [];
@@ -107,9 +113,7 @@ const AnimeInfoCard = ({ anime, setWatch }: { anime: IAnimeInfoAnilit, setWatch:
             <span>{anime.rating ? anime.rating + "%" : ""}</span>
           </p>
           <p className="no-scrollbar max-h-[145px] overflow-y-scroll">
-            {anime.description
-              ?.replaceAll("<br>", "")
-            }
+            {anime.description?.replaceAll("<br>", "")}
           </p>
         </div>
         <div className="flex items-center justify-between">

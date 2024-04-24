@@ -35,7 +35,11 @@ const Page = () => {
         setHasMore(res.hasNextPage);
         setLoading(false);
         setTotalPages(res.totalPages);
-        setSearchResults((prev) => [...prev, ...res.results]);
+        if (page == 1) {
+          setSearchResults(res.results);
+        } else {
+          setSearchResults((prev) => [...prev, ...res.results]);
+        }
       }
     } catch (error: any) {
       throw new Error(error.message);
@@ -48,11 +52,11 @@ const Page = () => {
 
   return (
     <MainSection>
-      <div className="flex flex-col justify-between">
+      <div className="flex-1 flex flex-col justify-between">
         <h2 className="sub-heading">Search</h2>
         <div
           id="search-results"
-          className="custom-scrollbar grid flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
+          className="max-h-[85vh] custom-scrollbar grid flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
         >
           {searchResults.length == 0 &&
             [...Array(10)].map((a, i) => <EpisodeCardSkeleton key={i} />)}

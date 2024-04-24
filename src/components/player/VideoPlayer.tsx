@@ -44,7 +44,7 @@ const VideoPlayer = ({
   }, [episode]);
 
   return (
-    <div className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-xl bg-black/100 shadow-sm shadow-black/80 backdrop-blur-xl">
+    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-xl bg-black/100 shadow-sm shadow-black/80 backdrop-blur-xl">
       {/* <div className="ml-auto w-fit">
         <select name="subDub" id="subDub" className="text-black w-[150px] outline-none p-1">
           <option value="sub">Subbed</option>
@@ -54,7 +54,7 @@ const VideoPlayer = ({
           }
         </select>
       </div> */}
-      <div className="flex gap-1">
+      <div className="absolute top-0 left-0 flex gap-1 items-start">
         <button
           onClick={() => setWatch(false)}
           className="group/back flex w-fit items-center gap-2 bg-white/20 px-4 py-2 backdrop-blur-xl hover:bg-white/30"
@@ -62,7 +62,11 @@ const VideoPlayer = ({
           <i className="fi fi-ss-arrow-left transition-all group-hover/back:-translate-x-1" />
           <span>Overview</span>
         </button>
-        <select name="subDub" id="subDub" className="outline-none flex w-fit items-center gap-2 bg-white/20 px-4 py-2 backdrop-blur-xl hover:bg-white/30">
+        <select
+          name="subDub"
+          id="subDub"
+          className="flex w-fit items-center gap-2 px-4 py-2 outline-none bg-white/20 backdrop-blur-xl hover:bg-white/30"
+        >
           <option value="sub">Subbed</option>
         </select>
       </div>
