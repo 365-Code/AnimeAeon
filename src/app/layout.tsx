@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Karla, Poppins } from "next/font/google";
 import "./globals.css";
 import { MyListState } from "@/context/MyListState";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import SideNav from "@/components/Nav/SideNav";
+import SearchTop from "@/components/Nav/SearchTop";
+import MainSection from "@/components/sections/MainSection";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
 
 // AstraAnime
 export const metadata: Metadata = {
@@ -21,10 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <MyListState>
         <body className={poppins.className}>
-          <main
-            id="main-screen"
-            className=""
-          >
+          <main id="main-screen">
+            <SideNav />
             {children}
           </main>
         </body>

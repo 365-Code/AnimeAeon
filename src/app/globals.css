@@ -15,16 +15,24 @@ i {
 }
 
 body {
-  @apply h-screen scroll-smooth transition-all dark:bg-[#181a20] dark:text-white;
+  @apply scroll-smooth transition-all dark:bg-[#181a20] dark:text-white;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-style: normal;
 }
 
-
-#main-screen{
-  @apply md:p-8 max-w-screen-lg mx-auto h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none;
+:root {
+  --sidenav-width: 50px;
+  --st-min-w: 180px;
+  /* --st-min-w: 280px */
+  --st-max-w: 320px;
 }
+
+#main-screen {
+  /* @apply md:p-8 max-w-screen-lg mx-auto h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none; */
+  @apply relative overflow-hidden flex flex-col h-screen px-10 py-6;
+}
+
 /* body::-webkit-scrollbar{
   @apply w-0 h-0;
 } */
@@ -38,19 +46,31 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply h-[1px] w-[1px];
+  @apply h-1 w-1;
 }
 
-/* .custom-scrollbar::-webkit-scrollbar-thumb{
-  @apply bg-slate-400;
-} */
+.custom-scrollbar::-webkit-scrollbar-thumb{
+  @apply bg-slate-400 rounded-full;
+}
 
-.btn {
+/* .btn {
   @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06b149] bg-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6 hover:bg-[#06b149];
-}
+} */
 
 .de-btn {
   @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6;
+}
+
+.grid-row-container{
+  display: grid;
+  grid-template-rows: 7vh 70vh 40vh;
+  gap: 2rem
+}
+
+.grid-col-container{
+  display: grid;
+  grid-template-rows: 7vh 70vh 40vh;
+  gap: 2rem
 }
 
 .grid-cards {
@@ -65,4 +85,125 @@ body {
 .logo {
   font-family: "Turret Road", sans-serif;
   font-style: normal;
+}
+
+.side-nav {
+  @apply fixed left-0 top-0 flex h-full w-[250px] flex-col gap-2 bg-black py-4 transition-all;
+}
+
+.nav-li {
+  @apply transition-all flex w-full items-center gap-4 p-4 font-normal hover:dark:bg-[#181a20];
+}
+
+.nav-li-active {
+  @apply dark:bg-[#181a20];
+}
+
+.heading{
+  @apply text-3xl sm:text-4xl md:text-5xl py-4;
+}
+
+.sub-heading{
+  @apply text-2xl sm:text-3xl md:text-4xl py-2;
+}
+
+.btn{
+  @apply px-6 py-3 min-w-fit flex items-center transition-all gap-4 rounded-full;
+}
+
+.btn-primary{
+  @apply btn bg-white text-black hover:bg-white/90 border;
+}
+
+.btn-secondary{
+  @apply btn bg-transparent text-white hover:bg-white/90 hover:text-black border;
+}
+
+
+.animate-fade{
+  @apply transition-all;
+  animation: animation-fade 1s linear;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes animation-fade{
+  0%{
+    opacity: 0.3;
+    /* transform: translateX(100%); */
+  } to{
+    opacity: 0.5;
+    /* transform: translateX(0); */
+  }
+}
+
+.animate-fade-visible{
+  @apply transition-all;
+  animation: animation-fade-visible 1s linear;
+  animation-fill-mode: forwards;
+}
+
+
+@keyframes animation-fade-visible{
+  0%{
+    opacity: 0.3;
+    /* transform: translateX(100%); */
+  } to{
+    opacity: 1;
+    /* transform: translateX(0); */
+  }
+}
+
+/* Cards */
+
+.anime-card {
+  @apply relative flex h-[320px] w-[90vw] max-w-[625px] rounded-br-3xl bg-black/40 shadow-xl shadow-black backdrop-blur-sm 
+  sm:min-w-[380px]
+  sm:rounded-none
+  md:min-h-fit
+  md:min-w-[625px];
+}
+
+.anime-tag {
+  @apply absolute -left-3 -top-3 z-10 w-[250px] rounded-lg rounded-br-[60px] bg-white p-2 font-semibold text-black;
+}
+
+.anime-card-detail {
+  @apply relative flex flex-col justify-between px-2 pb-6 pl-4 pt-10 text-left text-white sm:flex-1 sm:pl-6;
+}
+
+.anime-card-detail h3 {
+  @apply max-h-[102px] min-h-fit text-left;
+  overflow: hidden;
+}
+
+.anime-card-img {
+  @apply hidden sm:block sm:basis-[38%];
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+
+.st-anime-card{
+  @apply min-h-full min-w-[var(--st-min-w)] max-w-[var(--st-max-w)] overflow-hidden relative transition-all;
+}
+
+.st-anime-card-detail{
+  @apply no-scrollbar absolute bottom-0 left-0 h-fit max-h-full min-h-10 w-full overflow-y-scroll hyphens-auto bg-black/70 p-4 font-semibold transition-all;
+}
+
+.cover-img{
+  @apply h-full w-full object-cover object-center;
+}
+
+.ep-card {
+  @apply h-full min-w-[280px] max-w-[320px];
+}
+
+.ep-card-skeleton {
+  @apply w-[280px] h-[420px] backdrop-blur-sm bg-black/40 animate-pulse;
+}
+
+.display-cards{
+  @apply grid items-start justify-start gap-4;
+  grid-template-columns: repeat(auto-fit, minmax(var(--st-min-w),var(--st-max-w)));
 }

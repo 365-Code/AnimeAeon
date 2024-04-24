@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@flaticon/flaticon-uicons": "^3.1.0",
+    "@consumet/extensions": "^1.5.6",
+    "@flaticon/flaticon-uicons": "^3.2.1",
+    "hls.js": "^1.5.8",
     "next": "14.1.0",
+    "plyr": "^3.7.8",
+    "plyr-react": "^5.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-responsive-carousel": "^3.2.23"

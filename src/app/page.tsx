@@ -1,68 +1,46 @@
-import HomeAnimeList from "@/components/home/HomeAnimeList";
-import Image from "next/image";
+import SearchBar from "@/components/Nav/SearchBar";
+import UpcomingAnime from "@/components/UpcomingAnime";
+import FetchMovies from "@/components/fetch/FetchMovies";
+import FetchPopular from "@/components/fetch/FetchPopular";
+import FetchRecentEpisodes from "@/components/fetch/FetchRecentEpisodes";
+import FetchSeries from "@/components/fetch/FetchSeries";
+import FetchTrending from "@/components/fetch/FetchTrending";
+import FetchUpcoming from "@/components/fetch/FetchUpcoming";
+import FetchWatchList from "@/components/fetch/FetchWatchList";
+import DisplayCharacters from "@/components/list/DisplayCharacters";
+import DisplayRecentEpisode from "@/components/list/DisplayRecentEpisode";
+import DisplayWatchList from "@/components/list/DisplayWatchList";
+import NewList from "@/components/list/NewList";
+import Watch from "@/components/player/Watch";
+import MainSection from "@/components/sections/MainSection";
+import SectionLeft from "@/components/sections/SectionLeft";
+import { IAnimeCharacter, infoAnime, recentEpisodeList } from "@/utils";
 import React from "react";
-import MyListButton from "@/components/MyListButton";
-import Link from "next/link";
-import BottomNav from "@/components/Nav/BottomNav";
-import HomeUpcoming from "@/components/home/HomeUpcoming";
-import Carousell from "@/components/Carousel";
-import HomeAnime from "@/components/home/HomeAnime";
 
 const Page = () => {
   return (
-    <div className="">
-      
-      <div className="absolute left-0 top-0 -z-10 h-[340px] w-full">
-        {/* <Image
-          width={400}
-          height={400}
-          src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-7I8Cip7XRDhV.jpg"
-          alt="cover-image"
-          className="h-full w-full object-cover object-center"
-        /> */}
+    // <section className="h-full">
+    //   <SectionLeft />
+
+    // </section>
+    <MainSection>
+      <div className="no-scrollbar h-full flex-1 space-y-4 overflow-y-scroll">
+        <FetchUpcoming />
+        <FetchPopular />
+        <FetchTrending />
+        <FetchMovies />
+        <FetchSeries />
       </div>
-      <HomeAnime />
-
-      {/* <div className="mb-4 flex h-[308px] w-full flex-col justify-between pb-4">
-        <div className="flex items-center justify-between">
-          <div id="logo" className="rounded-full bg-white/50 p-1">
-            <Image src={"/logo2.png"} width={40} height={40} alt="logo" />
-          </div>
-          <div className="flex items-center gap-6">
-            <button>
-              <i className="fi fi-rr-search text-xl" />
-            </button>
-            <Link href={"/notifications"}>
-              <i className="fi fi-rr-bell text-xl" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="space-y-1">
-          <h1 className="text-2xl font-medium">The Apothecary Diaries</h1>
-          <p className="text-sm font-normal">Drama, Mystery</p>
-          <div className="flex items-center gap-4">
-            <button className="btn flex items-center">
-              <i className="fi fi-rr-play-circle text-white" /> Play
-            </button>
-            <MyListButton
-              id="MyListButton"
-              image="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161645-7I8Cip7XRDhV.jpg"
-            />
-          </div>
-        </div>
-      </div> */}
-
-
-      <HomeAnimeList
-        title="Top Hits Anime"
-        type="topHits"
-        linkTo="/top-hits-anime"
-      />
-      <HomeAnimeList title="Recents" type="recents" linkTo="/recents" />
-      <HomeUpcoming />
-      <BottomNav />
-    </div>
+    </MainSection>
+    // <MainSection>
+    //   {/* <Watch anime={infoAnime} /> */}
+    //   <FetchUpcoming />
+    //   <FetchMovies />
+    //   <FetchSeries />
+    //   <DisplayCharacters
+    //     characterList={infoAnime.characters as IAnimeCharacter[]}
+    //     />
+    // </MainSection>
   );
 };
 

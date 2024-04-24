@@ -18,9 +18,7 @@ const HomeAnimeList = ({
     try {
       let result;
       if (type == "topHits") {
-        result = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/gogoPopular/1`
-        );
+        result = await fetch(`/api/anilist/popular`);
       } else {
         result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recent/1`);
       }
@@ -40,13 +38,13 @@ const HomeAnimeList = ({
 
   return (
     <div className="">
-      <div className="py-4 flex items-center justify-between">
-        <h3 className="capitalize font-medium text-lg">{title}</h3>
-        <Link href={linkTo} className="text-[#06c149] font-medium text-sm">
+      <div className="flex items-center justify-between py-4">
+        <h3 className="text-lg font-medium capitalize">{title}</h3>
+        <Link href={linkTo} className="text-sm font-medium text-[#06c149]">
           See all
         </Link>
       </div>
-      <div className="w-full custom-scrollbar overflow-x-scroll flex gap-4 items-start">
+      <div className="custom-scrollbar flex w-full items-start gap-4 overflow-x-scroll">
         {animeList?.map((anime, ind) => (
           <div key={anime.id + ind} className="min-w-[160px]">
             <AnimePreview

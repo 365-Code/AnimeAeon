@@ -1,23 +1,52 @@
-"use client"
+"use client";
 import AnimeListCard from "@/components/AnimeListCard";
 import AnimePreview from "@/components/AnimePreview";
 import NavTop from "@/components/Nav/NavTop";
 import NotificationCard from "@/components/NotificationCard";
 import { animeList, getAnime } from "@/utils";
+import { META } from "@consumet/extensions";
+import { ApiError } from "next/dist/server/api-utils";
 import React, { useEffect } from "react";
 
 const Page = () => {
+  // Using the example id of "21" (one piece) and the query of "gogoanime"
+  const url = "/api/anilist/upcoming";
+  // const data = async () => {
+  //   try {
+  //     const data = await fetch(url);
+  //     const res = await data.json();
+  //     console.log(res);
+  //     return data;
+  //   } catch (err) {
+  //     if (err instanceof ApiError) throw new Error(err.message);
+  //   }
+  // };
 
-  // useEffect(() => {
-  //   fetch()
-  // }, [])
-  
+  const recentEpisodes = async () => {
+    try {
+      const data = fetch("/api/anilist/recentEpisodes");
+      const res = await data.json();
+    } catch (error) {
+      if (error instanceof ApiError) throw new Error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    // const debounce = setTimeout(() => {
+    recentEpisodes();
+    // }, 500);
+    // return () => clearTimeout(debounce);
+  }, []);
+
+  useEffect(() => {
+    recentEpisodes();
+  }, []);
+
   return (
     <div>
-      asdf
+      <video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
     </div>
-  )
-  
+  );
 };
 
 export default Page;

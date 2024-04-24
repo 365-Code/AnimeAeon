@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AnimeCardSkeleton from "./AnimeCardSkeleton";
-import { animePreviewType } from "@/utils";
-import { randomUUID } from "crypto";
+import Loader from "./Loader";
 
 const InfiniteScroll = ({
   page,
@@ -10,16 +8,19 @@ const InfiniteScroll = ({
   loading,
   setLoading,
   hasMore,
+  id,
 }: {
   page: number;
   setPage: any;
   loading: boolean;
   setLoading: any;
   hasMore: any;
+  id: string;
 }) => {
   const handleInfiniteScroll = async () => {
     try {
-      const upScroll = document.getElementById("upcoming-scroll");
+      const upScroll = document.getElementById(id);
+
       if (upScroll) {
         if (
           upScroll.clientHeight + upScroll.scrollTop + 1 >=
@@ -36,16 +37,26 @@ const InfiniteScroll = ({
   };
 
   useEffect(() => {
-    const upScroll = document.getElementById("upcoming-scroll");
+    const upScroll = document.getElementById(id);
     if (upScroll) {
       upScroll.addEventListener("scroll", handleInfiniteScroll);
     }
-    return () => upScroll?.removeEventListener("scroll", handleInfiniteScroll);
+    return () => {
+      page > 2 && upScroll?.scrollBy({ top: 40, behavior: "smooth" });
+      upScroll?.removeEventListener("scroll", handleInfiniteScroll);
+    };
   });
   return (
-    <div>
-      {loading && [...Array(8)].map((v, ind) => <AnimeCardSkeleton key={ind} />)}
-    </div>
+    <>
+      {loading && (
+        <div className="fixed left-0 top-0 z-10 flex h-screen w-screen flex-col items-center justify-center bg-black/40 bg-opacity-25">
+          <Loader />
+          <h3 className="py-2 text-2xl font-bold text-[#09f]">
+            Please Wait for a few...
+          </h3>
+        </div>
+      )}
+    </>
   );
 };
 
