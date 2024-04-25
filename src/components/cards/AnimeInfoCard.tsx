@@ -134,7 +134,7 @@ const AnimeInfoCard = ({
             )}
             {anime.totalEpisodes || anime.currentEpisode ? (
               <>
-                <span>{anime.totalEpisodes || anime.currentEpisode}</span>
+                <span>{anime.currentEpisode || anime.totalEpisodes}</span>
                 <span className="min-h-2 min-w-2 rounded-full bg-white"></span>
               </>
             ) : (
