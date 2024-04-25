@@ -69,7 +69,10 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
               ""
             )}
           </p>
-          <p typeof="html" className="description max-h-[100px] overflow-hidden">
+          <p
+            typeof="html"
+            className="description max-h-[100px] overflow-hidden"
+          >
             {anime.description}
             {/* <code>
               {anime.description as string}

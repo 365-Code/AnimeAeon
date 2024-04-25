@@ -20,7 +20,6 @@ const InfiniteScroll = ({
   const handleInfiniteScroll = async () => {
     try {
       const upScroll = document.getElementById(id);
-
       if (upScroll) {
         if (
           upScroll.clientHeight + upScroll.scrollTop + 1 >=
@@ -38,6 +37,7 @@ const InfiniteScroll = ({
 
   useEffect(() => {
     const upScroll = document.getElementById(id);
+
     if (upScroll) {
       upScroll.addEventListener("scroll", handleInfiniteScroll);
     }

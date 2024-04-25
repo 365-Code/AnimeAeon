@@ -3,7 +3,7 @@ import { ISearchResult, moviesList } from "@/utils";
 import React, { useEffect, useState } from "react";
 import DisplayCards from "../list/DisplayCards";
 
-const FetchMovies = ({ title }: { title?: string }) => {
+const FetchMovies = () => {
   const [movies, setMovies] = useState<ISearchResult[]>([]);
 
   const fetchMovies = async () => {
@@ -18,8 +18,7 @@ const FetchMovies = ({ title }: { title?: string }) => {
   };
 
   useEffect(() => {
-    // fetchMovies();
-    setMovies(moviesList);
+    fetchMovies();
   }, []);
 
   return <DisplayCards animeList={movies} title="Movies" />;

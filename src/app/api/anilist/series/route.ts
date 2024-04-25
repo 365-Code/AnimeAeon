@@ -21,8 +21,7 @@ export async function GET(req: NextRequest) {
       { success: true, hasNextPage, currentPage, totalPages, results },
       { status: 200 },
     );
-  } catch (error) {
-    if (error instanceof ApiError)
+  } catch (error: any) {
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 },

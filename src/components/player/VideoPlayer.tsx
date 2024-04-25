@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import Player from "./Player";
 import { episodeInfo } from "@/utils";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 const VideoPlayer = ({
   setWatch,
@@ -16,7 +16,8 @@ const VideoPlayer = ({
 }) => {
   const searchParams = useSearchParams();
   const episode = searchParams.get("episode") as string;
-
+  const params = useParams()
+  const animeId = Number(params["id"]);
   const [epSources, setEpSources] = useState([
     {
       quality: "default",
@@ -26,8 +27,6 @@ const VideoPlayer = ({
 
   const fetchEpisode = async () => {
     try {
-      console.log("working");
-
       const res = await (
         await fetch("/api/anilist/episode-sources?episodeId=" + episode)
       ).json();
@@ -40,7 +39,19 @@ const VideoPlayer = ({
   };
 
   useEffect(() => {
-    episode && fetchEpisode();
+    if(episode){
+      fetchEpisode();
+      const data = localStorage.getItem("continueList");
+      if(data){
+        let list = JSON.parse(data) as Array<any>
+        const exist = list.findIndex((v) => v.id == animeId) || -1
+        if(exist != -1){
+          list[exist].episodeId = episode
+          list[exist].episodeNumber = Number(episode.split("episode-").at(-1))
+          localStorage.setItem("continueList", JSON.stringify(list))
+        }
+      }
+    }
   }, [episode]);
 
   return (
@@ -54,7 +65,13 @@ const VideoPlayer = ({
           }
         </select>
       </div> */}
-      <div className="absolute top-0 left-0 flex gap-1 items-start">
+      
+      <div>
+        <Player
+          source={epSources.find((e) => e.quality == "default")?.url || ""}
+        />
+      </div>
+      <div className=" absolute left-0 top-0 flex items-start gap-1">
         <button
           onClick={() => setWatch(false)}
           className="group/back flex w-fit items-center gap-2 bg-white/20 px-4 py-2 backdrop-blur-xl hover:bg-white/30"
@@ -65,15 +82,10 @@ const VideoPlayer = ({
         <select
           name="subDub"
           id="subDub"
-          className="flex w-fit items-center gap-2 px-4 py-2 outline-none bg-white/20 backdrop-blur-xl hover:bg-white/30"
+          className="flex w-fit items-center gap-2 bg-white/20 px-4 py-2 outline-none backdrop-blur-xl hover:bg-white/30"
         >
           <option value="sub">Subbed</option>
         </select>
-      </div>
-      <div>
-        {/* <Player
-          source={epSources.find((e) => e.quality == "default")?.url || ""}
-        /> */}
       </div>
     </div>
   );

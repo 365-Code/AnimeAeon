@@ -5,34 +5,27 @@ import EpisodeCard from "../cards/EpisodeCard";
 import { IRecentEpisode, recentEpisode, recentEpisodeList } from "@/utils";
 import EpisodeCardSkeleton from "../skeletons/EpisodeCardSkeleton";
 import DisplayRecentEpisode from "../list/DisplayRecentEpisode";
+import DisplayWatchList from "../list/DisplayWatchList";
 
 const FetchWatchList = () => {
   const [watchList, setWatchList] = useState<IRecentEpisode[]>([]);
 
-  const data = async () => {
-    try {
-      const data = await fetch("/api/anilist/watchList");
-      const res = await data.json();
-      if (res.success) {
-        setWatchList(res.results);
-      }
-    } catch (error) {
-      if (error instanceof ApiError) throw new Error(error.message);
+  const data = () => {
+    const dta = localStorage.getItem("watchList");
+    if (dta) {
+      const list = JSON.parse(dta);
+      setWatchList(list);
     }
   };
 
   useEffect(() => {
-    // const debounce = setTimeout(() => {
-    //   data();
-    // }, 500);
-    // return () => clearTimeout(debounce);
-    setWatchList(recentEpisodeList);
+    data();
   }, []);
 
   return (
     <section>
       {/* <DisplayRecentEpisode animeList={recentEpisodes} /> */}
-      <DisplayRecentEpisode animeList={watchList} />
+      <DisplayWatchList animeEpList={watchList} />
       {/* <h2 className="heading">Recent Episodes</h2>
       <div className="no-scrollbar flex w-full gap-2 overflow-x-scroll">
         {recentEpisodes.map((anime) => (

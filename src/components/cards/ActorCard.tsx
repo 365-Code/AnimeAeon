@@ -15,7 +15,7 @@ const ActorCard = ({
   return (
     <div
       onClick={() => setActive(index)}
-      className={`relative h-[350px] min-w-[130px] overflow-hidden rounded-xl transition-all ${active == index ? "min-w-[250px]" : ""} `}
+      className={`cursor-pointer relative h-[350px] w-[130px] min-w-[130px] overflow-hidden rounded-xl transition-all ${active == index ? "min-w-[250px]" : ""} `}
     >
       <div
         className={`h-full w-full transition-all ${active == index ? "opacity-50" : "opacity-100"} `}

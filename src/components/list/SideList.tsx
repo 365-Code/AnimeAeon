@@ -5,16 +5,16 @@ import { IRecentEpisode, recentEpisode } from "@/utils";
 import EpisodeCard2 from "../cards/EpisodeCard2";
 import { title } from "process";
 
-const NewList = ({ list }: { list: { title: string; component: any }[] }) => {
+const SideList = ({ list }: { list: { title: string; component: any }[] }) => {
   const [active, setActive] = useState(-1);
 
   return (
-    <div className="flex h-full flex-1 flex-col overflow-hidden rounded-xl border bg-black/30 px-2 backdrop-blur-sm">
+    <div className="flex h-full flex-1 flex-col overflow-hidden rounded-xl bg-black/30 backdrop-blur-sm">
       {list?.map((lst, i) => (
         <div key={i}>
           <button
             onClick={() => setActive((prev) => (prev != i ? i : -1))}
-            className={`flex w-full items-center justify-between p-2 py-2 shadow-sm shadow-white/10 `}
+            className={`flex w-full items-center justify-between bg-black/20 px-4 py-2 `}
           >
             <span>{lst.title}</span>
             <span
@@ -24,7 +24,7 @@ const NewList = ({ list }: { list: { title: string; component: any }[] }) => {
             </span>
           </button>
           <div
-            className={` ${active == i ? "h-[300px] flex-1 overflow-y-scroll" : "h-0 overflow-hidden"} no-scrollbar transition-all`}
+            className={` ${active == i ? "h-[300px] flex-1 overflow-y-scroll" : "h-0 overflow-hidden"} no-scrollbar bg-black/20 px-4 transition-all`}
             // className="h-[300px]"
           >
             {lst.component}
@@ -35,4 +35,4 @@ const NewList = ({ list }: { list: { title: string; component: any }[] }) => {
   );
 };
 
-export default NewList;
+export default SideList;

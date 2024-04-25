@@ -3,7 +3,7 @@ import { ISearchResult, moviesList, trendingList } from "@/utils";
 import React, { useEffect, useState } from "react";
 import DisplayCards from "../list/DisplayCards";
 
-const FetchTrending = ({ title }: { title?: string }) => {
+const FetchTrending = () => {
   const [trending, setTrending] = useState<ISearchResult[]>([]);
 
   const fetchTrending = async () => {
@@ -18,8 +18,7 @@ const FetchTrending = ({ title }: { title?: string }) => {
   };
 
   useEffect(() => {
-    // fetchTrending();
-    setTrending(trendingList);
+    fetchTrending();
   }, []);
 
   return <DisplayCards animeList={trending} title="Trending" />;

@@ -3,7 +3,7 @@ import { ISearchResult, moviesList, popularList } from "@/utils";
 import React, { useEffect, useState } from "react";
 import DisplayCards from "../list/DisplayCards";
 
-const FetchPopular = ({ title }: { title?: string }) => {
+const FetchPopular = () => {
   const [popular, setPopular] = useState<ISearchResult[]>([]);
 
   const fetchPopular = async () => {
@@ -18,8 +18,7 @@ const FetchPopular = ({ title }: { title?: string }) => {
   };
 
   useEffect(() => {
-    // fetchPopular();
-    setPopular(popularList);
+    fetchPopular();
   }, []);
 
   return <DisplayCards animeList={popular} title="Popular" />;

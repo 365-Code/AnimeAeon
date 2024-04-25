@@ -1,31 +1,28 @@
 "use client";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import DisplayCards from "@/components/list/DisplayCards";
-import { ISearchResult, perPage } from "@/utils";
+import { ISearchResult, moviesList, perPage } from "@/utils";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  const [popular, setPopular] = useState<ISearchResult[][]>([]);
+  const [movies, setMovies] = useState<Array<ISearchResult[]>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const fetchPopular = async () => {
+  const fetchMovies = async () => {
     try {
       setLoading(true);
       const res = await (
-        await fetch(`/api/anilist/popular?page=${page}&perPage=${perPage}`)
+        await fetch(`/api/anilist/movies?page=${page}&perPage=${perPage}`)
       ).json();
       if (res.success) {
         if (page % 2 == 1) {
           setPage(page + 1);
           setLoading(false);
         }
-        if(!hasMore){
-          setLoading(false)
-        }
         setHasMore(res.hasNextPage);
-        setPopular((prev) => [...prev, res.results]);
+        setMovies((prev) => [...prev, res.results]);
         setLoading(false);
       }
     } catch (error: any) {
@@ -35,21 +32,24 @@ const Page = () => {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      fetchPopular();
+      fetchMovies();
     }, 100);
     return () => clearTimeout(debounce);
   }, [page]);
 
   return (
     <section className="flex h-full flex-1 flex-col overflow-hidden rounded-xl">
-      <h2 className="heading">Popular</h2>
-      <div id="popular" className="flex-1 space-y-6 overflow-y-scroll no-scrollbar">
-        {popular?.map((popularList, i) => (
-          <DisplayCards key={i} animeList={popularList} />
+      <h2 className="heading">Movies</h2>
+      <div
+        id="movies"
+        className="no-scrollbar flex-1 space-y-6 overflow-y-scroll"
+      >
+        {movies?.map((movieList, i) => (
+          <DisplayCards key={i} animeList={movieList} />
         ))}
       </div>
       <InfiniteScroll
-        id="popular"
+        id="movies"
         loading={loading}
         setLoading={setLoading}
         hasMore={hasMore}

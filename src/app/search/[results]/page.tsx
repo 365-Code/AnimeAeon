@@ -3,7 +3,7 @@ import InfiniteScroll from "@/components/InfiniteScroll";
 import StAnimeCard from "@/components/cards/StAnimeCard";
 import MainSection from "@/components/sections/MainSection";
 import EpisodeCardSkeleton from "@/components/skeletons/EpisodeCardSkeleton";
-import { ISearchResult } from "@/utils";
+import { ISearchResult, perPage } from "@/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -22,8 +22,6 @@ const Page = () => {
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState(1);
-
-  const perPage = 18;
 
   const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "All"}&sort=${sort || "All"}&genres=${genres || "All"}&status=${status || "All"}&season=${season || "All"}`;
 
@@ -52,15 +50,15 @@ const Page = () => {
 
   return (
     <MainSection>
-      <div className="flex-1 flex flex-col justify-between">
+      <div className="flex flex-1 flex-col justify-between">
         <h2 className="sub-heading">Search</h2>
         <div
           id="search-results"
-          className="max-h-[85vh] custom-scrollbar grid flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
+          className="custom-scrollbar grid max-h-[85vh] flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
         >
           {searchResults.length == 0 &&
             [...Array(10)].map((a, i) => <EpisodeCardSkeleton key={i} />)}
-          {searchResults.map((anime) => (
+          {searchResults?.map((anime) => (
             <StAnimeCard key={anime.id} anime={anime} />
           ))}
         </div>

@@ -9,8 +9,7 @@ export async function GET(req: NextRequest) {
     const animeId = searchParams.get("id") as string
     const result = await anilist.fetchAnimeInfo(animeId);
     return NextResponse.json({ success: true, result }, { status: 200 });
-  } catch (error) {
-    if (error instanceof ApiError)
+  } catch (error: any) {
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 },

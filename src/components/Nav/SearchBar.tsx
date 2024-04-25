@@ -7,7 +7,7 @@ const SearchBar = () => {
   const [searchInput, setSearchInput] = useState("");
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    nav.push("/anime/search?query=" + searchInput);
+    nav.push("/search/results?query=" + searchInput);
     setSearchInput("");
   };
 

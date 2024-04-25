@@ -3,7 +3,7 @@ import { ISearchResult, seriesList } from "@/utils";
 import React, { useEffect, useState } from "react";
 import DisplayCards from "../list/DisplayCards";
 
-const FetchSeries = ({ title }: { title?: string }) => {
+const FetchSeries = () => {
   const [series, setSeries] = useState<ISearchResult[]>([]);
 
   const fetchSeries = async () => {
@@ -18,8 +18,7 @@ const FetchSeries = ({ title }: { title?: string }) => {
   };
 
   useEffect(() => {
-    // fetchSeries();
-    setSeries(seriesList)
+    fetchSeries();
   }, []);
 
   return (

@@ -20,13 +20,10 @@ const FetchRecentEpisodes = () => {
   };
 
   useEffect(() => {
-    // const debounce = setTimeout(() => {
-    //   data();
-    // }, 500);
-    // return () => clearTimeout(debounce);
-
-    setRecentEpisodes(recentEpisodeList)
-    
+    const debounce = setTimeout(() => {
+      data();
+    }, 500);
+    return () => clearTimeout(debounce);
   }, []);
 
   return <DisplayRecentEpisode animeList={recentEpisodes} />;

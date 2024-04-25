@@ -11,7 +11,7 @@ const FetchUpcoming = () => {
     try {
       const res = await (await fetch("/api/anilist/upcoming")).json();
       if (res.success) {
-        setUpcoming(res.result);
+        setUpcoming(res.results);
       }
     } catch (error: any) {
       throw new Error(error.message);
@@ -19,15 +19,17 @@ const FetchUpcoming = () => {
   };
 
   useEffect(() => {
-    // fetchUpcoming();
-    setUpcoming(upcomingList);
+    // const debounce = setTimeout(() => {
+    fetchUpcoming();
+    // }, 100);
+    // return () => clearTimeout(debounce);
   }, []);
 
   const [currentBanner, setCurrentBanner] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % upcoming.length);
+      setCurrentBanner((prev) => (prev + 1) % upcoming?.length);
     }, 3000);
     return () => clearInterval(interval);
   }, [currentBanner, upcoming]);
@@ -35,13 +37,13 @@ const FetchUpcoming = () => {
   const handleSlideShow = (n: 1 | -1) => {
     setCurrentBanner(
       (prev) =>
-        (prev + n < 0 ? upcoming.length - 1 : prev + n) % upcoming.length,
+        (prev + n < 0 ? upcoming?.length - 1 : prev + n) % upcoming?.length,
     );
   };
 
   return (
     <section className="no-scrollbar relative flex max-h-[50vh] w-full snap-x snap-mandatory items-center overflow-hidden rounded-xl">
-      {upcoming.map((up, i) => (
+      {upcoming?.map((up, i) => (
         <div
           key={i}
           className={`h-full w-full snap-start bg-black opacity-40 transition-all ${currentBanner == i ? "animate-fade-visible block translate-x-0" : "hidden translate-x-10"}`}

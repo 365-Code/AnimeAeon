@@ -10,8 +10,8 @@ const DisplayCharacters = ({
   return (
     <section className="w-full space-y-4 overflow-hidden">
       <h3 className="heading">Characters</h3>
-      <div className="no-scrollbar flex w-full items-start gap-2 overflow-x-scroll">
-        {characterList.map((character) => (
+      <div className="no-scrollbar relative flex w-full items-start gap-2 overflow-x-scroll">
+        {characterList?.map((character) => (
           <CharacterCard key={character.id} character={character} />
         ))}
       </div>

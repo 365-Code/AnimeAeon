@@ -53,11 +53,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, results, currentPage, hasNextPage, totalPages }, { status: 200 });
   } catch (error: any) {
-    if (error instanceof ApiError)
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 500 },
-      );
 
     return NextResponse.json(
       { success: false, error: error.message },

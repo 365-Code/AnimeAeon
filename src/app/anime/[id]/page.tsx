@@ -47,12 +47,12 @@ const Page = () => {
       ) : (
         <AnimeInfoCard setWatch={setWatch} anime={animeInfo} />
       )}
-      <DisplayCharacters characterList={animeInfo?.characters || []} />
       <DisplayAnimeCards
         title="You Might Like"
         animeList={animeInfo?.recommendations || []}
       />
-      <DisplayCharacterActors charActorList={animeInfo?.characters || []} />
+      <DisplayCharacters characterList={animeInfo?.characters || []} />
+      {/* <DisplayCharacterActors charActorList={animeInfo?.characters || []} /> */}
     </section>
   );
 };

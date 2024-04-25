@@ -11,8 +11,7 @@ export async function GET(req: NextRequest) {
     const { results, currentPage, hasNextPage, totalPages } =
       await anilist.fetchPopularAnime(Number(page), Number(perPage));
     return NextResponse.json({ success: true, results }, { status: 200 });
-  } catch (error) {
-    if (error instanceof ApiError)
+  } catch (error: any) {
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 },

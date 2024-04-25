@@ -8,8 +8,7 @@ export async function GET(req: NextRequest) {
     const {results} = await anilist.fetchRecentEpisodes();
 
     return NextResponse.json({ success: true, results }, { status: 200 });
-  } catch (error) {
-    if (error instanceof ApiError)
+  } catch (error: any) {
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 },

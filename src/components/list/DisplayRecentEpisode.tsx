@@ -11,7 +11,7 @@ const DisplayRecentEpisode = ({
   return (
     // <div className="flex h-[70vh] w-[350px] flex-col gap-4 overflow-y-hidden rounded-xl bg-black/30 p-4 backdrop-blur-sm">
     <div className="flex flex-col gap-4 overflow-y-scroll no-scrollbar">
-      {animeList.map((recentEpisode) => (
+      {animeList?.map((recentEpisode) => (
         <EpisodeCard2 key={recentEpisode.id} anime={recentEpisode} />
       ))}
     </div>

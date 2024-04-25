@@ -32,12 +32,6 @@ export async function GET(req: NextRequest) {
     // return NextResponse.json({ success: true, results }, { status: 200 });
 
   } catch (error: any) {
-    if (error instanceof ApiError)
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 500 },
-      );
-      else
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 },

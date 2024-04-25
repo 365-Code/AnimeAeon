@@ -4,6 +4,8 @@ import {
   IAnimeEpisodeV2,
 } from "@consumet/extensions/dist/models/types";
 
+
+export const perPage = 18
 export interface IArtWork {
   img: string;
   type: string;

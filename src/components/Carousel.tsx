@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
-import MyListButton from "./MyListButton";
 
 const Carousell = ({
   images,
@@ -15,7 +14,7 @@ const Carousell = ({
   return (
     <Carousel autoPlay infiniteLoop showThumbs={false}>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[0]?.image || ""}
@@ -24,7 +23,7 @@ const Carousell = ({
         />
       </div>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[1]?.image || ""}
@@ -34,7 +33,7 @@ const Carousell = ({
         <p>asdfl</p>
       </div>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[2]?.image || ""}
@@ -44,7 +43,7 @@ const Carousell = ({
         <p className="bg-black p-4">asdfl</p>
       </div>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[3]?.image || ""}
@@ -53,7 +52,7 @@ const Carousell = ({
         />
       </div>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[4]?.image || ""}
@@ -62,7 +61,7 @@ const Carousell = ({
         />
       </div>
       <div className={height ? height : "h-[340px]"}>
-        <Image
+        <img
           width={500}
           height={500}
           src={images[5]?.image || ""}

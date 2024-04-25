@@ -18,7 +18,7 @@ const AnimePreview = ({
     <div className="min-h-fit max-h-[250px]">
     <Link href={`/anime/${id}`}>
       <div className="relative min-w-fit h-[200px]">
-        <Image
+        <img
           width={400}
           height={400}
           className="anime-image"

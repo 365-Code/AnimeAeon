@@ -1,8 +1,11 @@
+
+
 import { IRecentEpisode, toAnimeTitle } from "@/utils";
 import { IAnimeEpisode, ITitle } from "@consumet/extensions";
+import Link from "next/link";
 import React from "react";
 
-const DisplayWatchList = ({
+const DisplayContinue = ({
   animeEpList,
 }: {
   animeEpList: IRecentEpisode[];
@@ -11,25 +14,27 @@ const DisplayWatchList = ({
     // <div className="flex h-[400px] w-[350px] flex-col gap-4 overflow-y-hidden rounded-xl bg-black/30 p-4 backdrop-blur-sm">
     <div className=" no-scrollbar flex flex-col gap-4 overflow-y-scroll">
       {animeEpList?.map((animeEp) => (
-        <div
+        <Link
+        href={'/anime/' + animeEp.id + "?episode=" + animeEp.episodeId}
           key={animeEp?.id}
           className="flex items-center justify-between gap-2"
         >
-          <div className="min-w-[64px] max-w-[64px] overflow-hidden rounded-lg">
+          <div className="min-w-[64px] max-w-[64px]  overflow-hidden rounded-lg">
             <img src={animeEp.image} alt="" className="cover-img" />
           </div>
-          <div className="flex items-start flex-1 max-h-[70px]">
-            <p className="">
+          <div className="flex-1">
+            <p className="max-h-[52px] overflow-y-hidden">
               {toAnimeTitle(animeEp?.title as ITitle)}
             </p>
+            <p>Episode - {animeEp?.episodeNumber}</p>
           </div>
-          <button className="rounded-full bg-white/10 p-4 h-fit text-sm">
+          <button className="rounded-full bg-white/10 hover:bg-white/20 transition-all p-4 text-sm">
             <i className="fi fi-ss-play" />
           </button>
-        </div>
+        </Link>
       ))}
     </div>
-  );
+);
 };
 
-export default DisplayWatchList;
+export default DisplayContinue;

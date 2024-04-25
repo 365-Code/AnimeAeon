@@ -8,7 +8,7 @@ const GettingStarted = () => {``
 
   return (
     <div className="flex flex-col w-full justify-end h-full overflow-hidden">
-      <Image
+      <img
         width={500}
         height={500}
         src={"/bg.jpeg"}

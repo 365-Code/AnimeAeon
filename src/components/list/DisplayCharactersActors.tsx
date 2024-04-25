@@ -7,6 +7,7 @@ const DisplayCharacterActors = ({
 }: {
   charActorList: IAnimeCharacter[];
 }) => {
+  
   const voiceActorList = (characterList: IAnimeCharacter[]) => {
     let langMap = {} as { [x: string]: IActorWithCharacter[] };
     characterList?.forEach((character) => {
@@ -33,21 +34,10 @@ const DisplayCharacterActors = ({
             ...actor,
             image: actorImage,
           } as IActorWithCharacter);
-          // }else{
-          //   langMap[lang].push(actor as IActorWithCharacter);
-          // }
         } else {
-          // if (
-          //   actor.image ==
-          //   "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
-          // ) {
           langMap[lang] = [{ ...actor, image: actorImage }];
-          // } else {
-          //   langMap[lang] = [actor];
-          // }
         }
       });
-      // actorList = [...actorList, ...actors];
     });
 
     return Object.keys(langMap).map((i) => ({
@@ -60,7 +50,7 @@ const DisplayCharacterActors = ({
     <section className="space-y-4">
       <h3 className="heading">Voice Actors</h3>
       <div className="space-y-4">
-        {voiceActorList(charActorList as IAnimeCharacter[]).map((data, i) => (
+        {voiceActorList(charActorList as IAnimeCharacter[])?.map((data, i) => (
           <div key={i}>
             <h3 className="sub-heading">{data.language}</h3>
             <DisplayVoiceActors voiceActorList={data.list} />

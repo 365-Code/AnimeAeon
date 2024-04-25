@@ -7,7 +7,7 @@ const Page = () => {
   return (
     <div className="flex flex-col items-center h-full justify-between">
       <BackButton />
-      <Image
+      <img
         width={300}
         height={300}
         src="/logo2.png"

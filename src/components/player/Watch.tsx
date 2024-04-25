@@ -3,8 +3,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Player from "./Player";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { IAnimeResult, IVideo } from "@consumet/extensions";
-import TestPlayer from "./TestPlayer";
-import TestEpisodes from "./TestEpisodes";
 import { IAnimeInfoAnilit, episodeInfo, infoAnime } from "@/utils";
 import VideoPlayer from "./VideoPlayer";
 import AnimeEpisodes from "../list/AnimeEpisodes";

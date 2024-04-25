@@ -13,7 +13,7 @@ const DisplayVoiceActors = ({
   return (
     <section className="w-full overflow-hidden">
       <div className="no-scrollbar flex w-full items-start gap-2 overflow-x-scroll">
-        {voiceActorList.map((actor, i) => (
+        {voiceActorList?.map((actor, i) => (
           <ActorCard
             key={actor.id}
             active={active}

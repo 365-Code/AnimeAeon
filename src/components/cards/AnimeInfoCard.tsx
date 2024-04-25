@@ -27,11 +27,51 @@ const AnimeInfoCard = ({
     setCurrentBanner((prev) => (prev + n) % banner.length);
   };
 
+  const handleWatchList = () => {
+    const data = localStorage.getItem("watchList");
+    if (data) {
+      const list = JSON.parse(data) as Array<any>;
+      const exist = list.findIndex((v) => v.id != anime.id);
+      if (exist == -1) {
+        localStorage.setItem(
+          "watchList",
+          JSON.stringify([
+            ...list,
+            { id: anime.id, image: anime.image, title: anime.title },
+          ]),
+        );
+      }
+    } else {
+      localStorage.setItem(
+        "watchList",
+        JSON.stringify([
+          { id: anime.id, image: anime.image, title: anime.title },
+        ]),
+      );
+    }
+  };
+
+  const handleWatch = () => {
+    setWatch(true)
+    const data = localStorage.getItem("continueList")
+    const epData = {id: anime.id, title: anime.title, image: anime.image, episodeNumber: 1, episodeId: null};
+    if(data){
+      const list = JSON.parse(data) as Array<any>;
+      const exist = list.findIndex((v) => v.id == anime.id);
+      if(exist == -1){
+        localStorage.setItem("continueList", JSON.stringify([...list, epData]))
+      }
+    }else{
+      localStorage.setItem("continueList", JSON.stringify([epData]))
+    }
+  }
+
   return (
     // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
     <section className="relative h-[70vh] w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
-      {banner.map((b, i) => (
+      {banner?.map((b, i) => (
         <div
+          key={i}
           className={`h-full w-full opacity-40 transition-all ${currentBanner == i ? "animate-fade block translate-x-0" : "hidden translate-x-10"}`}
         >
           <img
@@ -118,17 +158,19 @@ const AnimeInfoCard = ({
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => setWatch(true)} className="btn btn-primary">
+            <button onClick={handleWatch} className="btn btn-primary">
               <span>
                 <i className="fi fi-sr-play" />
               </span>
               <span>Watch</span>
             </button>
-            <button className="btn btn-secondary">
+            <button onClick={handleWatchList} className="btn btn-secondary">
               <span>
-                <i className="fi fi-sr-download" />
+                {/* <i className="fi fi-sr-download" /> */}
+                <i className="fi fi-sr-wishlist-star" />
               </span>
-              <span>Download</span>
+              {/* <span>Download</span> */}
+              <span>Add to WatchList</span>
             </button>
           </div>
           <div className="flex items-center gap-4">

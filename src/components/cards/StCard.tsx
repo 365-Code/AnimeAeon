@@ -4,7 +4,7 @@ import React from "react";
 
 const StCard = ({ anime }: { anime: ISearchResult }) => {
   return (
-    <div className="relative h-[450px] min-w-[350px] snap-start overflow-hidden rounded-xl">
+    <div className="relative h-[450px] min-w-[320px] snap-start overflow-hidden rounded-xl">
       <div className="h-full w-full">
         <img src={anime.image} className="h-full w-full object-cover" alt="" />
       </div>
@@ -12,9 +12,13 @@ const StCard = ({ anime }: { anime: ISearchResult }) => {
         style={{
           backgroundColor: anime.color ? anime.color + "aa" : "#000000aa",
         }}
-        className={`absolute bottom-0 left-0 z-[1] h-fit w-full p-4`}
+        className={`absolute bottom-0 left-0 z-[1] h-fit w-full space-y-1 p-4`}
       >
-        <p className="no-scrollbar flex gap-2 overflow-x-scroll">
+        <p className="flex items-center gap-1 text-2xl">
+          <i className="fi fi-ss-star" />{" "}
+          {anime.rating ? anime.rating + "%" : ""}
+        </p>
+        <p className="no-scrollbar flex items-center gap-2 overflow-x-scroll">
           {anime.genres?.map((g, i) => (
             <span
               key={i}
