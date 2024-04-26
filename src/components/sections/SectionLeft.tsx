@@ -13,7 +13,7 @@ const SectionLeft = () => {
   return (
     <div className="flex h-full w-[350px] flex-col gap-6">
       <SearchBar />
-      <div className="w-fit flex-1">
+      <div className="w-full flex-1">
         <SideList
           list={[
             {

@@ -1,33 +1,56 @@
 import { IRecentEpisode, toAnimeTitle } from "@/utils";
 import { IAnimeEpisode, ITitle } from "@consumet/extensions";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ListCardSkeleton from "../skeletons/ListCardSkeleton";
+import Link from "next/link";
 
 const DisplayWatchList = ({
   animeEpList,
 }: {
   animeEpList: IRecentEpisode[];
 }) => {
+  const [avl, setAvl] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (animeEpList.length == 0) {
+        setAvl(true);
+      }
+    }, 3000);
+  }, []);
   return (
     // <div className="flex h-[400px] w-[350px] flex-col gap-4 overflow-y-hidden rounded-xl bg-black/30 p-4 backdrop-blur-sm">
     <div className=" no-scrollbar flex flex-col gap-4 overflow-y-scroll">
       {animeEpList?.map((animeEp) => (
         <div
-          key={animeEp?.id}
+          key={animeEp.id}
           className="flex items-center justify-between gap-2"
         >
           <div className="min-w-[64px] max-w-[64px] overflow-hidden rounded-lg">
             <img src={animeEp.image} alt="" className="cover-img" />
           </div>
           <div className="flex items-start flex-1 max-h-[70px]">
-            <p className="">
-              {toAnimeTitle(animeEp?.title as ITitle)}
-            </p>
+            <p className="">{toAnimeTitle(animeEp?.title as ITitle)}</p>
           </div>
-          <button className="rounded-full bg-white/10 p-4 h-fit text-sm">
+          <Link href={'/anime/'+animeEp.id} className="rounded-full bg-white/10 p-4 h-fit text-sm">
             <i className="fi fi-ss-play" />
-          </button>
+          </Link>
         </div>
       ))}
+
+      {!avl && animeEpList.length == 0
+        ? [...Array(4)].map((x, i) => (
+            <div
+              key={i}
+              style={{ animationDelay: `${(i + 1) * 0.25}s` }}
+              className="animate-pulse"
+            >
+              <ListCardSkeleton />
+            </div>
+          ))
+        : animeEpList.length == 0 && (
+            <h2 className="text-xl text-center p-4">Nothing In WatchList</h2>
+          )}
     </div>
   );
 };

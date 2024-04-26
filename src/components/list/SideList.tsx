@@ -6,10 +6,10 @@ import EpisodeCard2 from "../cards/EpisodeCard2";
 import { title } from "process";
 
 const SideList = ({ list }: { list: { title: string; component: any }[] }) => {
-  const [active, setActive] = useState(-1);
+  const [active, setActive] = useState(0);
 
   return (
-    <div className="flex h-full flex-1 flex-col overflow-hidden rounded-xl bg-black/30 backdrop-blur-sm">
+    <div className="flex h-full w-full flex-1 flex-col overflow-hidden rounded-xl bg-black/30 backdrop-blur-sm">
       {list?.map((lst, i) => (
         <div key={i}>
           <button
@@ -24,7 +24,11 @@ const SideList = ({ list }: { list: { title: string; component: any }[] }) => {
             </span>
           </button>
           <div
-            className={` ${active == i ? "h-[300px] flex-1 overflow-y-scroll" : "h-0 overflow-hidden"} no-scrollbar bg-black/20 px-4 transition-all`}
+            className={` ${
+              active == i
+                ? "h-[300px] flex-1 overflow-y-scroll"
+                : "h-0 overflow-hidden"
+            } no-scrollbar bg-black/20 px-4 transition-all`}
             // className="h-[300px]"
           >
             {lst.component}

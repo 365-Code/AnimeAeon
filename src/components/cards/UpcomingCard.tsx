@@ -1,9 +1,18 @@
 "use client";
 import { IAnimeInfoAnilit, ISearchResult, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  DetailedHTMLProps,
+  Dispatch,
+  HTMLAttributes,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
+
   return (
     // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
     <section className="relative flex h-[50vh] w-full items-start overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
@@ -35,7 +44,7 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
             {toAnimeTitle(anime.title as ITitle)}
           </h2>
         </div>
-        <div className="flex max-w-[85%] flex-col gap-2">
+        <div className="flex h-full max-w-[85%] flex-col gap-2">
           <p className="flex items-center gap-2">
             {anime.releaseDate ? (
               <>
@@ -70,14 +79,9 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
             )}
           </p>
           <p
-            typeof="html"
-            className="description max-h-[100px] overflow-hidden"
-          >
-            {anime.description}
-            {/* <code>
-              {anime.description as string}
-            </code> */}
-          </p>
+          dangerouslySetInnerHTML={{__html: anime.description}}
+            className="flex flex-wrap text-pretty flex-1 overflow-hidden"
+          />
         </div>
       </div>
     </section>

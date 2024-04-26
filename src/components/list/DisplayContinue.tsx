@@ -1,21 +1,31 @@
-
-
+"use client";
 import { IRecentEpisode, toAnimeTitle } from "@/utils";
-import { IAnimeEpisode, ITitle } from "@consumet/extensions";
+import { ITitle } from "@consumet/extensions";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ListCardSkeleton from "../skeletons/ListCardSkeleton";
 
 const DisplayContinue = ({
   animeEpList,
 }: {
   animeEpList: IRecentEpisode[];
 }) => {
+  const [avl, setAvl] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (animeEpList.length == 0) {
+        setAvl(true);
+      }
+    }, 1000);
+  }, []);
+
   return (
     // <div className="flex h-[400px] w-[350px] flex-col gap-4 overflow-y-hidden rounded-xl bg-black/30 p-4 backdrop-blur-sm">
     <div className=" no-scrollbar flex flex-col gap-4 overflow-y-scroll">
       {animeEpList?.map((animeEp) => (
         <Link
-        href={'/anime/' + animeEp.id + "?episode=" + animeEp.episodeId}
+          href={"/anime/" + animeEp.id + "?episode=" + animeEp.episodeId}
           key={animeEp?.id}
           className="flex items-center justify-between gap-2"
         >
@@ -33,8 +43,21 @@ const DisplayContinue = ({
           </button>
         </Link>
       ))}
+      {!avl && animeEpList.length == 0
+        ? [...Array(4)].map((x, i) => (
+            <div
+              key={i}
+              style={{ animationDelay: `${(i + 1) * 0.25}s` }}
+              className="animate-pulse"
+            >
+              <ListCardSkeleton />
+            </div>
+          ))
+        : animeEpList.length == 0 && (
+            <h2 className="text-xl text-center p-4">Nothing To Continue</h2>
+          )}
     </div>
-);
+  );
 };
 
 export default DisplayContinue;

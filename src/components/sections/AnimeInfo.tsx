@@ -13,7 +13,7 @@ const AnimeInfo = ({ anime }: { anime: IAnimeInfoAnilit }) => {
         // gridTemplateColumns: "70% 28%",
         gridTemplateColumns: "minmax(70%,1fr) minmax(0%, 28%)",
       }}
-      className="relative h-[70vh] w-full border"
+      className="relative h-[512px] w-full border"
     >
       {/* <AnimeInfoCard anime={anime} /> */}
       <AnimeEpisodes episodeList={anime?.episodes || []} />

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AnimeInfoCard from "../cards/AnimeInfoCard";
 import UpcomingCard from "../cards/UpcomingCard";
 import { ISearchResult, upcomingList } from "@/utils";
+import UpcomingSkeleton from "../skeletons/UpcomingSkeleton";
 
 const FetchUpcoming = () => {
   const [upcoming, setUpcoming] = useState<ISearchResult[]>([]);
@@ -52,6 +53,7 @@ const FetchUpcoming = () => {
           <UpcomingCard anime={up} />
         </div>
       ))}
+      {upcoming.length == 0 && <UpcomingSkeleton />}
       <div className="absolute bottom-4 right-4 z-10">
         <div className="flex items-center gap-4">
           <button

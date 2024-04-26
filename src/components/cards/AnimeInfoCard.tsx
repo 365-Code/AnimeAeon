@@ -1,6 +1,7 @@
 "use client";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const AnimeInfoCard = ({
@@ -15,6 +16,7 @@ const AnimeInfoCard = ({
     : [];
 
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [inWatch, setInWatch] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,8 +29,47 @@ const AnimeInfoCard = ({
     setCurrentBanner((prev) => (prev + n) % banner.length);
   };
 
+  const nav = useRouter();
+  const handleWatch = () => {
+    if (anime?.episodes && anime.episodes?.length != 0) {
+      setTimeout(() => {
+        setWatch(true);
+      }, 500);
+      nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
+    }
+    const data = localStorage.getItem("continueList");
+    const epData = {
+      id: anime.id,
+      title: anime.title,
+      image: anime.image,
+      episodeNumber: 1,
+      episodeId: null,
+    };
+    if (data) {
+      const list = JSON.parse(data) as Array<any>;
+      const exist = list.findIndex((v) => v.id == anime.id);
+      if (exist == -1) {
+        localStorage.setItem("continueList", JSON.stringify([...list, epData]));
+      }
+    } else {
+      localStorage.setItem("continueList", JSON.stringify([epData]));
+    }
+  };
+
   const handleWatchList = () => {
     const data = localStorage.getItem("watchList");
+    if (inWatch) {
+      setInWatch(false);
+      if (data) {
+        const list = JSON.parse(data) as Array<any>;
+        localStorage.setItem(
+          "watchList",
+          JSON.stringify(list.filter((v) => v.id != anime.id)),
+        );
+      }
+      return;
+    }
+    setInWatch(true);
     if (data) {
       const list = JSON.parse(data) as Array<any>;
       const exist = list.findIndex((v) => v.id != anime.id);
@@ -51,28 +92,30 @@ const AnimeInfoCard = ({
     }
   };
 
-  const handleWatch = () => {
-    setWatch(true)
-    const data = localStorage.getItem("continueList")
-    const epData = {id: anime.id, title: anime.title, image: anime.image, episodeNumber: 1, episodeId: null};
-    if(data){
+  useEffect(() => {
+    const data = localStorage.getItem("watchList");
+    if (data && anime) {
       const list = JSON.parse(data) as Array<any>;
       const exist = list.findIndex((v) => v.id == anime.id);
-      if(exist == -1){
-        localStorage.setItem("continueList", JSON.stringify([...list, epData]))
+      if (exist != -1) {
+        setInWatch(true);
       }
-    }else{
-      localStorage.setItem("continueList", JSON.stringify([epData]))
     }
-  }
+  }, [anime]);
 
   return (
     // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
-    <section className="relative h-[70vh] w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
+    <section
+      className={` relative h-[512px] w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
+    >
       {banner?.map((b, i) => (
         <div
           key={i}
-          className={`h-full w-full opacity-40 transition-all ${currentBanner == i ? "animate-fade block translate-x-0" : "hidden translate-x-10"}`}
+          className={`h-full w-full opacity-40 transition-all ${
+            currentBanner == i
+              ? "animate-fade block translate-x-0"
+              : "hidden translate-x-10"
+          }`}
         >
           <img
             id="carousel"
@@ -98,6 +141,17 @@ const AnimeInfoCard = ({
             {toAnimeTitle(anime.title as ITitle)}
           </h2>
         </div>
+        {!anime.id && (
+          <div role="status" className="max-w-sm animate-pulse">
+            <div className="mb-4 h-2.5 w-48 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="mb-2.5 h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="mb-2.5 h-2 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="mb-2.5 h-2 max-w-[330px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="mb-2.5 h-2 max-w-[300px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
         <div className="flex max-w-[50%] flex-col gap-2">
           <p className="text-lg font-normal">
             {anime.studios?.map((studio, i) => (
@@ -156,6 +210,41 @@ const AnimeInfoCard = ({
             {anime.description?.replaceAll("<br>", "")}
           </p>
         </div>
+        {!anime.id && (
+          <div role="status" className="max-w-lg animate-pulse space-y-2.5">
+            <div className="flex w-full items-center">
+              <div className="h-2.5 w-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            </div>
+            <div className="flex w-full max-w-[480px] items-center">
+              <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            </div>
+            <div className="flex w-full max-w-[400px] items-center">
+              <div className="h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            </div>
+            <div className="flex w-full max-w-[480px] items-center">
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            </div>
+            <div className="flex w-full max-w-[440px] items-center">
+              <div className="ms-2 h-2.5 w-32 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            </div>
+            <div className="flex w-full max-w-[360px] items-center">
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+              <div className="ms-2 h-2.5 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
+            </div>
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={handleWatch} className="btn btn-primary">
@@ -164,10 +253,17 @@ const AnimeInfoCard = ({
               </span>
               <span>Watch</span>
             </button>
-            <button onClick={handleWatchList} className="btn btn-secondary">
+            <button
+              onClick={handleWatchList}
+              className={`btn ${inWatch ? "btn-primary" : "btn-secondary"}`}
+            >
               <span>
                 {/* <i className="fi fi-sr-download" /> */}
-                <i className="fi fi-sr-wishlist-star" />
+                {inWatch ? (
+                  <i className="fi fi-ss-check animate-pop" />
+                ) : (
+                  <i className="fi fi-sr-wishlist-star animate-pop" />
+                )}
               </span>
               {/* <span>Download</span> */}
               <span>Add to WatchList</span>

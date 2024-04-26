@@ -154,6 +154,19 @@ body {
   }
 }
 
+
+.animate-pop{
+  @apply transition-all;
+  animation: animation-pop 1s linear;
+  animation-fill-mode: forwards;
+}
+@keyframes animation-pop{
+  from{
+    @apply rotate-90 opacity-30;
+  } to{
+    @apply rotate-0 opacity-100;
+  }
+}
 /* Cards */
 
 .anime-card {

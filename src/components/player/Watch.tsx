@@ -163,7 +163,7 @@ const Watch = ({
         gap: "1.5rem",
         gridTemplateColumns: "65% 30%",
       }}
-      className="relative h-[70vh] w-full"
+      className="relative h-[512px] w-full"
     >
       <VideoPlayer setWatch={setWatch} />
       {/* <Player /> */}

@@ -16,7 +16,7 @@ const VideoPlayer = ({
 }) => {
   const searchParams = useSearchParams();
   const episode = searchParams.get("episode") as string;
-  const params = useParams()
+  const params = useParams();
   const animeId = Number(params["id"]);
   const [epSources, setEpSources] = useState([
     {
@@ -39,18 +39,20 @@ const VideoPlayer = ({
   };
 
   useEffect(() => {
-    if(episode){
+    if (episode) {
       fetchEpisode();
       const data = localStorage.getItem("continueList");
-      if(data){
-        let list = JSON.parse(data) as Array<any>
-        const exist = list.findIndex((v) => v.id == animeId) || -1
-        if(exist != -1){
-          list[exist].episodeId = episode
-          list[exist].episodeNumber = Number(episode.split("episode-").at(-1))
-          localStorage.setItem("continueList", JSON.stringify(list))
+      if (data) {
+        let list = JSON.parse(data) as Array<any>;
+        const exist = list.findIndex((v) => v.id == animeId) || -1;
+        if (exist != -1) {
+          list[exist].episodeId = episode;
+          list[exist].episodeNumber = Number(episode.split("episode-").at(-1));
+          localStorage.setItem("continueList", JSON.stringify(list));
         }
       }
+    } else {
+      setWatch(false);
     }
   }, [episode]);
 
@@ -65,7 +67,7 @@ const VideoPlayer = ({
           }
         </select>
       </div> */}
-      
+
       <div>
         <Player
           source={epSources.find((e) => e.quality == "default")?.url || ""}
