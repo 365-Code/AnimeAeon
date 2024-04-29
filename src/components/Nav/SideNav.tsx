@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const SideNav = () => {
@@ -40,6 +40,7 @@ const SideNav = () => {
   ];
 
   const pathanme = usePathname();
+  const nav = useRouter()
 
   const logo = pathanme.includes("trending")
     ? "/trending.png"
@@ -58,6 +59,9 @@ const SideNav = () => {
       className={`${showNav ? "translate-x-0" : "-translate-x-full"} side-nav z-20 w-fit`}
     >
       <div className="max-w-[60%] p-4">
+        <button className="p-4 rounded-full hover:bg-white hover:text-black" onClick={() => nav.back()}>
+        <i className="fi fi-sr-back"/>
+        </button>
         <img className="h-full w-full object-center" src={logo} />
       </div>
       <nav>

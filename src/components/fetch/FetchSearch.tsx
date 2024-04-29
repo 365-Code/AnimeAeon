@@ -55,7 +55,7 @@ const FetchSearch = () => {
         <h2 className="sub-heading">Search Results</h2>
         <div
           id="search-results"
-          className="rounded-xl no-scrollbar grid max-h-[85vh] flex-1 grid-cols-2 justify-between overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
+          className="rounded-xl no-scrollbar grid max-h-[85vh] flex-1 gap-4 grid-cols-2 justify-between overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
         >
           {searchResults.length == 0 &&
             [...Array(10)].map((a, i) => <EpisodeCardSkeleton key={i} />)}
