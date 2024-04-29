@@ -35,8 +35,7 @@ export async function GET(req: NextRequest) {
       searchParams.get("season") != "All"
         ? searchParams.get("season") || undefined
         : undefined;
-
-
+    
     const {currentPage, hasNextPage, totalPages, results} = await anilist.advancedSearch(
       query,
       "ANIME",

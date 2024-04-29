@@ -21,8 +21,8 @@ const StAnimeCard = ({ anime }: { anime: ISearchResult }) => {
             <span className="h-2 w-2 rounded-full bg-white" />
             <span>{anime.status}</span>
           </p>
-          <p className="no-scrollbar h-0 overflow-hidden font-normal transition-all group-hover/epCard:h-[150px] group-hover/epCard:overflow-y-scroll">
-            {anime.description}
+          <p dangerouslySetInnerHTML={{ __html: anime.description }} className="no-scrollbar h-0 overflow-hidden font-normal transition-all group-hover/epCard:h-[150px] group-hover/epCard:overflow-y-scroll">
+            {/* {anime.description} */}
           </p>
         </div>
       </div>

@@ -34,8 +34,8 @@ const SideNav = () => {
     },
     {
       icon: <i className="fi fi-sr-wishlist-star" />,
-      title: "wishlist",
-      url: "/wishlist",
+      title: "watchlist",
+      url: "/watchlist",
     },
   ];
 

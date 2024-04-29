@@ -11,7 +11,7 @@ const FetchSearch = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const format = searchParams.get("format")?.toString() || "";
-  const sort = searchParams.get("sort")?.split(",") || "";
+  const sort = searchParams.get("sort")?.split(",") || ["TRENDING_DESC"] || "";
   const genres = searchParams.get("genres")?.split(",") || "";
   const status = searchParams.get("status") || "";
   const season = searchParams.get("season") || "";
@@ -45,16 +45,17 @@ const FetchSearch = () => {
   };
 
   useEffect(() => {
+    setPage(1);
     advanceSearch();
   }, [searchQuery]);
 
   return (
     <MainSection>
       <div className="flex flex-1 flex-col justify-between">
-        <h2 className="sub-heading">Search</h2>
+        <h2 className="sub-heading">Search Results</h2>
         <div
           id="search-results"
-          className="custom-scrollbar grid max-h-[85vh] flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
+          className="rounded-xl no-scrollbar grid max-h-[85vh] flex-1 grid-cols-2 justify-between overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
         >
           {searchResults.length == 0 &&
             [...Array(10)].map((a, i) => <EpisodeCardSkeleton key={i} />)}

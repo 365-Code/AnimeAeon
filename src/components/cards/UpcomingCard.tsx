@@ -79,8 +79,8 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
             )}
           </p>
           <p
-          dangerouslySetInnerHTML={{__html: anime.description}}
-            className="flex flex-wrap text-pretty flex-1 overflow-hidden"
+            dangerouslySetInnerHTML={{ __html: anime.description }}
+            className="flex flex-1 flex-wrap overflow-hidden text-pretty"
           />
         </div>
       </div>

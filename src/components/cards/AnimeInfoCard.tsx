@@ -30,6 +30,7 @@ const AnimeInfoCard = ({
   };
 
   const nav = useRouter();
+
   const handleWatch = () => {
     if (anime?.episodes && anime.episodes?.length != 0) {
       setTimeout(() => {
@@ -72,7 +73,7 @@ const AnimeInfoCard = ({
     setInWatch(true);
     if (data) {
       const list = JSON.parse(data) as Array<any>;
-      const exist = list.findIndex((v) => v.id != anime.id);
+      const exist = list.findIndex((v) => v.id == anime.id);
       if (exist == -1) {
         localStorage.setItem(
           "watchList",
@@ -206,8 +207,8 @@ const AnimeInfoCard = ({
             <i style={{ color: anime.color }} className="fi fi-ss-star" />
             <span>{anime.rating ? anime.rating + "%" : ""}</span>
           </p>
-          <p className="no-scrollbar max-h-[145px] overflow-y-scroll">
-            {anime.description?.replaceAll("<br>", "")}
+          <p dangerouslySetInnerHTML={{ __html: anime.description || "" }} className="custom-scrollbar max-h-[145px] overflow-y-scroll">
+            {/* {anime.description?.replaceAll("<br>", "")} */}
           </p>
         </div>
         {!anime.id && (
@@ -251,7 +252,7 @@ const AnimeInfoCard = ({
               <span>
                 <i className="fi fi-sr-play" />
               </span>
-              <span>Watch</span>
+              <span className={anime.id ? "visible animate-pulse" : "invisible"}>Watch</span>
             </button>
             <button
               onClick={handleWatchList}
@@ -266,7 +267,7 @@ const AnimeInfoCard = ({
                 )}
               </span>
               {/* <span>Download</span> */}
-              <span>Add to WatchList</span>
+              <span className={anime.id ? "visible animate-pulse" : "invisible"}>Add to WatchList</span>
             </button>
           </div>
           <div className="flex items-center gap-4">
