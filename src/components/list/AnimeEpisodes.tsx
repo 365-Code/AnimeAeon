@@ -9,9 +9,6 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
   const searchParams = useSearchParams();
   const episodeId = searchParams.get("episode") as string;
 
-  console.log(episodeId);
-  
-
   return (
     <section className="relative flex h-full w-full flex-col overflow-hidden rounded-xl bg-black/20 p-4 shadow-sm shadow-black/80 backdrop-blur-sm">
       <h3 className="sub-heading">Episodes</h3>

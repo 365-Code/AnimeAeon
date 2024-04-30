@@ -105,7 +105,6 @@ const AnimeInfoCard = ({
   }, [anime]);
 
   return (
-    // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
     <section
       className={` relative h-[512px] w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
     >
@@ -208,7 +207,6 @@ const AnimeInfoCard = ({
             <span>{anime.rating ? anime.rating + "%" : ""}</span>
           </p>
           <p dangerouslySetInnerHTML={{ __html: anime.description || "" }} className="custom-scrollbar max-h-[145px] overflow-y-scroll">
-            {/* {anime.description?.replaceAll("<br>", "")} */}
           </p>
         </div>
         {!anime.id && (
@@ -259,14 +257,12 @@ const AnimeInfoCard = ({
               className={`btn ${inWatch ? "btn-primary" : "btn-secondary"}`}
             >
               <span>
-                {/* <i className="fi fi-sr-download" /> */}
                 {inWatch ? (
                   <i className="fi fi-ss-check animate-pop" />
                 ) : (
                   <i className="fi fi-sr-wishlist-star animate-pop" />
                 )}
               </span>
-              {/* <span>Download</span> */}
               <span className={anime.id ? "visible animate-pulse" : "invisible"}>Add to WatchList</span>
             </button>
           </div>

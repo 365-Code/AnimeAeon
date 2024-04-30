@@ -32,7 +32,6 @@ const StCard = ({ anime }: { anime: ISearchResult }) => {
           {toAnimeTitle(anime.title)}
         </h2>
         <div className="flex items-start justify-between">
-          {/* <p className="max-h-[58px] hyphens-auto">{anime.description}</p> */}
           <p className="max-h-[58px] hyphens-auto" dangerouslySetInnerHTML={{ __html: anime.description }}></p>
           <Link
             href={"/anime/" + anime.id}

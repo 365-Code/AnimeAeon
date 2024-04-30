@@ -20,10 +20,7 @@ const FetchUpcoming = () => {
   };
 
   useEffect(() => {
-    // const debounce = setTimeout(() => {
     fetchUpcoming();
-    // }, 100);
-    // return () => clearTimeout(debounce);
   }, []);
 
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -48,7 +45,6 @@ const FetchUpcoming = () => {
         <div
           key={i}
           className={`h-full w-full snap-start bg-black opacity-40 transition-all ${currentBanner == i ? "animate-fade-visible block translate-x-0" : "hidden translate-x-10"}`}
-          // className="min-w-full snap-start"
         >
           <UpcomingCard anime={up} />
         </div>

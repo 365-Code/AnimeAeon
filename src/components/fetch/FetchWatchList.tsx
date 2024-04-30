@@ -24,17 +24,7 @@ const FetchWatchList = () => {
 
   return (
     <section>
-      {/* <DisplayRecentEpisode animeList={recentEpisodes} /> */}
       <DisplayWatchList animeEpList={watchList} />
-      {/* <h2 className="heading">Recent Episodes</h2>
-      <div className="no-scrollbar flex w-full gap-2 overflow-x-scroll">
-        {recentEpisodes.map((anime) => (
-          <EpisodeCard key={anime.id} anime={anime} />
-        ))}
-        {
-          recentEpisodes.length == 0 && [...Array(7)].map(() => <EpisodeCardSkeleton />)
-        }
-      </div> */}
     </section>
   );
 };

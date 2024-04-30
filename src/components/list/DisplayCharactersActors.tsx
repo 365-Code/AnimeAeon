@@ -29,7 +29,6 @@ const DisplayCharacterActors = ({
           actorImage = character.image;
         }
         if (langMap[lang]) {
-          // if(actor.image == "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"){
           langMap[lang].push({
             ...actor,
             image: actorImage,

@@ -9,7 +9,6 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600"],
 });
 
-// AstraAnime
 export const metadata: Metadata = {
   title: "AnimeAeon",
   description: "An anime streaming app",

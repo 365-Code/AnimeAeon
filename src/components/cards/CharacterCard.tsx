@@ -45,7 +45,6 @@ const CharacterCard = ({ character }: { character: IAnimeCharacter }) => {
           </p>
           <p className="text-lg font-normal">{character.role}</p>
 
-          {/* <DisplayVoiceActors voiceActorList={{character.voiceActors}} /> */}
         </div>
       </div>
       <div

@@ -3,9 +3,10 @@ import Link from "next/link";
 import React from "react";
 
 const EpisodeCard2 = ({ anime }: { anime: IRecentEpisode }) => {
+
   return (
     <Link
-      href={"/anime/" + anime.id}
+      href={"/anime/" + anime.id + "?episode=" + anime.episodeId.replace('/', '')}
       className="group/epCard relative max-h-[190px] min-h-[190px]  w-full overflow-hidden rounded-xl transition-all"
     >
       <div className="h-full w-full opacity-90 group-hover/epCard:opacity-100">

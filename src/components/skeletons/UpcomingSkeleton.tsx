@@ -2,11 +2,9 @@ import React from "react";
 
 const UpcomingSkeleton = () => {
   return (
-    // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
     <section className="animate-pulse relative flex h-[50vh] w-full items-start overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
       <div className="absolute h-full w-full"></div>
       <div className="h-full w-[500px] bg-black"></div>
-      {/* <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8"> */}
       <div className="flex w-full flex-col gap-4 p-8">
         <div className="flex flex-wrap items-center gap-2">
           {[...Array(3)]?.map((g, i) => (

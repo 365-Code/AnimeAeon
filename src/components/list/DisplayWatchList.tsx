@@ -19,7 +19,6 @@ const DisplayWatchList = ({
     }, 3000);
   }, []);
   return (
-    // <div className="flex h-[400px] w-[350px] flex-col gap-4 overflow-y-hidden rounded-xl bg-black/30 p-4 backdrop-blur-sm">
     <div className=" no-scrollbar flex flex-col gap-4 overflow-y-scroll">
       {animeEpList?.map((animeEp) => (
         <div

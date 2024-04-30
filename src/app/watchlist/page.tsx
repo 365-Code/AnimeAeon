@@ -21,7 +21,6 @@ const Page = () => {
     <section className="flex h-full flex-1 flex-col">
       <h1 className="heading">Watchlist</h1>
       <div className="grid flex-1 grid-cols-2 gap-4 no-scrollbar overflow-y-scroll sm:grid-cols-3 md:grid-cols-5">
-          {/* watchList.map((watch, i) => <WatchCard key={i} watch={watch} />), */}
         {
       watchList.map((watch, i) => <WatchCard key={i} watch={watch} />)
       }

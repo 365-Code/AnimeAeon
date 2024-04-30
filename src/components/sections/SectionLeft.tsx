@@ -31,32 +31,8 @@ const SectionLeft = () => {
           ]}
         />
       </div>
-      {/* <DisplayRecentEpisode animeList={recentEpisodeList} />
-      <DisplayWatchList animeEpList={recentEpisodeList} /> */}
-      {/* <FetchRecentEpisodes />
-        <FetchWatchList /> */}
     </div>
   );
 };
 
 export default SectionLeft;
-
-// <div className="h-full border flex flex-col gap-6">
-//   <SearchBar />
-//   <NewList
-//     list={[
-//       {
-//         title: "Recent",
-//         component: <DisplayRecentEpisode animeList={recentEpisodeList} />,
-//       },
-//       {
-//         title: "WatchList",
-//         component: <DisplayWatchList animeEpList={recentEpisodeList} />,
-//       },
-//     ]}
-//   />
-//   {/* <DisplayRecentEpisode animeList={recentEpisodeList} />
-//   <DisplayWatchList animeEpList={recentEpisodeList} /> */}
-//   {/* <FetchRecentEpisodes />
-//     <FetchWatchList /> */}
-// </div>

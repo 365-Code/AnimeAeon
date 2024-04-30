@@ -14,7 +14,6 @@ import React, {
 const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
 
   return (
-    // <section className="relative h-full w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
     <section className="relative flex h-[50vh] w-full items-start overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm">
       <div className="absolute h-full w-full">
         <img
@@ -27,7 +26,6 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
       <div className="h-full w-[500px]">
         <img src={anime.image} className="cover-img" alt="" />
       </div>
-      {/* <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8"> */}
       <div className="flex w-full flex-col gap-4 p-8">
         <div className="flex flex-wrap items-center gap-2">
           {anime.genres?.map((g, i) => (

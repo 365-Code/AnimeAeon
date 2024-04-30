@@ -22,9 +22,7 @@ const FetchSeries = () => {
   }, []);
 
   return (
-    // <section className="w-full space-y-4 overflow-hidden">
       <DisplayCards animeList={series} title="Series" />
-    // </section>
   );
 };
 

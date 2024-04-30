@@ -58,9 +58,9 @@ const SideNav = () => {
       onMouseLeave={() => setShowNav(false)}
       className={`${showNav ? "translate-x-0" : "-translate-x-full"} side-nav z-20 w-fit`}
     >
-      <div className="max-w-[60%] p-4">
-        <button className="p-4 rounded-full hover:bg-white hover:text-black" onClick={() => nav.back()}>
-        <i className="fi fi-sr-back"/>
+      <div className="max-w-[60%] p-4 flex items-center gap-2">
+        <button className="p-2 transition-all rounded-full hover:bg-white hover:text-black" onClick={() => nav.back()}>
+        <i className="fi fi-ss-arrow-left"/>
         </button>
         <img className="h-full w-full object-center" src={logo} />
       </div>

@@ -41,7 +41,6 @@ const Page = () => {
 
   return (
     <section className="space-y-6 overflow-y-scroll no-scrollbar">
-      {/* <AnimeInfo anime={animeInfo} /> */}
       {watch ? (
         <Watch anime={animeInfo} setWatch={setWatch} />
       ) : (
@@ -52,7 +51,6 @@ const Page = () => {
         animeList={animeInfo?.recommendations || []}
       />
       <DisplayCharacters characterList={animeInfo?.characters || []} />
-      {/* <DisplayCharacterActors charActorList={animeInfo?.characters || []} /> */}
     </section>
   );
 };

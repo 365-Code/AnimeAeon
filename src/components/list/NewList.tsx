@@ -25,7 +25,6 @@ const NewList = ({ list }: { list: { title: string; component: any }[] }) => {
           </button>
           <div
             className={` ${active == i ? "h-[300px] flex-1 overflow-y-scroll" : "h-0 overflow-hidden"} no-scrollbar transition-all`}
-            // className="h-[300px]"
           >
             {lst.component}
           </div>

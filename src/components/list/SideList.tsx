@@ -29,7 +29,6 @@ const SideList = ({ list }: { list: { title: string; component: any }[] }) => {
                 ? "h-[300px] flex-1 overflow-y-scroll"
                 : "h-0 overflow-hidden"
             } no-scrollbar bg-black/20 px-4 transition-all`}
-            // className="h-[300px]"
           >
             {lst.component}
           </div>

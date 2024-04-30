@@ -55,13 +55,7 @@ const Episode = ({
     fetchEpisode();
   }, []);
 
-  // console.log(episode?.stream.sources[0]?.file);
-
   return (
-    // <div className='rounded-lg overflow-hidden min-w-[150px] h-[150px] border border-black'>
-    //     {ep.name}
-
-    //     <iframe></iframe>
     <>
       <video
         crossOrigin=""
@@ -70,12 +64,10 @@ const Episode = ({
       >
         <source
             src={episode?.stream?.sources[0].file || ""}
-        //   src={URL.createObjectURL(episode?.stream?.sources[0].file)}
           type="application/x-mpegURL"
         />
       </video>
     </>
-    // </div>
   );
 };
 

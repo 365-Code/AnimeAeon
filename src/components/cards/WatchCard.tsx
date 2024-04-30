@@ -5,7 +5,7 @@ import React from "react";
 
 const WatchCard = ({ watch }: { watch: IRecentEpisode }) => {
   return (
-    <Link href={"/anime/info?id=" + watch.id}>
+    <Link href={"/anime/" + watch.id}>
       <div className=" h-[300px] w-full max-w-[260px] overflow-hidden rounded-xl shadow-xl shadow-black/30 transition-all hover:z-20 hover:h-[350px]">
         <div className="relative h-full w-full">
           <img
