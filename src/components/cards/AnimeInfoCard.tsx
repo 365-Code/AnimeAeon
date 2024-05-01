@@ -206,7 +206,7 @@ const AnimeInfoCard = ({
             <i style={{ color: anime.color }} className="fi fi-ss-star" />
             <span>{anime.rating ? anime.rating + "%" : ""}</span>
           </p>
-          <p dangerouslySetInnerHTML={{ __html: anime.description || "" }} className="custom-scrollbar max-h-[145px] overflow-y-scroll">
+          <p dangerouslySetInnerHTML={{ __html: anime.description || "" }} className="custom-scrollbar max-h-[145px] overflow-y-scroll flex items-center hyphens-auto whitespace-nowrap flex-wrap">
           </p>
         </div>
         {!anime.id && (
