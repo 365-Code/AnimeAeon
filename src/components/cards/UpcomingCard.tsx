@@ -26,8 +26,8 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
       <div className="h-full w-[500px]">
         <img src={anime.image} className="cover-img" alt="" />
       </div>
-      <div className="flex w-full flex-col gap-4 p-8">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="z-10 overflow-hidden flex w-full flex-col gap-4 p-8">
+        <div className="min-h-fit overflow-x-scroll no-scrollbar flex items-center gap-2">
           {anime.genres?.map((g, i) => (
             <span
               key={i}
@@ -38,11 +38,11 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
           ))}
         </div>
         <div className="">
-          <h2 className="text-5xl font-semibold">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold">
             {toAnimeTitle(anime.title as ITitle)}
           </h2>
         </div>
-        <div className="flex h-full max-w-[85%] flex-col gap-2">
+        <div className="flex-1 overflow-hidden flex max-w-[90%] flex-col gap-2">
           <p className="flex items-center gap-2">
             {anime.releaseDate ? (
               <>
@@ -77,8 +77,8 @@ const UpcomingCard = ({ anime }: { anime: ISearchResult }) => {
             )}
           </p>
           <p
-            dangerouslySetInnerHTML={{ __html: anime.description }}
-            className="flex flex-1 flex-wrap overflow-hidden text-pretty"
+            dangerouslySetInnerHTML={{ __html: (anime.description.replaceAll("<br>", "")) }}
+            className="flex items-center gap-1 custom-scrollbar hyphens-auto whitespace-nowrap flex-wrap overflow-y-scroll text-pretty"
           />
         </div>
       </div>

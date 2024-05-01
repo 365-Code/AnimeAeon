@@ -3,10 +3,11 @@ import Link from "next/link";
 import React from "react";
 
 const EpisodeCard2 = ({ anime }: { anime: IRecentEpisode }) => {
-
   return (
     <Link
-      href={"/anime/" + anime.id + "?episode=" + anime.episodeId.replace('/', '')}
+      href={
+        "/anime/" + anime.id + "?episode=" + anime.episodeId.replace("/", "")
+      }
       className="group/epCard relative max-h-[190px] min-h-[190px]  w-full overflow-hidden rounded-xl transition-all"
     >
       <div className="h-full w-full opacity-90 group-hover/epCard:opacity-100">
@@ -17,7 +18,7 @@ const EpisodeCard2 = ({ anime }: { anime: IRecentEpisode }) => {
         />
       </div>
       <div className="absolute bottom-0 left-0 flex w-full items-center justify-between bg-black/40 p-4 text-lg font-medium backdrop-blur-sm transition-all group-hover/epCard:bg-black/50 group-hover/epCard:backdrop-blur-none">
-        <div className="">
+        <div>
           <p>{toAnimeTitle(anime.title)}</p>
           <p className="flex items-center gap-2 text-base">
             <span>{anime.type}</span>

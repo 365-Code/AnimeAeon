@@ -1,8 +1,7 @@
 "use client";
 import { IAnimeEpisode } from "@consumet/extensions";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
