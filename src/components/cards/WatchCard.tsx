@@ -14,7 +14,7 @@ const WatchCard = ({ watch }: { watch: IRecentEpisode }) => {
             alt=""
           />
           <div className="absolute bottom-0 left-0 w-full bg-black/60 p-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl">
+            <h1 className="text-xl sm:text-2xl md:text-3xl">
               {toAnimeTitle(watch.title)}
             </h1>
           </div>

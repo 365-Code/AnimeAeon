@@ -20,7 +20,9 @@ const AnimeInfoCard = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banner.length);
+      if (banner.length > 1) {
+        setCurrentBanner((prev) => (prev + 1) % banner.length);
+      }
     }, 5000);
     return () => clearInterval(interval);
   }, [currentBanner, banner]);
@@ -206,8 +208,12 @@ const AnimeInfoCard = ({
             <i style={{ color: anime.color }} className="fi fi-ss-star" />
             <span>{anime.rating ? anime.rating + "%" : ""}</span>
           </p>
-          <p dangerouslySetInnerHTML={{ __html: anime.description || "" }} className="custom-scrollbar max-h-[145px] overflow-y-scroll flex items-center hyphens-auto whitespace-nowrap flex-wrap">
-          </p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: anime.description?.replaceAll("<br>", "") || "",
+            }}
+            className="custom-scrollbar flex max-h-[145px] flex-wrap items-center overflow-y-scroll hyphens-auto"
+          ></p>
         </div>
         {!anime.id && (
           <div role="status" className="max-w-lg animate-pulse space-y-2.5">
@@ -246,15 +252,18 @@ const AnimeInfoCard = ({
         )}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={handleWatch} className="btn btn-primary">
+            <button
+              onClick={anime.id ? handleWatch : () => null}
+              className={`btn btn-primary ${!anime.id && "animate-pulse"}`}
+            >
               <span>
                 <i className="fi fi-sr-play" />
               </span>
-              <span className={anime.id ? "visible animate-pulse" : "invisible"}>Watch</span>
+              <span className={anime.id ? "visible" : "invisible"}>Watch</span>
             </button>
             <button
-              onClick={handleWatchList}
-              className={`btn ${inWatch ? "btn-primary" : "btn-secondary"}`}
+              onClick={anime.id ? handleWatchList : () => null}
+              className={`btn ${inWatch ? "btn-primary" : "btn-secondary"} ${!anime.id && "animate-pulse"}`}
             >
               <span>
                 {inWatch ? (
@@ -263,7 +272,9 @@ const AnimeInfoCard = ({
                   <i className="fi fi-sr-wishlist-star animate-pop" />
                 )}
               </span>
-              <span className={anime.id ? "visible animate-pulse" : "invisible"}>Add to WatchList</span>
+              <span className={anime.id ? "visible" : "invisible"}>
+                Add to WatchList
+              </span>
             </button>
           </div>
           <div className="flex items-center gap-4">
