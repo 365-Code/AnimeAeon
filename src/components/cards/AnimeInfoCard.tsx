@@ -18,15 +18,6 @@ const AnimeInfoCard = ({
   const [currentBanner, setCurrentBanner] = useState(0);
   const [inWatch, setInWatch] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (banner.length > 1) {
-        setCurrentBanner((prev) => (prev + 1) % banner.length);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [currentBanner, banner]);
-
   const handleSlideShow = (n: 1 | -1) => {
     setCurrentBanner((prev) => (prev + n) % banner.length);
   };
@@ -94,6 +85,15 @@ const AnimeInfoCard = ({
       );
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (banner.length > 1) {
+        setCurrentBanner((prev) => (prev + 1) % banner.length);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentBanner, banner]);
 
   useEffect(() => {
     const data = localStorage.getItem("watchList");
@@ -210,7 +210,7 @@ const AnimeInfoCard = ({
           </p>
           <p
             dangerouslySetInnerHTML={{
-              __html: anime.description?.replaceAll("<br>", "") || "",
+              __html: String(anime.description)?.replaceAll("<br>", "") || "",
             }}
             className="custom-scrollbar flex max-h-[145px] flex-wrap items-center overflow-y-scroll hyphens-auto"
           ></p>
@@ -253,7 +253,7 @@ const AnimeInfoCard = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
-              onClick={anime.id ? handleWatch : () => null}
+              onClick={handleWatch}
               className={`btn btn-primary ${!anime.id && "animate-pulse"}`}
             >
               <span>
@@ -262,7 +262,7 @@ const AnimeInfoCard = ({
               <span className={anime.id ? "visible" : "invisible"}>Watch</span>
             </button>
             <button
-              onClick={anime.id ? handleWatchList : () => null}
+              onClick={handleWatch}
               className={`btn ${inWatch ? "btn-primary" : "btn-secondary"} ${!anime.id && "animate-pulse"}`}
             >
               <span>

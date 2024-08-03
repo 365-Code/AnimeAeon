@@ -1,6 +1,4 @@
 import BackButton from "@/components/BackButton";
-import Loader from "@/components/Loader";
-import Image from "next/image";
 import React from "react";
 
 const Page = () => {

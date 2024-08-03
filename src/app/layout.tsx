@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Karla, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import SideNav from "@/components/Nav/SideNav";
@@ -21,12 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <body className={poppins.className}>
-          <main id="main-screen">
-            <SideNav />
-            {children}
-          </main>
-        </body>
+      <body className={poppins.className}>
+        <main id="main-screen">
+          <SideNav />
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

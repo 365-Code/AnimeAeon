@@ -23,9 +23,9 @@ const StAnimeCard = ({ anime }: { anime: ISearchResult }) => {
           </p>
           <p
             dangerouslySetInnerHTML={{
-              __html: anime.description
-                .replaceAll("<br>", "")
-                .replaceAll("\n", ""),
+              __html: String(anime.description)
+                ?.replaceAll("<br>", "")
+                ?.replaceAll("\n", ""),
             }}
             className="no-scrollbar flex h-0 flex-wrap overflow-hidden hyphens-auto text-pretty font-normal transition-all group-hover/epCard:h-[150px] group-hover/epCard:overflow-y-scroll"
           ></p>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NewCard from "../cards/NewCard";
-import { IRecentEpisode, recentEpisode } from "@/utils";
+import { IRecentEpisode } from "@/utils";
 import EpisodeCard2 from "../cards/EpisodeCard2";
 import EpCard2Skeleton from "../skeletons/EpCard2Skeleton";
 
@@ -25,7 +24,7 @@ const DisplayRecentEpisode = ({
       ))}
       {
       !avl && animeList.length == 0
-        ? 
+        ?
         [...Array(4)].map((x, i) => (
             <div
               key={i}

@@ -1,9 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import NewCard from "../cards/NewCard";
-import { IRecentEpisode, recentEpisode } from "@/utils";
-import EpisodeCard2 from "../cards/EpisodeCard2";
-import { title } from "process";
 
 const SideList = ({ list }: { list: { title: string; component: any }[] }) => {
   const [active, setActive] = useState(0);

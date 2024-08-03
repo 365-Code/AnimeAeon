@@ -1,5 +1,5 @@
 import { IActorWithCharacter, IAnimeCharacter } from "@/utils";
-import React, { useState } from "react";
+import React from "react";
 import DisplayVoiceActors from "./DisplayVoiceActors";
 
 const DisplayCharacterActors = ({
@@ -7,7 +7,7 @@ const DisplayCharacterActors = ({
 }: {
   charActorList: IAnimeCharacter[];
 }) => {
-  
+
   const voiceActorList = (characterList: IAnimeCharacter[]) => {
     let langMap = {} as { [x: string]: IActorWithCharacter[] };
     characterList?.forEach((character) => {

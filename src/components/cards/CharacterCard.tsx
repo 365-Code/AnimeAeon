@@ -1,6 +1,5 @@
 import { IAnimeCharacter } from "@/utils";
 import React, { useEffect, useState } from "react";
-import DisplayVoiceActors from "../list/DisplayVoiceActors";
 import ActorCard from "./ActorCard";
 
 const CharacterCard = ({ character }: { character: IAnimeCharacter }) => {

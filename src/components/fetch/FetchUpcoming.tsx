@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AnimeInfoCard from "../cards/AnimeInfoCard";
 import UpcomingCard from "../cards/UpcomingCard";
-import { ISearchResult, upcomingList } from "@/utils";
+import { ISearchResult } from "@/utils";
 import UpcomingSkeleton from "../skeletons/UpcomingSkeleton";
 
 const FetchUpcoming = () => {

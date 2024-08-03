@@ -1,5 +1,5 @@
 "use client";
-import { ISearchResult, moviesList } from "@/utils";
+import { ISearchResult } from "@/utils";
 import React, { useEffect, useState } from "react";
 import DisplayCards from "../list/DisplayCards";
 

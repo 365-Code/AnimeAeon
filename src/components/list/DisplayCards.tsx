@@ -1,6 +1,4 @@
-import { IAnimeResult } from "@consumet/extensions";
 import React from "react";
-import NewCard from "../cards/NewCard";
 import { ISearchResult } from "@/utils";
 import StCard from "../cards/StCard";
 import StCardSkeleton from "../skeletons/StCardSkeleton";

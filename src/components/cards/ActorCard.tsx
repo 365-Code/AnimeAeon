@@ -1,4 +1,4 @@
-import { IActorWithCharacter, IAnimeCharacter, IVoiceActor } from "@/utils";
+import { IActorWithCharacter } from "@/utils";
 import React, { Dispatch, SetStateAction } from "react";
 
 const ActorCard = ({

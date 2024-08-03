@@ -1,13 +1,11 @@
 "use client";
 import DisplayAnimeCards from "@/components/list/DisplayAnimeCards";
 import AnimeInfoCard from "@/components/cards/AnimeInfoCard";
-import { IAnimeInfoAnilit, infoAnime } from "@/utils";
+import { IAnimeInfoAnilit } from "@/utils";
 import { useParams, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import DisplayCharacters from "@/components/list/DisplayCharacters";
-import DisplayCharacterActors from "@/components/list/DisplayCharactersActors";
 import Watch from "@/components/player/Watch";
-import AnimeInfo from "@/components/sections/AnimeInfo";
 
 const Page = () => {
   const params = useParams();
@@ -40,7 +38,7 @@ const Page = () => {
   const [watch, setWatch] = useState(playing ? true : false);
 
   return (
-    <section className="space-y-6 overflow-y-scroll no-scrollbar">
+    <section className="no-scrollbar space-y-6 overflow-y-scroll">
       {watch ? (
         <Watch anime={animeInfo} setWatch={setWatch} />
       ) : (

@@ -6,7 +6,7 @@ const EpisodeCard2 = ({ anime }: { anime: IRecentEpisode }) => {
   return (
     <Link
       href={
-        "/anime/" + anime.id + "?episode=" + anime.episodeId.replace("/", "")
+        "/anime/" + anime.id + "?episode=" + String(anime.episodeId)?.replace("/", "")
       }
       className="group/epCard relative max-h-[190px] min-h-[190px]  w-full overflow-hidden rounded-xl transition-all"
     >

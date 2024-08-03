@@ -1,6 +1,5 @@
-import { IActorWithCharacter, IAnimeCharacter, IVoiceActor } from "@/utils";
+import { IActorWithCharacter } from "@/utils";
 import React, { useState } from "react";
-import CharacterCard from "../cards/CharacterCard";
 import ActorCard from "../cards/ActorCard";
 
 

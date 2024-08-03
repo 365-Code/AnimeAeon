@@ -3,11 +3,9 @@ import React, {
   Dispatch,
   SetStateAction,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import Player from "./Player";
-import { episodeInfo } from "@/utils";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 const VideoPlayer = ({
@@ -57,20 +55,20 @@ const VideoPlayer = ({
     }
   }, [episode]);
 
-  const nav  = useRouter()
+  const nav = useRouter();
   const handleSubDub = (e: ChangeEvent<HTMLSelectElement>) => {
     const subDub = e.target.value as string;
     if (subDub == "sub") {
       setSubDub("sub");
-      nav.push("?episode=" + episode.replace("-dub", ""))
+      nav.push("?episode=" + String(episode)?.replace("-dub", ""));
     } else {
       setSubDub("dub");
-      nav.push("?episode=" + episode.replace("-episode-", "-dub-episode-"))
+      nav.push("?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"));
     }
   };
 
   useEffect(() => {
-      handleDubbed();
+    handleDubbed();
   }, [episode]);
 
   const handleDubbed = async () => {
@@ -78,7 +76,7 @@ const VideoPlayer = ({
       const res = await (
         await fetch(
           "/api/anilist/episode-sources?episodeId=" +
-            episode.replace("-episode-", "-dub-episode-"),
+            String(episode)?.replace("-episode-", "-dub-episode-"),
         )
       ).json();
       if (res.success) {
@@ -96,13 +94,12 @@ const VideoPlayer = ({
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-xl bg-black/100 shadow-sm shadow-black/80 backdrop-blur-xl">
-
-      <div>
+      <div className="max-h-fit">
         <Player
           source={epSources.find((e) => e.quality == "default")?.url || ""}
         />
       </div>
-      <div className=" absolute left-0 top-0 flex justify-between w-full items-start gap-1">
+      <div className=" absolute left-0 top-0 flex w-full items-start justify-between gap-1">
         <div className="flex items-center gap-1">
           <button
             onClick={() => setWatch(false)}

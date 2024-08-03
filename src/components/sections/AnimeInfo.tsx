@@ -1,6 +1,5 @@
 import { IAnimeInfoAnilit } from "@/utils";
 import React from "react";
-import AnimeInfoCard from "../cards/AnimeInfoCard";
 import AnimeEpisodes from "../list/AnimeEpisodes";
 
 const AnimeInfo = ({ anime }: { anime: IAnimeInfoAnilit }) => {

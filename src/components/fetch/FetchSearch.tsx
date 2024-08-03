@@ -16,7 +16,6 @@ const FetchSearch = () => {
   const status = searchParams.get("status") || "";
   const season = searchParams.get("season") || "";
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(false);
@@ -55,7 +54,7 @@ const FetchSearch = () => {
         <h2 className="sub-heading">Search Results</h2>
         <div
           id="search-results"
-          className="rounded-xl no-scrollbar grid max-h-[85vh] flex-1 gap-4 grid-cols-2 justify-between overflow-y-scroll sm:grid-cols-3 2xl:grid-cols-4"
+          className="no-scrollbar grid max-h-[85vh] flex-1 grid-cols-2 justify-between gap-4 overflow-y-scroll rounded-xl sm:grid-cols-3 2xl:grid-cols-4"
         >
           {searchResults.length == 0 &&
             [...Array(10)].map((a, i) => <EpisodeCardSkeleton key={i} />)}

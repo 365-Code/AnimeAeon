@@ -1,11 +1,12 @@
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import Player from "./Player";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { IAnimeResult, IVideo } from "@consumet/extensions";
-import { IAnimeInfoAnilit, episodeInfo, infoAnime } from "@/utils";
-import VideoPlayer from "./VideoPlayer";
+import React, { Dispatch, SetStateAction } from "react";
+import { IAnimeInfoAnilit } from "@/utils";
 import AnimeEpisodes from "../list/AnimeEpisodes";
+import dynamic from "next/dynamic";
+
+const DynamicVideoPlayer = dynamic(() => import("./VideoPlayer"), {
+  ssr: false,
+});
 
 const Watch = ({
   anime,
@@ -17,13 +18,12 @@ const Watch = ({
   return (
     <section
       style={{
-        display: "grid",
         gap: "1.5rem",
         gridTemplateColumns: "65% 30%",
       }}
-      className="relative h-[512px] w-full"
+      className="relative w-full sm:grid md:h-[512px] xl:h-[680px]"
     >
-      <VideoPlayer setWatch={setWatch} />
+      <DynamicVideoPlayer setWatch={setWatch} />
       <AnimeEpisodes episodeList={anime.episodes || []} />
     </section>
   );

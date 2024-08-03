@@ -1,5 +1,4 @@
 import { IRecentEpisode, toAnimeTitle } from "@/utils";
-import { ITitle } from "@consumet/extensions";
 import Link from "next/link";
 import React from "react";
 

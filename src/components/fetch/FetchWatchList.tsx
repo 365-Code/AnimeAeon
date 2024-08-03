@@ -1,10 +1,6 @@
 "use client";
-import { ApiError } from "next/dist/server/api-utils";
 import React, { useEffect, useState } from "react";
-import EpisodeCard from "../cards/EpisodeCard";
-import { IRecentEpisode, recentEpisode, recentEpisodeList } from "@/utils";
-import EpisodeCardSkeleton from "../skeletons/EpisodeCardSkeleton";
-import DisplayRecentEpisode from "../list/DisplayRecentEpisode";
+import { IRecentEpisode } from "@/utils";
 import DisplayWatchList from "../list/DisplayWatchList";
 
 const FetchWatchList = () => {

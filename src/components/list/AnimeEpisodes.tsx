@@ -9,18 +9,27 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
   const episodeId = searchParams.get("episode") as string;
 
   return (
-    <section className="relative flex h-full w-full flex-col overflow-hidden rounded-xl bg-black/20 p-4 shadow-sm shadow-black/80 backdrop-blur-sm">
+    <section className="relative flex max-h-[300px] w-full flex-col overflow-hidden rounded-xl bg-black/20 p-4 shadow-sm shadow-black/80 backdrop-blur-sm md:h-full md:max-h-none">
       <h3 className="sub-heading">Episodes</h3>
-      <div className="custom-scrollbar flex flex-1 flex-col gap-4 overflow-y-scroll ">
+      <div className="custom-scrollbar flex flex-1 flex-row gap-4 overflow-y-scroll md:flex-col ">
         {episodeList?.map((ep, i) => (
           <Link href={"?episode=" + ep.id} key={i}>
             <div
-              className={`flex w-full items-center gap-4 rounded-lg bg-white/10 p-4 shadow-sm backdrop-blur-sm transition-all ${episodeId == ep.id ? "bg-white/20" : "hover:bg-white/20"}`}
+              className={`relative flex w-fit items-center gap-4 rounded-lg bg-white/10 p-4 shadow-sm backdrop-blur-sm transition-all md:w-full ${episodeId == ep.id ? "bg-white/20" : "hover:bg-white/20"}`}
             >
-              <div className="h-[64px] w-[64px]">
-                <img src={ep.image} alt="" className="cover-img rounded-xl" />
+              <div className="h-[70px] w-[70px]">
+                <img
+                  src={ep.image}
+                  alt=""
+                  className="cover-img rounded-xl opacity-40 md:opacity-100"
+                />
               </div>
-              <span>{ep.title}</span>
+              <div className="md:hidden absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center">
+                <span className="">{ep.title}</span>
+              </div>
+              <div className="hidden md:inline-block">
+                <span className="">{ep.title}</span>
+              </div>
             </div>
           </Link>
         ))}

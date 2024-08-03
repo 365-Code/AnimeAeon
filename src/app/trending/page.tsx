@@ -1,7 +1,7 @@
 "use client";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import DisplayCards from "@/components/list/DisplayCards";
-import { ISearchResult, trendingList, perPage } from "@/utils";
+import { ISearchResult, perPage } from "@/utils";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {

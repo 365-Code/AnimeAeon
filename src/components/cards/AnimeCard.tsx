@@ -1,9 +1,7 @@
 "use client";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
-import { IAnimeEpisode, IAnimeInfo, ITitle } from "@consumet/extensions";
-import Image from "next/image";
+import { ITitle } from "@consumet/extensions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {

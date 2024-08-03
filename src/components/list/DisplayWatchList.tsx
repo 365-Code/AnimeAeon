@@ -1,5 +1,5 @@
 import { IRecentEpisode, toAnimeTitle } from "@/utils";
-import { IAnimeEpisode, ITitle } from "@consumet/extensions";
+import { ITitle } from "@consumet/extensions";
 import React, { useEffect, useState } from "react";
 import ListCardSkeleton from "../skeletons/ListCardSkeleton";
 import Link from "next/link";
