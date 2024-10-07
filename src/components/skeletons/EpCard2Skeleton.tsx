@@ -1,5 +1,3 @@
-import { IRecentEpisode, toAnimeTitle } from "@/utils";
-import Link from "next/link";
 import React from "react";
 
 const EpCard2Skeleton = () => {

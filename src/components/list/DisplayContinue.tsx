@@ -37,7 +37,7 @@ const DisplayContinue = ({
             </p>
             <p>Episode - {animeEp?.episodeNumber}</p>
           </div>
-          <button className="rounded-full bg-white/10 hover:bg-white/20 transition-all p-4 text-sm">
+          <button className="rounded-full bg-white/10 p-4 text-sm transition-all hover:bg-white/20">
             <i className="fi fi-ss-play" />
           </button>
         </Link>
@@ -53,7 +53,9 @@ const DisplayContinue = ({
             </div>
           ))
         : animeEpList.length == 0 && (
-            <h2 className="text-xl text-center p-4">Nothing To Continue</h2>
+            <h2 className="gradient-text from-slate-200 to-slate-800 p-4 text-center text-xl">
+              Nothing To Continue
+            </h2>
           )}
     </div>
   );

@@ -1,4 +1,5 @@
 import BackButton from "@/components/BackButton";
+import { Mail } from "lucide-react";
 import React from "react";
 
 const Page = () => {
@@ -8,14 +9,14 @@ const Page = () => {
       <img
         width={300}
         height={300}
-        src="/logo2.png"
+        src="/assets/anizone.png"
         className="h-[200px] w-[200px] border rounded-full"
         alt="logo"
       />
       <h1 className="text-center text-3xl font-medium">Create Your Account</h1>
       <div className="flex flex-col justify-center items-center gap-3">
         <div className="w-full rounded-lg bg-[#1f222a] flex items-center h-fit overflow-hidden">
-          <i className="fi fi-sr-envelope px-4" />
+          <Mail size={20} />
           <input
             type="email"
             name="email"

@@ -8,13 +8,15 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = searchParams.get("page") || 1;
     const perPage = searchParams.get("perPage") || 20;
-    const { results, currentPage, hasNextPage, totalPages } =
-      await anilist.fetchPopularAnime(Number(page), Number(perPage));
-    return NextResponse.json({ success: true, results }, { status: 200 });
+    const { results, hasNextPage } = await anilist.fetchPopularAnime(
+      Number(page),
+      Number(perPage),
+    );
+    return NextResponse.json({ success: true, results, hasNextPage }, { status: 200 });
   } catch (error: any) {
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 500 },
-      );
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 },
+    );
   }
 }

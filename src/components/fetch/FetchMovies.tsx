@@ -1,10 +1,18 @@
 "use client";
-import { ISearchResult } from "@/utils";
 import React, { useEffect, useState } from "react";
-import DisplayCards from "../list/DisplayCards";
+import dynamic from "next/dynamic";
+import { IAnimeResult } from "@consumet/extensions";
+
+const DynamicCarousel = dynamic(
+  () => import("@/components/carousel/carousel"),
+  {
+    ssr: false,
+  },
+);
 
 const FetchMovies = () => {
-  const [movies, setMovies] = useState<ISearchResult[]>([]);
+  // const [movies, setMovies] = useState<ISearchResult[]>([]);
+  const [movies, setMovies] = useState<IAnimeResult[]>([]);
 
   const fetchMovies = async () => {
     try {
@@ -20,8 +28,12 @@ const FetchMovies = () => {
   useEffect(() => {
     fetchMovies();
   }, []);
-
-  return <DisplayCards animeList={movies} title="Movies" />;
+  return (
+    <section className="relative mb-6">
+      <DynamicCarousel animeList={movies} title="Movies" />;
+    </section>
+  );
+  // return <DisplayCards animeList={movies} title="Movies" />;
 };
 
 export default FetchMovies;

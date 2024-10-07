@@ -63,7 +63,9 @@ const VideoPlayer = ({
       nav.push("?episode=" + String(episode)?.replace("-dub", ""));
     } else {
       setSubDub("dub");
-      nav.push("?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"));
+      nav.push(
+        "?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"),
+      );
     }
   };
 
@@ -93,7 +95,7 @@ const VideoPlayer = ({
   const [isDubbed, setIsDubbed] = useState(true);
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-xl bg-black/100 shadow-sm shadow-black/80 backdrop-blur-xl">
+    <div className="relative my-auto flex h-fit w-full flex-col overflow-hidden rounded-xl backdrop-blur-xl">
       <div className="max-h-fit">
         <Player
           source={epSources.find((e) => e.quality == "default")?.url || ""}

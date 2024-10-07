@@ -17,14 +17,25 @@ const Page = () => {
   useEffect(() => {
     data();
   }, []);
+
   return (
-    <section className="flex h-full flex-1 flex-col">
-      <h1 className="heading">Watchlist</h1>
-      <div className="grid flex-1 grid-cols-2 gap-4 no-scrollbar overflow-y-scroll sm:grid-cols-3 md:grid-cols-5">
-        {
-      watchList.map((watch, i) => <WatchCard key={i} watch={watch} />)
-      }
-      </div>
+    <section className="mx-auto flex h-full max-w-7xl flex-1 flex-col">
+      {!watchList || watchList.length == 0 ? (
+        <div className="flex h-full flex-1 flex-col items-center justify-center">
+          <h2 className="gradient-text from-red-500 to-blue-500 text-center text-xl font-medium sm:text-3xl md:text-5xl">
+            You didn&apos;t like anything yet
+          </h2>
+        </div>
+      ) : (
+        <>
+          <h1 className="heading">Watchlist</h1>
+          <div className="no-scrollbar grid flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 md:grid-cols-5">
+            {watchList.map((watch, i) => (
+              <WatchCard key={i} watch={watch} />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 };

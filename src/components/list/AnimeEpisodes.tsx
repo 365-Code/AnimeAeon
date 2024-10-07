@@ -3,34 +3,29 @@ import { IAnimeEpisode } from "@consumet/extensions";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
+import { Button } from "../ui/button";
 
 const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
   const searchParams = useSearchParams();
   const episodeId = searchParams.get("episode") as string;
 
   return (
-    <section className="relative flex max-h-[300px] w-full flex-col overflow-hidden rounded-xl bg-black/20 p-4 shadow-sm shadow-black/80 backdrop-blur-sm md:h-full md:max-h-none">
-      <h3 className="sub-heading">Episodes</h3>
-      <div className="custom-scrollbar flex flex-1 flex-row gap-4 overflow-y-scroll md:flex-col ">
+    <section className="relative flex max-h-[300px] w-full flex-col overflow-hidden rounded-xl bg-muted p-4 shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
+      <h3 className="mb-4 text-lg font-semibold text-muted-foreground">
+        Episodes
+      </h3>
+
+      {/* Scrollable List of Episodes */}
+      <div className="no-scrollbar flex h-full flex-1 flex-row gap-4 overflow-y-auto md:flex-wrap">
         {episodeList?.map((ep, i) => (
-          <Link href={"?episode=" + ep.id} key={i}>
-            <div
-              className={`relative flex w-fit items-center gap-4 rounded-lg bg-white/10 p-4 shadow-sm backdrop-blur-sm transition-all md:w-full ${episodeId == ep.id ? "bg-white/20" : "hover:bg-white/20"}`}
+          <Link href={"?episode=" + ep.id} key={i} className="group w-fit">
+            <Button
+              type="button"
+              variant={episodeId == ep.id ? "default" : "secondary"}
+              className="text-sm font-medium"
             >
-              <div className="h-[70px] w-[70px]">
-                <img
-                  src={ep.image}
-                  alt=""
-                  className="cover-img rounded-xl opacity-40 md:opacity-100"
-                />
-              </div>
-              <div className="md:hidden absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center">
-                <span className="">{ep.title}</span>
-              </div>
-              <div className="hidden md:inline-block">
-                <span className="">{ep.title}</span>
-              </div>
-            </div>
+              {ep.title}
+            </Button>
           </Link>
         ))}
       </div>

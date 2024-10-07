@@ -16,15 +16,13 @@ const Watch = ({
   setWatch: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
-    <section
-      style={{
-        gap: "1.5rem",
-        gridTemplateColumns: "65% 30%",
-      }}
-      className="relative w-full sm:grid md:h-[512px] xl:h-[680px]"
-    >
-      <DynamicVideoPlayer setWatch={setWatch} />
-      <AnimeEpisodes episodeList={anime.episodes || []} />
+    <section className="relative flex flex-col md:grid md:grid-cols-3 gap-4">
+      <div className="col-span-2">
+        <DynamicVideoPlayer setWatch={setWatch} />
+      </div>
+      <div className="col-span-1">
+        <AnimeEpisodes episodeList={anime.episodes || []} />
+      </div>
     </section>
   );
 };

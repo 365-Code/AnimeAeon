@@ -97,7 +97,7 @@ const Player = ({ source }: { source: string }) => {
   const supported = Hls.isSupported();  
   
   return (
-    <div className="wrapper w-full h-full">
+    <div className="wrapper w-full h-full object-scale-down">
       {supported ? (
         <CustomPlyrInstance
           ref={ref}

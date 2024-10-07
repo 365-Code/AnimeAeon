@@ -10,15 +10,8 @@
   box-sizing: border-box;
 }
 
-i {
-  @apply flex flex-col items-center justify-center;
-}
-
 body {
-  @apply scroll-smooth transition-all dark:bg-[#181a20] dark:text-white;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+  @apply scroll-smooth transition-all flex flex-col min-h-screen;
 }
 
 :root {
@@ -30,7 +23,7 @@ body {
 
 #main-screen {
   /* @apply md:p-8 max-w-screen-lg mx-auto h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none; */
-  @apply relative overflow-hidden flex flex-col h-screen px-10 py-6;
+  @apply relative flex h-screen flex-col overflow-hidden px-10 py-6;
 }
 
 /* body::-webkit-scrollbar{
@@ -49,8 +42,8 @@ body {
   @apply h-1 w-1;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb{
-  @apply bg-slate-400 rounded-full;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-400;
 }
 
 /* .btn {
@@ -61,16 +54,16 @@ body {
   @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6;
 }
 
-.grid-row-container{
+.grid-row-container {
   display: grid;
   grid-template-rows: 7vh 70vh 40vh;
-  gap: 2rem
+  gap: 2rem;
 }
 
-.grid-col-container{
+.grid-col-container {
   display: grid;
   grid-template-rows: 7vh 70vh 40vh;
-  gap: 2rem
+  gap: 2rem;
 }
 
 .grid-cards {
@@ -88,93 +81,68 @@ body {
 }
 
 .side-nav {
-  @apply fixed left-0 top-0 flex h-full w-[250px] flex-col gap-2 bg-black py-4 transition-all;
+  @apply fixed left-0 top-0 flex h-full w-[250px] flex-col gap-2 bg-slate-300 py-4 transition-all;
 }
 
-.nav-li {
-  @apply transition-all flex w-full items-center gap-4 p-4 font-normal hover:dark:bg-[#181a20];
-}
-
-.nav-li-active {
-  @apply dark:bg-[#181a20];
-}
-
-.heading{
-  @apply text-3xl sm:text-4xl md:text-5xl py-4;
-}
-
-.sub-heading{
-  @apply text-2xl sm:text-3xl md:text-4xl py-2;
-}
-
-.btn{
-  @apply px-6 py-3 min-w-fit flex items-center transition-all gap-4 rounded-full;
-}
-
-.btn-primary{
-  @apply btn bg-white text-black hover:bg-white/90 border;
-}
-
-.btn-secondary{
-  @apply btn bg-transparent text-white hover:bg-white/90 hover:text-black border;
-}
-
-
-.animate-fade{
+.animate-fade {
   @apply transition-all;
   animation: animation-fade 1s linear;
   animation-fill-mode: forwards;
 }
 
+.gradient-text {
+  @apply bg-gradient-to-br bg-clip-text text-transparent;
+}
 
-@keyframes animation-fade{
-  0%{
+@keyframes animation-fade {
+  0% {
     opacity: 0.3;
     /* transform: translateX(100%); */
-  } to{
+  }
+  to {
     opacity: 0.5;
     /* transform: translateX(0); */
   }
 }
 
-.animate-fade-visible{
+.animate-fade-visible {
   @apply transition-all;
   animation: animation-fade-visible 1s linear;
   animation-fill-mode: forwards;
 }
 
-
-@keyframes animation-fade-visible{
-  0%{
+@keyframes animation-fade-visible {
+  0% {
     opacity: 0.3;
     /* transform: translateX(100%); */
-  } to{
+  }
+  to {
     opacity: 1;
     /* transform: translateX(0); */
   }
 }
 
-
-.animate-pop{
+.animate-pop {
   @apply transition-all;
   animation: animation-pop 1s linear;
   animation-fill-mode: forwards;
 }
-@keyframes animation-pop{
-  from{
+@keyframes animation-pop {
+  from {
     @apply rotate-90 opacity-30;
-  } to{
+  }
+  to {
     @apply rotate-0 opacity-100;
   }
 }
 /* Cards */
 
 .anime-card {
-  @apply relative flex h-[320px] w-[90vw] max-w-[625px] rounded-br-3xl bg-black/40 shadow-xl shadow-black backdrop-blur-sm 
+  @apply relative flex h-[320px] w-[90vw] max-w-[580px] rounded-br-3xl bg-black/40 shadow-xl shadow-black backdrop-blur-sm 
   sm:min-w-[380px]
   sm:rounded-none
   md:min-h-fit
-  md:min-w-[625px];
+  md:min-w-[580px];
 }
 
 .anime-tag {
@@ -195,16 +163,15 @@ body {
   clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
 }
 
-
-.st-anime-card{
-  @apply min-h-full min-w-[var(--st-min-w)] max-w-[var(--st-max-w)] overflow-hidden relative transition-all;
+.st-anime-card {
+  @apply relative min-h-full min-w-[var(--st-min-w)] max-w-[var(--st-max-w)] overflow-hidden transition-all;
 }
 
-.st-anime-card-detail{
+.st-anime-card-detail {
   @apply no-scrollbar absolute bottom-0 left-0 h-fit max-h-full min-h-10 w-full overflow-y-scroll hyphens-auto bg-black/70 p-4 font-semibold transition-all;
 }
 
-.cover-img{
+.cover-img {
   @apply h-full w-full object-cover object-center;
 }
 
@@ -213,10 +180,78 @@ body {
 }
 
 .ep-card-skeleton {
-  @apply w-[280px] h-[420px] backdrop-blur-sm bg-black/40 animate-pulse;
+  @apply h-[420px] w-[280px] animate-pulse bg-black/40 backdrop-blur-sm;
 }
 
-.display-cards{
+.display-cards {
   @apply grid items-start justify-start gap-4;
-  grid-template-columns: repeat(auto-fit, minmax(var(--st-min-w),var(--st-max-w)));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--st-min-w), var(--st-max-w))
+  );
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useState } from "react";
+import { Input } from "../ui/input";
+import { Search } from "lucide-react";
 
 const SearchBar = () => {
   const nav = useRouter();
@@ -12,17 +14,17 @@ const SearchBar = () => {
   };
 
   return (
-    <search className="flex items-center gap-2 overflow-hidden rounded-full bg-black/30 py-4 px-8 shadow-inner shadow-black/80">
-      <i className="fi fi-ss-search" />
+    <search className="flex items-center rounded-full bg-black/30 pl-4 shadow-inner shadow-black/80">
+      <Search />
       <form onSubmit={handleSubmit} className="w-full">
-        <input
+        <Input
           value={searchInput}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setSearchInput(e.target.value)
           }
           type="search"
           placeholder="Search"
-          className="h-full w-full bg-transparent text-lg font-normal outline-none"
+          className="border-none py-6 text-lg focus-visible:ring-0"
         />
       </form>
     </search>

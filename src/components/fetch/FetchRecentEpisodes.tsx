@@ -1,11 +1,11 @@
 "use client";
 import { ApiError } from "next/dist/server/api-utils";
 import React, { useEffect, useState } from "react";
-import { IRecentEpisode } from "@/utils";
-import DisplayRecentEpisode from "../list/DisplayRecentEpisode";
+import { IAnimeResult } from "@consumet/extensions";
+import VerticalCarousel from "../carousel/vertical-carousel";
 
 const FetchRecentEpisodes = () => {
-  const [recentEpisodes, setRecentEpisodes] = useState<IRecentEpisode[]>([]);
+  const [recentEpisodes, setRecentEpisodes] = useState<IAnimeResult[]>([]);
 
   const data = async () => {
     try {
@@ -25,8 +25,16 @@ const FetchRecentEpisodes = () => {
     }, 500);
     return () => clearTimeout(debounce);
   }, []);
-
-  return <DisplayRecentEpisode animeList={recentEpisodes} />;
+  {
+    /* <DisplayRecentEpisode animeList={recentEpisodes} />; */
+  }
+  return (
+    <VerticalCarousel
+      animeList={recentEpisodes}
+      direction="vertical"
+      height={400}
+    />
+  );
 };
 
 export default FetchRecentEpisodes;

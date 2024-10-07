@@ -6,21 +6,19 @@ import DisplayContinue from "../list/DisplayContinue";
 const FetchContinue = () => {
   const [continueList, setContinueList] = useState<IRecentEpisode[]>([]);
 
-  const data = () => {
-    const dta = localStorage.getItem("continueList");
-    if (dta) {
-      const list = JSON.parse(dta);
+  const loadContinue = () => {
+    const data = localStorage.getItem("continueList");
+    if (data) {
+      const list = JSON.parse(data);
       setContinueList(list);
     }
   };
 
   useEffect(() => {
-    data();
+    loadContinue();
   }, []);
 
-  return (
-      <DisplayContinue animeEpList={continueList} />
-  );
+  return <DisplayContinue animeEpList={continueList} />;
 };
 
 export default FetchContinue;

@@ -2,7 +2,24 @@
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Button } from "../ui/button";
+import {
+  Bookmark,
+  BookmarkCheck,
+  ChevronLeft,
+  ChevronRight,
+  PlayCircle,
+  Star,
+} from "lucide-react";
+import { Badge } from "../ui/badge";
+import { Skeleton } from "../ui/skeleton";
 
 const AnimeInfoCard = ({
   anime,
@@ -63,6 +80,7 @@ const AnimeInfoCard = ({
       }
       return;
     }
+
     setInWatch(true);
     if (data) {
       const list = JSON.parse(data) as Array<any>;
@@ -106,14 +124,25 @@ const AnimeInfoCard = ({
     }
   }, [anime]);
 
+  const paraRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    if (paraRef.current) {
+      paraRef.current.innerHTML = String(anime.description);
+    }
+  }, []);
+
+  if (!anime.id) {
+    return <AnimeBannerSkeleton />;
+  }
   return (
     <section
-      className={` relative h-[512px] w-full overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
+      className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-gradient-to-tr from-black/60 to-transparent p-6 shadow-lg backdrop-blur-lg sm:max-h-[512px]`}
     >
       {banner?.map((b, i) => (
         <div
           key={i}
-          className={`h-full w-full opacity-40 transition-all ${
+          className={`absolute left-0 top-0 -z-0 h-full w-full opacity-40 transition-all ${
             currentBanner == i
               ? "animate-fade block translate-x-0"
               : "hidden translate-x-10"
@@ -121,176 +150,107 @@ const AnimeInfoCard = ({
         >
           <img
             id="carousel"
-            src={banner[currentBanner]?.img || anime.image || ""}
+            src={
+              banner[currentBanner]?.img ||
+              anime.image ||
+              "/placeholder/bg.jpeg"
+            }
             alt={toAnimeTitle(anime.title as ITitle)}
             className={`h-full w-full object-cover object-center`}
           />
         </div>
       ))}
-      <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8">
-        <div className="flex flex-wrap items-center gap-2">
-          {anime.genres?.map((g, i) => (
-            <span
-              key={i}
-              className="rounded-full bg-black/20 px-3 py-1 text-sm font-medium"
-            >
-              {g}
-            </span>
-          ))}
-        </div>
-        <div className="max-w-[85%]">
-          <h2 className="text-5xl font-semibold">
-            {toAnimeTitle(anime.title as ITitle)}
-          </h2>
-        </div>
-        {!anime.id && (
-          <div role="status" className="max-w-sm animate-pulse">
-            <div className="mb-4 h-2.5 w-48 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="mb-2.5 h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="mb-2.5 h-2 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="mb-2.5 h-2 max-w-[330px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="mb-2.5 h-2 max-w-[300px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <span className="sr-only">Loading...</span>
-          </div>
-        )}
-        <div className="flex max-w-[50%] flex-col gap-2">
-          <p className="text-lg font-normal">
-            {anime.studios?.map((studio, i) => (
-              <span key={i} style={{ color: anime.color || "white" }}>
-                {studio}
-              </span>
+      <div className="z-[1] flex flex-1 justify-between gap-6 overflow-hidden">
+        <div className="mb-4 mt-auto flex basis-1/2 flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-2">
+            {anime.genres?.map((g, i) => (
+              <Badge key={i} className="rounded-full bg-transparent/50">
+                {g}
+              </Badge>
             ))}
-          </p>
-          <p className="flex items-center gap-2">
-            {anime.season ? (
-              <>
-                <span>{anime.season}</span>
-                <span className="min-h-2 min-w-2 rounded-full bg-white"></span>
-              </>
-            ) : (
-              ""
-            )}
+          </div>
+          <div className="max-w-[85%]">
+            <h2 className="text-2xl font-semibold sm:text-4xl md:text-5xl">
+              {toAnimeTitle(anime.title as ITitle)}
+            </h2>
+          </div>
+          <div className="flex max-w-[50%] flex-col gap-2">
+            {anime.studios?.map((studio, i) => (
+              <Badge
+                className="w-fit text-xl"
+                key={i}
+                style={{ color: anime.color || "white" }}
+              >
+                {studio}
+              </Badge>
+            ))}
+            <div className="flex items-center gap-2">
+              {anime.season && <Badge>{anime.season}</Badge>}
 
-            {anime.releaseDate ? (
-              <>
-                <span>{anime.releaseDate}</span>
-                <span className="min-h-2 min-w-2 rounded-full bg-white"></span>
-              </>
-            ) : (
-              ""
-            )}
-            {anime.type ? (
-              <>
-                <span>{anime.type}</span>
-                <span className="min-h-2 min-w-2 rounded-full bg-white"></span>
-              </>
-            ) : (
-              ""
-            )}
-            {anime.totalEpisodes || anime.currentEpisode ? (
-              <>
-                <span>{anime.currentEpisode || anime.totalEpisodes}</span>
-                <span className="min-h-2 min-w-2 rounded-full bg-white"></span>
-              </>
-            ) : (
-              ""
-            )}
-            {anime.status ? (
-              <>
-                <span>{anime.status}</span>
-              </>
-            ) : (
-              ""
-            )}
-          </p>
-          <p className="flex items-center gap-1 text-xl font-medium">
-            <i style={{ color: anime.color }} className="fi fi-ss-star" />
-            <span>{anime.rating ? anime.rating + "%" : ""}</span>
-          </p>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: String(anime.description)?.replaceAll("<br>", "") || "",
-            }}
-            className="custom-scrollbar flex max-h-[145px] flex-wrap items-center overflow-y-scroll hyphens-auto"
-          ></p>
+              {anime.releaseDate && (
+                <>
+                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                  <Badge>{anime.releaseDate}</Badge>
+                </>
+              )}
+              {anime.type && (
+                <>
+                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                  <Badge>{anime.type}</Badge>
+                </>
+              )}
+              {(anime.totalEpisodes || anime.currentEpisode) && (
+                <>
+                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                  <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
+                </>
+              )}
+              {anime.status && (
+                <>
+                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                  <Badge>{anime.status}</Badge>
+                </>
+              )}
+            </div>
+            <p className="flex items-center gap-1 text-xl font-medium">
+              <Star fill={anime.color} stroke={anime.color} />
+              <span>{anime.rating ? anime.rating + "%" : ""}</span>
+            </p>
+          </div>
         </div>
-        {!anime.id && (
-          <div role="status" className="max-w-lg animate-pulse space-y-2.5">
-            <div className="flex w-full items-center">
-              <div className="h-2.5 w-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-            <div className="flex w-full max-w-[480px] items-center">
-              <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-            <div className="flex w-full max-w-[400px] items-center">
-              <div className="h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-            <div className="flex w-full max-w-[480px] items-center">
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-            <div className="flex w-full max-w-[440px] items-center">
-              <div className="ms-2 h-2.5 w-32 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            </div>
-            <div className="flex w-full max-w-[360px] items-center">
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-              <div className="ms-2 h-2.5 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-              <div className="ms-2 h-2.5 w-full rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
-            <span className="sr-only">Loading...</span>
-          </div>
-        )}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleWatch}
-              className={`btn btn-primary ${!anime.id && "animate-pulse"}`}
-            >
-              <span>
-                <i className="fi fi-sr-play" />
-              </span>
-              <span className={anime.id ? "visible" : "invisible"}>Watch</span>
-            </button>
-            <button
-              onClick={handleWatch}
-              className={`btn ${inWatch ? "btn-primary" : "btn-secondary"} ${!anime.id && "animate-pulse"}`}
-            >
-              <span>
-                {inWatch ? (
-                  <i className="fi fi-ss-check animate-pop" />
-                ) : (
-                  <i className="fi fi-sr-wishlist-star animate-pop" />
-                )}
-              </span>
-              <span className={anime.id ? "visible" : "invisible"}>
-                Add to WatchList
-              </span>
-            </button>
-          </div>
-          <div className="flex items-center gap-4">
-            <button
-              className="rounded-full bg-black/30 p-4 transition-all hover:bg-black/40"
-              onClick={() => handleSlideShow(-1)}
-            >
-              <i className="fi fi-sr-angle-left" />
-            </button>
-            <button
-              className="rounded-full bg-black/30 p-4 transition-all hover:bg-black/40"
-              onClick={() => handleSlideShow(1)}
-            >
-              <i className="fi fi-sr-angle-right" />
-            </button>
-          </div>
+        <div className="custom-scrollbar mt-auto overflow-y-auto md:max-h-[250px]">
+          <p className="font-medium" ref={paraRef} />
+          {/* {anime.description} */}
+        </div>
+      </div>
+
+      <div className="z-[1] flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button onClick={handleWatch} className="flex items-center gap-1 p-6">
+            <PlayCircle size={15} className="m-0 p-0" />
+            Watch Now
+          </Button>
+          <Button
+            onClick={handleWatchList}
+            className="flex items-center gap-1 p-6"
+          >
+            {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
+            Add to WatchList
+          </Button>
+        </div>
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={() => handleSlideShow(-1)}
+            className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
+          >
+            <ChevronLeft size={25} className="m-0 p-0" />
+          </Button>
+          <Button
+            onClick={() => handleSlideShow(1)}
+            className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
+          >
+            <ChevronRight size={25} className="m-0 p-0" />
+          </Button>
         </div>
       </div>
     </section>
@@ -298,3 +258,54 @@ const AnimeInfoCard = ({
 };
 
 export default AnimeInfoCard;
+
+const AnimeBannerSkeleton = () => {
+  return (
+    <section
+      className={`relative w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm sm:h-[512px]`}
+    >
+      {/* Image Skeleton */}
+      <Skeleton className="h-full w-full object-cover object-center" />
+
+      <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8">
+        {/* Genre Badges Skeleton */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+
+        {/* Title Skeleton */}
+        <div className="max-w-[85%]">
+          <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
+        </div>
+
+        {/* Studio and Info Skeleton */}
+        <div className="flex max-w-[50%] flex-col gap-2">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-6 w-48" />
+        </div>
+
+        {/* Rating Skeleton */}
+        <div className="flex items-center gap-1">
+          <Skeleton className="h-6 w-6 rounded-full" />
+          <Skeleton className="h-6 w-12" />
+        </div>
+
+        {/* Action Buttons Skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-10 w-32 rounded-md" />
+            <Skeleton className="h-10 w-48 rounded-md" />
+          </div>
+
+          {/* Arrow Buttons Skeleton */}
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

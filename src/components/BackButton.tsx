@@ -1,13 +1,22 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Button } from "./ui/button";
+import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const BackButton = () => {
+const BackButton = ({
+  text,
+  className,
+}: {
+  text?: string;
+  className?: string;
+}) => {
   const nav = useRouter();
   return (
-    <button onClick={() => nav.back()} className="flex w-full text-left">
-      <i className="fi fi-sr-arrow-small-left text-2xl" />
-    </button>
+    <Button onClick={() => nav.back()} className={cn("w-fit", className)}>
+      {text ? text : <ArrowLeft />}
+    </Button>
   );
 };
 

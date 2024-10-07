@@ -28,10 +28,13 @@ const DisplayWatchList = ({
           <div className="min-w-[64px] max-w-[64px] overflow-hidden rounded-lg">
             <img src={animeEp.image} alt="" className="cover-img" />
           </div>
-          <div className="flex items-start flex-1 max-h-[70px]">
+          <div className="flex max-h-[70px] flex-1 items-start">
             <p className="">{toAnimeTitle(animeEp?.title as ITitle)}</p>
           </div>
-          <Link href={'/anime/'+animeEp.id} className="rounded-full bg-white/10 p-4 h-fit text-sm">
+          <Link
+            href={"/anime/" + animeEp.id}
+            className="h-fit rounded-full bg-white/10 p-4 text-sm"
+          >
             <i className="fi fi-ss-play" />
           </Link>
         </div>
@@ -48,7 +51,9 @@ const DisplayWatchList = ({
             </div>
           ))
         : animeEpList.length == 0 && (
-            <h2 className="text-xl text-center p-4">Nothing In WatchList</h2>
+            <h2 className="gradient-text from-slate-200 to-slate-800 p-4 text-center text-xl">
+              Nothing In WatchList
+            </h2>
           )}
     </div>
   );

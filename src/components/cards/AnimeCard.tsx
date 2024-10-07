@@ -16,15 +16,17 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
         <div className="anime-tag">
-          {anime.genres && anime.genres.length > 0
-            ? anime.genres?.map(
-                (g, i) =>
-                  (i < 2 ? g : "") +
-                  (anime?.genres?.length && anime?.genres?.length > 1 && i < 1
-                    ? ", "
-                    : ""),
-              )
-            : <span className="invisible">Genres: N/A</span>}
+          {anime.genres && anime.genres.length > 0 ? (
+            anime.genres?.map(
+              (g, i) =>
+                (i < 2 ? g : "") +
+                (anime?.genres?.length && anime?.genres?.length > 1 && i < 1
+                  ? ", "
+                  : ""),
+            )
+          ) : (
+            <span className="invisible">Genres: N/A</span>
+          )}
         </div>
         <div className="anime-card-detail">
           <div className="flex flex-col gap-2">
@@ -32,27 +34,27 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               {anime.season && (
                 <>
                   <span>{anime.season}</span>
-                  <span className="h-1 w-1 rounded-full bg-white" />
+                  <span className="h-1 w-1 rounded-full" />
                 </>
               )}
               {anime.releaseDate && (
                 <>
                   <span>{anime.releaseDate}</span>
-                  <span className="h-1 w-1 rounded-full bg-white" />
+                  <span className="h-1 w-1 rounded-full" />
                 </>
               )}
               <span>{anime.type}</span>
               {!anime.season && (
                 <>
-                  <span className="h-1 w-1 rounded-full bg-white" />
+                  <span className="h-1 w-1 rounded-full" />
                   <span>{String(anime?.episodes)} - Episodes</span>
                 </>
               )}
             </p>
-            <Link href={"/anime/"+ anime.id}>
+            <Link href={"/anime/" + anime.id}>
               <h3
                 id="anime-card-title"
-                className="hyphens-auto text-lg font-semibold  sm:text-3xl"
+                className="line-clamp-1 hyphens-auto text-lg font-semibold sm:text-3xl"
               >
                 {toAnimeTitle(anime.title as ITitle)}
               </h3>

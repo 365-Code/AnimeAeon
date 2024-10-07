@@ -38,17 +38,21 @@ const Page = () => {
   const [watch, setWatch] = useState(playing ? true : false);
 
   return (
-    <section className="no-scrollbar space-y-6 overflow-y-scroll">
+    <section className="no-scrollbar mx-auto flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll">
       {watch ? (
         <Watch anime={animeInfo} setWatch={setWatch} />
       ) : (
         <AnimeInfoCard setWatch={setWatch} anime={animeInfo} />
       )}
-      <DisplayAnimeCards
-        title="You Might Like"
-        animeList={animeInfo?.recommendations || []}
-      />
-      <DisplayCharacters characterList={animeInfo?.characters || []} />
+      <div className="mb-4 mt-2">
+        <DisplayAnimeCards
+          title="You Might Like"
+          animeList={animeInfo?.recommendations || []}
+        />
+      </div>
+      <div className="mb-4">
+        <DisplayCharacters characterList={animeInfo?.characters || []} />
+      </div>
     </section>
   );
 };
