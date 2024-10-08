@@ -46,7 +46,6 @@ export default function Header() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     nav.push("/search/results?query=" + searchInput);
-    setSearchInput("");
   };
 
   useEffect(() => {

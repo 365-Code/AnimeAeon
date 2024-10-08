@@ -1,6 +1,7 @@
 import { IAnimeResult } from "@consumet/extensions";
 import React, { useRef } from "react";
 import AnimeCard from "../cards/AnimeCard";
+import StCardSkeleton from "../skeletons/StCardSkeleton";
 
 const DisplayAnimeCards = ({
   animeList,
@@ -21,6 +22,20 @@ const DisplayAnimeCards = ({
       });
     }
   };
+
+  if (animeList.length == 0) {
+    return (
+      <div className="flex items-center gap-4 overflow-x-scroll no-scrollbar">
+        {Array(5)
+          .fill(0)
+          .map((_, i) => (
+            <div key={i} className="min-w-[300px]">
+              <StCardSkeleton key={i} />
+            </div>
+          ))}
+      </div>
+    );
+  }
 
   return (
     <section id="disp" className="relative snap-start space-y-4">

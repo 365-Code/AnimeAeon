@@ -20,6 +20,14 @@ import {
 } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { cn } from "@/lib/utils";
 
 const AnimeInfoCard = ({
   anime,
@@ -127,133 +135,167 @@ const AnimeInfoCard = ({
   const paraRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
-    if (paraRef.current) {
-      paraRef.current.innerHTML = String(anime.description);
+    if (paraRef.current && anime.description) {
+      paraRef.current.innerHTML = anime.description;
     }
-  }, []);
+  }, [anime.description]);
+
+  const screenSize =
+    typeof window != undefined && window.innerWidth <= 500 ? true : false;
 
   if (!anime.id) {
     return <AnimeBannerSkeleton />;
   }
+
   return (
-    <section
-      className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-gradient-to-tr from-black/60 to-transparent p-6 shadow-lg backdrop-blur-lg sm:max-h-[512px]`}
-    >
-      {banner?.map((b, i) => (
-        <div
-          key={i}
-          className={`absolute left-0 top-0 -z-0 h-full w-full opacity-40 transition-all ${
-            currentBanner == i
-              ? "animate-fade block translate-x-0"
-              : "hidden translate-x-10"
-          }`}
-        >
-          <img
-            id="carousel"
-            src={
-              banner[currentBanner]?.img ||
-              anime.image ||
-              "/placeholder/bg.jpeg"
-            }
-            alt={toAnimeTitle(anime.title as ITitle)}
-            className={`h-full w-full object-cover object-center`}
-          />
-        </div>
-      ))}
-      <div className="z-[1] flex flex-1 justify-between gap-6 overflow-hidden">
-        <div className="mb-4 mt-auto flex basis-1/2 flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            {anime.genres?.map((g, i) => (
-              <Badge key={i} className="rounded-full bg-transparent/50">
-                {g}
-              </Badge>
-            ))}
+    <>
+      <section
+        className={`relative flex w-full flex-col overflow-hidden rounded-xl bg-gradient-to-tr from-black/60 to-transparent p-2 shadow-lg backdrop-blur-lg sm:max-h-[512px] sm:p-6`}
+      >
+        {banner?.map((b, i) => (
+          <div
+            key={i}
+            className={`absolute left-0 top-0 -z-0 h-full w-full opacity-40 transition-all ${
+              currentBanner == i
+                ? "animate-fade block translate-x-0"
+                : "hidden translate-x-10"
+            }`}
+          >
+            <img
+              id="carousel"
+              src={
+                banner[currentBanner]?.img ||
+                anime.image ||
+                "/placeholder/bg.jpeg"
+              }
+              alt={toAnimeTitle(anime.title as ITitle)}
+              className={`h-full w-full object-cover object-center`}
+            />
           </div>
-          <div className="max-w-[85%]">
-            <h2 className="text-2xl font-semibold sm:text-4xl md:text-5xl">
+        ))}
+        <div className="z-[1] flex-1 justify-between gap-6 overflow-hidden sm:flex">
+          <div className="mb-4 mt-auto flex flex-col gap-4 sm:basis-1/2">
+            <div className="flex flex-wrap items-center gap-2">
+              {anime.genres?.map((g, i) => (
+                <Badge key={i} className="rounded-full bg-transparent/50">
+                  {g}
+                </Badge>
+              ))}
+            </div>
+            <h2 className="text-3xl font-semibold sm:text-4xl md:text-5xl">
               {toAnimeTitle(anime.title as ITitle)}
             </h2>
-          </div>
-          <div className="flex max-w-[50%] flex-col gap-2">
-            {anime.studios?.map((studio, i) => (
-              <Badge
-                className="w-fit text-xl"
-                key={i}
-                style={{ color: anime.color || "white" }}
-              >
-                {studio}
-              </Badge>
-            ))}
-            <div className="flex items-center gap-2">
-              {anime.season && <Badge>{anime.season}</Badge>}
+            <div className="flex flex-col gap-2">
+              {anime.studios?.map((studio, i) => (
+                <Badge
+                  className="w-fit text-base sm:text-lg md:text-xl"
+                  key={i}
+                  style={{ color: anime.color || "white" }}
+                >
+                  {studio}
+                </Badge>
+              ))}
+              <div className="flex flex-wrap items-center gap-2">
+                {anime.season && <Badge>{anime.season}</Badge>}
 
-              {anime.releaseDate && (
-                <>
-                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                  <Badge>{anime.releaseDate}</Badge>
-                </>
-              )}
-              {anime.type && (
-                <>
-                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                  <Badge>{anime.type}</Badge>
-                </>
-              )}
-              {(anime.totalEpisodes || anime.currentEpisode) && (
-                <>
-                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                  <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
-                </>
-              )}
-              {anime.status && (
-                <>
-                  <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                  <Badge>{anime.status}</Badge>
-                </>
-              )}
+                {anime.releaseDate && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.releaseDate}</Badge>
+                  </>
+                )}
+                {anime.type && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.type}</Badge>
+                  </>
+                )}
+                {(anime.totalEpisodes || anime.currentEpisode) && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
+                  </>
+                )}
+                {anime.status && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.status}</Badge>
+                  </>
+                )}
+              </div>
+              <p className="flex items-center gap-1 text-sm font-medium sm:text-lg">
+                <Star
+                  fill={anime.color}
+                  stroke={anime.color}
+                  className="h-[20px] w-[20px]"
+                />
+                <span className="text-white">
+                  {anime.rating ? anime.rating + "%" : ""}
+                </span>
+              </p>
             </div>
-            <p className="flex items-center gap-1 text-xl font-medium">
-              <Star fill={anime.color} stroke={anime.color} />
-              <span>{anime.rating ? anime.rating + "%" : ""}</span>
-            </p>
+          </div>
+          {/* <div className="custom-scrollbar mb-2 mt-auto hidden overflow-y-auto sm:block sm:basis-1/2 md:max-h-[250px]"> */}
+          <Card
+            className={cn(
+              "border-none bg-gradient-to-br from-slate-200 to-slate-300",
+              "custom-scrollbar mb-2 mt-auto hidden overflow-y-auto scroll-smooth sm:block sm:basis-1/2 md:max-h-[250px]",
+            )}
+          >
+            <CardHeader>
+              <CardTitle>Description</CardTitle>
+              <CardDescription className="font-medium" ref={paraRef}>
+                {!anime.description && "Description Not Available"}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          {/* </div> */}
+        </div>
+
+        <div className="z-[1] flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <Button
+              onClick={handleWatch}
+              className="flex items-center gap-1 sm:p-6"
+            >
+              <PlayCircle size={15} className="m-0 p-0" />
+              Watch Now
+            </Button>
+            <Button
+              onClick={handleWatchList}
+              className="flex items-center gap-1 sm:p-6"
+            >
+              {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
+              Add to WatchList
+            </Button>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={() => handleSlideShow(-1)}
+              className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
+            >
+              <ChevronLeft size={25} className="m-0 p-0" />
+            </Button>
+            <Button
+              onClick={() => handleSlideShow(1)}
+              className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
+            >
+              <ChevronRight size={25} className="m-0 p-0" />
+            </Button>
           </div>
         </div>
-        <div className="custom-scrollbar mt-auto overflow-y-auto md:max-h-[250px]">
-          <p className="font-medium" ref={paraRef} />
-          {/* {anime.description} */}
-        </div>
-      </div>
-
-      <div className="z-[1] flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button onClick={handleWatch} className="flex items-center gap-1 p-6">
-            <PlayCircle size={15} className="m-0 p-0" />
-            Watch Now
-          </Button>
-          <Button
-            onClick={handleWatchList}
-            className="flex items-center gap-1 p-6"
-          >
-            {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
-            Add to WatchList
-          </Button>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            onClick={() => handleSlideShow(-1)}
-            className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
-          >
-            <ChevronLeft size={25} className="m-0 p-0" />
-          </Button>
-          <Button
-            onClick={() => handleSlideShow(1)}
-            className="h-[2.3rem] w-[2.3rem] rounded-full p-0"
-          >
-            <ChevronRight size={25} className="m-0 p-0" />
-          </Button>
-        </div>
-      </div>
-    </section>
+      </section>
+      {screenSize && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Description</CardTitle>
+            <CardDescription ref={paraRef}>
+              {!anime.description && "Description Not Available"}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+    </>
   );
 };
 
@@ -262,7 +304,7 @@ export default AnimeInfoCard;
 const AnimeBannerSkeleton = () => {
   return (
     <section
-      className={`relative w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm sm:h-[512px]`}
+      className={`relative h-[412px] w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
     >
       {/* Image Skeleton */}
       <Skeleton className="h-full w-full object-cover object-center" />
@@ -276,9 +318,7 @@ const AnimeBannerSkeleton = () => {
         </div>
 
         {/* Title Skeleton */}
-        <div className="max-w-[85%]">
-          <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
-        </div>
+        <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
 
         {/* Studio and Info Skeleton */}
         <div className="flex max-w-[50%] flex-col gap-2">
@@ -287,20 +327,20 @@ const AnimeBannerSkeleton = () => {
         </div>
 
         {/* Rating Skeleton */}
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           <Skeleton className="h-6 w-6 rounded-full" />
           <Skeleton className="h-6 w-12" />
         </div>
 
         {/* Action Buttons Skeleton */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4 justify-between">
+          <div className="flex flex-wrap items-center gap-4">
             <Skeleton className="h-10 w-32 rounded-md" />
             <Skeleton className="h-10 w-48 rounded-md" />
           </div>
 
           {/* Arrow Buttons Skeleton */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
             <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
           </div>

@@ -10,11 +10,13 @@ import Watch from "@/components/player/Watch";
 const Page = () => {
   const params = useParams();
   const animeId = params["id"] as string;
+  const [loading, setLoading] = useState(false)
 
   const [animeInfo, setAnimeInfo] = useState<IAnimeInfoAnilit>(
     {} as IAnimeInfoAnilit,
   );
   const fetchAnimeInfo = async () => {
+    setLoading(true)
     try {
       const data = await fetch("/api/anilist/info?id=" + animeId);
       const res = await data.json();
@@ -23,6 +25,8 @@ const Page = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -38,7 +42,7 @@ const Page = () => {
   const [watch, setWatch] = useState(playing ? true : false);
 
   return (
-    <section className="no-scrollbar mx-auto flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll">
+    <section className="no-scrollbar mx-auto flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll mt-4">
       {watch ? (
         <Watch anime={animeInfo} setWatch={setWatch} />
       ) : (
@@ -50,6 +54,7 @@ const Page = () => {
           animeList={animeInfo?.recommendations || []}
         />
       </div>
+      
       <div className="mb-4">
         <DisplayCharacters characterList={animeInfo?.characters || []} />
       </div>

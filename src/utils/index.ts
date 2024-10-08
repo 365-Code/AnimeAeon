@@ -1,10 +1,7 @@
-import { IAnimeInfo, ITitle } from "@consumet/extensions";
-import {
-  IAnimeEpisode,
-  IAnimeEpisodeV2,
-} from "@consumet/extensions/dist/models/types";
+import { Genres, IAnimeInfo, ITitle } from "@consumet/extensions";
 
 export const perPage = 18;
+export const animeGenres = Object.values(Genres)
 export interface IArtWork {
   img: string;
   type: string;

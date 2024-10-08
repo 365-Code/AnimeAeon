@@ -39,7 +39,7 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply h-1 w-1;
+  @apply h-1 w-1 m-1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {

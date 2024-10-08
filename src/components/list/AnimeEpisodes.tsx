@@ -16,13 +16,13 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
       </h3>
 
       {/* Scrollable List of Episodes */}
-      <div className="no-scrollbar flex h-full flex-1 flex-row gap-4 overflow-y-auto md:flex-wrap">
+      <div className="custom-scrollbar flex h-fit flex-row items-start gap-4 overflow-y-auto md:flex-wrap">
         {episodeList?.map((ep, i) => (
-          <Link href={"?episode=" + ep.id} key={i} className="group w-fit">
+          <Link href={"?episode=" + ep.id} key={i}>
             <Button
               type="button"
               variant={episodeId == ep.id ? "default" : "secondary"}
-              className="text-sm font-medium"
+              className="hover:bg-primary hover:text-primary-foreground"
             >
               {ep.title}
             </Button>

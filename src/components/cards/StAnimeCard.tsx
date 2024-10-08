@@ -1,12 +1,18 @@
 import { toAnimeTitle } from "@/utils";
 import { IAnimeResult, ITitle } from "@consumet/extensions";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Star } from "lucide-react";
 
 const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
+  const descRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    if (descRef.current) descRef.current.innerHTML = anime.description;
+  }, []);
+
   return (
     <Link href={"/anime/" + anime.id} className="h-full w-full">
       <Card className="relative h-[200px] w-full max-w-[300px] overflow-hidden border-none transition-all min-[400px]:h-[400px]">
@@ -46,7 +52,7 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
                 {toAnimeTitle(anime.title as ITitle)}
               </CardTitle>
               <CardDescription className="line-clamp-3 sm:line-clamp-none">
-                <span className="line-clamp-3">{anime.description}</span>
+                <span ref={descRef} className="line-clamp-3"/>
               </CardDescription>
             </CardHeader>
           </Card>

@@ -7,11 +7,19 @@ import React, {
 } from "react";
 import Player from "./Player";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { IAnimeEpisode } from "@consumet/extensions";
+import Link from "next/link";
 
 const VideoPlayer = ({
   setWatch,
+  episodes,
+  totalEpisodes,
 }: {
   setWatch: Dispatch<SetStateAction<boolean>>;
+  episodes?: IAnimeEpisode[];
+  totalEpisodes?: number;
 }) => {
   const searchParams = useSearchParams();
   const episode = searchParams.get("episode") as string;
@@ -55,87 +63,93 @@ const VideoPlayer = ({
     }
   }, [episode]);
 
-  const nav = useRouter();
-  const handleSubDub = (e: ChangeEvent<HTMLSelectElement>) => {
-    const subDub = e.target.value as string;
-    if (subDub == "sub") {
-      setSubDub("sub");
-      nav.push("?episode=" + String(episode)?.replace("-dub", ""));
-    } else {
-      setSubDub("dub");
-      nav.push(
-        "?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"),
-      );
-    }
-  };
+  // const nav = useRouter();
+  // const handleSubDub = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   const subDub = e.target.value as string;
+  //   if (subDub == "sub") {
+  //     setSubDub("sub");
+  //     nav.push("?episode=" + String(episode)?.replace("-dub", ""));
+  //   } else {
+  //     setSubDub("dub");
+  //     nav.push(
+  //       "?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"),
+  //     );
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   handleDubbed();
+  // }, [episode]);
+
+  // const handleDubbed = async () => {
+  //   try {
+  //     const res = await (
+  //       await fetch(
+  //         "/api/anilist/episode-sources?episodeId=" +
+  //           String(episode)?.replace("-episode-", "-dub-episode-"),
+  //       )
+  //     ).json();
+  //     if (res.success) {
+  //       setIsDubbed(true);
+  //     } else {
+  //       setIsDubbed(false);
+  //     }
+  //   } catch (error: any) {
+  //     throw new Error(error.message);
+  //   }
+  // };
+
+  // const [subDub, setSubDub] = useState("sub");
+  // const [isDubbed, setIsDubbed] = useState(true);
+
+  const [epNumber, setEpNumber] = useState(1);
 
   useEffect(() => {
-    handleDubbed();
-  }, [episode]);
-
-  const handleDubbed = async () => {
-    try {
-      const res = await (
-        await fetch(
-          "/api/anilist/episode-sources?episodeId=" +
-            String(episode)?.replace("-episode-", "-dub-episode-"),
-        )
-      ).json();
-      if (res.success) {
-        setIsDubbed(true);
-      } else {
-        setIsDubbed(false);
-      }
-    } catch (error: any) {
-      throw new Error(error.message);
+    if (episodes && episodes.length > 1) {
+      const index = episodes.findIndex((b) => b.id == episode);
+      if (index != -1) setEpNumber(index + 1);
     }
-  };
-
-  const [subDub, setSubDub] = useState("sub");
-  const [isDubbed, setIsDubbed] = useState(true);
+  }, [episodes, episode]);
 
   return (
-    <div className="relative my-auto flex h-fit w-full flex-col overflow-hidden rounded-xl backdrop-blur-xl">
-      <div className="max-h-fit">
+    <div className="relative my-auto flex h-fit w-full flex-col">
+      <div className="mb-2 flex w-full flex-wrap items-start justify-between gap-1">
+        <Button
+          onClick={() => setWatch(false)}
+          className="group/back flex w-fit items-center gap-2 px-4 py-2 backdrop-blur-xl"
+        >
+          <i className="fi fi-ss-arrow-left transition-all group-hover/back:-translate-x-1" />
+          <span>Overview</span>
+        </Button>
+
+        {episodes &&
+          episodes?.length != 0 &&
+          totalEpisodes &&
+          totalEpisodes > 1 && (
+            <div className="flex items-center gap-1">
+              <Link
+                href={
+                  epNumber > 1 ? "?episode=" + episodes[epNumber - 2].id : ""
+                }
+              >
+                <Button disabled={epNumber <= 1}>
+                  <ChevronLeft size={15} className="mr-2" />
+                  Prev
+                </Button>
+              </Link>
+              <Link href={"?episode=" + episodes[epNumber].id}>
+                <Button disabled={epNumber >= totalEpisodes}>
+                  Next
+                  <ChevronRight size={15} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
+          )}
+      </div>
+      <div className="max-h-fit overflow-hidden rounded-xl">
         <Player
           source={epSources.find((e) => e.quality == "default")?.url || ""}
         />
-      </div>
-      <div className=" absolute left-0 top-0 flex w-full items-start justify-between gap-1">
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setWatch(false)}
-            className="group/back flex w-fit items-center gap-2 bg-black/20 px-4 py-2 backdrop-blur-xl hover:bg-black/30"
-          >
-            <i className="fi fi-ss-arrow-left transition-all group-hover/back:-translate-x-1" />
-            <span>Overview</span>
-          </button>
-          <select
-            onChange={handleSubDub}
-            value={subDub}
-            name="subDub"
-            id="subDub"
-            className="flex w-fit items-center gap-2 bg-black/20 px-4 py-2 outline-none backdrop-blur-xl hover:bg-black/30"
-          >
-            <option value="sub" className="bg-white text-black">
-              Subbed
-            </option>
-            {isDubbed && (
-              <option value="dub" className="bg-white text-black">
-                Dubbed
-              </option>
-            )}
-          </select>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button className="flex w-fit items-center gap-2 bg-black/20 px-4 py-2 backdrop-blur-xl hover:bg-black/30">
-            Prev
-          </button>
-          <button className="flex w-fit items-center gap-2 bg-black/20 px-4 py-2 backdrop-blur-xl hover:bg-black/30">
-            Next
-          </button>
-        </div>
       </div>
     </div>
   );

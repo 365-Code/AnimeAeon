@@ -1,12 +1,16 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 
 const SearchBar = () => {
   const nav = useRouter();
-  const [searchInput, setSearchInput] = useState("");
+  const searchParams = useSearchParams();
+  
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get("query") || "",
+  );
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     nav.push("/search/results?query=" + searchInput);

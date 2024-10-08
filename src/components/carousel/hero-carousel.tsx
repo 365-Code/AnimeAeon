@@ -96,12 +96,12 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
                 <Badge variant="secondary">{anime.status}</Badge>
               )}
             </div>
-            <CardTitle className="mt-2 text-3xl font-bold text-white">
+            <CardTitle className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-white">
               {toAnimeTitle(anime.title as ITitle)}
             </CardTitle>
             <CardDescription
               ref={descRef}
-              className="line-clamp-2 text-lg text-gray-200"
+              className="line-clamp-3 sm:line-clamp-2 md:text-lg text-gray-200"
             />
           </CardHeader>
         </CardContent>

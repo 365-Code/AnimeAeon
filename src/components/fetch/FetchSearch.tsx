@@ -1,10 +1,21 @@
 "use client";
 import StAnimeCard from "@/components/cards/StAnimeCard";
-import { perPage } from "@/utils";
-import { useSearchParams } from "next/navigation";
+import { animeGenres, perPage } from "@/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import StCardSkeleton from "../skeletons/StCardSkeleton";
 import { IAnimeResult } from "@consumet/extensions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { Search } from "lucide-react";
+import { Input } from "../ui/input";
 
 const FetchSearch = () => {
   const searchParams = useSearchParams();
@@ -46,11 +57,33 @@ const FetchSearch = () => {
   useEffect(() => {
     setPage(1);
     advanceSearch();
-  }, [query, genres, status, season]);
+  }, [searchQuery]);
 
   useEffect(() => {
     advanceSearch();
   }, [page]);
+
+  const [filter, setFilter] = useState({
+    genres: genres || [],
+    status: status,
+    searchInput: query == "All" ? "" : query,
+  });
+
+  const handleGenre = (genre: string) => {
+    const genres = filter.genres;
+    if (filter.genres.findIndex((g) => g == genre) != -1) {
+      setFilter((prev) => ({
+        ...prev,
+        genres: prev.genres.filter((g) => g !== genre),
+      }));
+    } else {
+      genres.push(genre);
+      setFilter((prev) => ({
+        ...prev,
+        genres: genres,
+      }));
+    }
+  };
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -70,8 +103,54 @@ const FetchSearch = () => {
     [loading, hasMore],
   );
 
+  const nav = useRouter();
+  const handleFilters = () => {
+    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=${page}&perPage=${perPage}&format=${format || "All"}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
+    nav.push(searchQuery);
+  };
+
   return (
     <section className="flex-1">
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle>Filters</CardTitle>
+          <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
+            <Search />
+            <Input
+              type="search"
+              value={filter.searchInput}
+              onChange={(e) =>
+                setFilter((prev) => ({
+                  ...prev,
+                  searchInput: e.target.value,
+                }))
+              }
+              placeholder="Search anime..."
+              className="w-full border-none bg-transparent text-base outline-none focus-visible:ring-0"
+            />
+          </Card>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-4">
+            {animeGenres.map((g, i) => (
+              <Button
+                key={i}
+                onClick={() => handleGenre(g)}
+                variant={
+                  filter.genres.findIndex((genre) => genre == g) != -1
+                    ? "default"
+                    : "secondary"
+                }
+              >
+                {g}
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button onClick={handleFilters}>Filter</Button>
+        </CardFooter>
+      </Card>
       <div className="grid flex-1 grid-cols-2 justify-between gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
         {searchResults.length > 0 &&
           searchResults.map((anime, i) =>
@@ -84,8 +163,10 @@ const FetchSearch = () => {
             ),
           )}
 
-        {searchResults.length == 0 ||
-          (loading && [...Array(10)].map((_, i) => <StCardSkeleton key={i} />))}
+        {loading &&
+          Array(10)
+            .fill(0)
+            .map((_, i) => <StCardSkeleton key={i} />)}
       </div>
     </section>
   );
