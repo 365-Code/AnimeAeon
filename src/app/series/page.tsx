@@ -1,50 +1,48 @@
 "use client";
 import StAnimeCard from "@/components/cards/StAnimeCard";
-import Carousel from "@/components/carousel/carousel";
-import InfiniteScroll from "@/components/InfiniteScroll";
-import DisplayCards from "@/components/list/DisplayCards";
 import StCardSkeleton from "@/components/skeletons/StCardSkeleton";
-import { Separator } from "@/components/ui/separator";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import { ISearchResult, perPage } from "@/utils";
+import { perPage } from "@/utils";
 import { IAnimeResult } from "@consumet/extensions";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import React, { Fragment, useEffect, useState } from "react";
-
-const DynamicCarousel = dynamic(
-  () => import("@/components/carousel/carousel"),
-  {
-    ssr: false,
-  },
-);
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 
 const Page = () => {
   // const [series, setSeries] = useState<IAnimeResult[][]>([]);
   const [series, setSeries] = useState<IAnimeResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const fetchSeries = async () => {
-    try {
-      setLoading(true);
-      const res = await (
-        await fetch(`/api/anilist/series?page=${page}&perPage=${perPage}`)
-      ).json();
-      if (res.success) {
-        setHasMore(res.hasNextPage);
-        setSeries((prev) => [...prev, ...res.results]);
-        // Carousel
-        // if (page % 2 == 1) setPage(page + 1);
-        // setSeries((prev) => [...prev, res.results]);
+  const { mutateAsync: fetchSeries, isPending: loading } = useMutation({
+    mutationKey: ["fetch-series"],
+    mutationFn: async () => {
+      try {
+        const response = await fetch(
+          `/api/anilist/series?page=${page}&perPage=${perPage}`,
+        );
+
+        const res = await response.json();
+        if (!response.ok) {
+          console.error("Couldn't Fetch Trending Anime");
+          return;
+        }
+        if (res.success) {
+          return {
+            results: res.results as IAnimeResult[],
+            hasMore: res.hasNextPage,
+          };
+        }
+      } catch (error: any) {
+        throw new Error(error.message);
       }
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    onSuccess(data) {
+      if (data) {
+        setHasMore(data.hasMore);
+        setSeries((prev) => [...prev, ...data.results]);
+      }
+    },
+  });
 
   useEffect(() => {
     const debounce = setTimeout(() => {

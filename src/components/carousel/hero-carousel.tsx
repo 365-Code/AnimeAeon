@@ -19,12 +19,18 @@ import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
 
 interface HeroCarouselProps {
-  animeList: IAnimeResult[];
+  animeList: IAnimeResult[] | undefined;
   title?: string;
   modifier?: number;
+  loading?: boolean;
 }
 
-const HeroCarousel = ({ animeList, title, modifier }: HeroCarouselProps) => {
+const HeroCarousel = ({
+  animeList,
+  title,
+  modifier,
+  loading,
+}: HeroCarouselProps) => {
   return (
     <div className="mx-auto w-full max-w-7xl">
       {title && (
@@ -51,7 +57,7 @@ const HeroCarousel = ({ animeList, title, modifier }: HeroCarouselProps) => {
         modules={[Autoplay, EffectCoverflow, Pagination]}
         className="relative mt-2 h-fit"
       >
-        {!animeList || animeList.length == 0
+        {loading
           ? Array(10)
               .fill(0)
               .map((_, i) => (
@@ -59,7 +65,8 @@ const HeroCarousel = ({ animeList, title, modifier }: HeroCarouselProps) => {
                   <SkeletonSlide />
                 </SwiperSlide>
               ))
-          : animeList.map((anime, i) => (
+          : animeList &&
+            animeList.map((anime, i) => (
               <SwiperSlide key={i} className="mx-auto h-fit w-full max-w-[70%]">
                 <HeroSlide anime={anime} />
               </SwiperSlide>
@@ -82,7 +89,7 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
 
   return (
     <Card className="group relative h-[400px] w-full overflow-hidden border-none transition-all">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
       <img
         src={anime.image}
         alt={toAnimeTitle(anime.title as ITitle)}
@@ -96,12 +103,12 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
                 <Badge variant="secondary">{anime.status}</Badge>
               )}
             </div>
-            <CardTitle className="mt-2 text-xl sm:text-2xl md:text-3xl font-bold text-white">
+            <CardTitle className="mt-2 text-xl font-bold text-white sm:text-2xl md:text-3xl">
               {toAnimeTitle(anime.title as ITitle)}
             </CardTitle>
             <CardDescription
               ref={descRef}
-              className="line-clamp-3 sm:line-clamp-2 md:text-lg text-gray-200"
+              className="line-clamp-3 text-gray-200 sm:line-clamp-2 md:text-lg"
             />
           </CardHeader>
         </CardContent>
@@ -112,6 +119,8 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
 
 const SkeletonSlide = () => {
   const images = ["bg.jpeg", "bg1.jpg", "bg2.jpg"];
+  // const images = ["bg.jpeg", "bg1.jpg", "bg2.jpg", "placeholder.jpg"];
+
   return (
     <Card className="group relative h-[400px] w-full overflow-hidden border-none transition-all">
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />

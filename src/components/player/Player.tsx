@@ -7,18 +7,6 @@ import { Options } from "plyr";
 const videoOptions = null;
 const videoSource = null;
 
-/**
- * This is a custom hook in TypeScript React that loads and attaches an HLS video source to a Plyr
- * player, and sets the quality options for the player.
- * @param {string} src - The source URL of the video that will be played.
- * @param {Options | null} options - `options` is an object that contains optional configuration
- * options for the Plyr player. It can include properties such as `autoplay`, `controls`, `loop`,
- * `muted`, `seekTime`, `volume`, and more. This parameter is optional and can be `null`.
- * @returns The `useHls` function returns an object with a single property `options`, which is of type
- * `Options | null`. The `options` object contains information about the video quality and any other
- * custom event listeners that may have been added.
- */
-
 const useHls = (src: string, options: Options | null) => {
   const hls = React.useRef<Hls>(new Hls());
   const hasQuality = React.useRef<boolean>(false);
@@ -94,10 +82,10 @@ const CustomPlyrInstance = React.forwardRef<
 
 const Player = ({ source }: { source: string }) => {
   const ref = React.useRef<APITypes>(null);
-  const supported = Hls.isSupported();  
-  
+  const supported = Hls.isSupported();
+
   return (
-    <div className="wrapper w-full h-full object-scale-down">
+    <div className="wrapper h-full w-full overflow-hidden rounded-xl object-scale-down">
       {supported ? (
         <CustomPlyrInstance
           ref={ref}

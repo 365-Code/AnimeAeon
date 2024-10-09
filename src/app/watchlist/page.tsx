@@ -1,6 +1,7 @@
 "use client";
-import WatchCard from "@/components/cards/WatchCard";
+import Carousel from "@/components/carousel/carousel";
 import { IRecentEpisode } from "@/utils";
+import { IAnimeResult } from "@consumet/extensions";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
@@ -19,7 +20,7 @@ const Page = () => {
   }, []);
 
   return (
-    <section className="mx-auto flex h-full max-w-7xl flex-1 flex-col">
+    <section className="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col">
       {!watchList || watchList.length == 0 ? (
         <div className="flex h-full flex-1 flex-col items-center justify-center">
           <h2 className="gradient-text from-red-500 to-blue-500 text-center text-xl font-medium sm:text-3xl md:text-5xl">
@@ -28,12 +29,10 @@ const Page = () => {
         </div>
       ) : (
         <>
-          <h1 className="heading">Watchlist</h1>
-          <div className="no-scrollbar grid flex-1 grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3 md:grid-cols-5">
-            {watchList.map((watch, i) => (
-              <WatchCard key={i} watch={watch} />
-            ))}
-          </div>
+          <h1 className="bg-gradient-to-br from-slate-300 to-slate-400 bg-clip-text text-left text-2xl text-transparent sm:text-3xl md:text-5xl">
+            Watch List
+          </h1>
+          <Carousel animeList={watchList as IAnimeResult[]} />
         </>
       )}
     </section>

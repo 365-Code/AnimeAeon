@@ -1,40 +1,47 @@
 "use client";
 import StAnimeCard from "@/components/cards/StAnimeCard";
-import Carousel from "@/components/carousel/carousel";
-import InfiniteScroll from "@/components/InfiniteScroll";
-import DisplayCards from "@/components/list/DisplayCards";
 import StCardSkeleton from "@/components/skeletons/StCardSkeleton";
-import { Separator } from "@/components/ui/separator";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import { ISearchResult, perPage } from "@/utils";
+import { perPage } from "@/utils";
 import { IAnimeResult } from "@consumet/extensions";
-import Image from "next/image";
-import React, { Fragment, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  // const [popular, setPopular] = useState<IAnimeResult[][]>([]);
   const [popular, setPopular] = useState<IAnimeResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const fetchPopular = async () => {
-    try {
-      setLoading(true);
-      const res = await (
-        await fetch(`/api/anilist/popular?page=${page}&perPage=${perPage}`)
-      ).json();
-      if (res.success) {
-        setHasMore(res.hasNextPage);
-        setPopular((prev) => [...prev, ...res.results]);
-        // Carousel
-        // if (page % 2 == 1) setPage(page + 1);
-        // setPopular((prev) => [...prev, res.results]);
+  const { mutateAsync: fetchPopular, isPending: loading } = useMutation({
+    mutationKey: ["fetch-popular"],
+    mutationFn: async () => {
+      try {
+        const response = await fetch(
+          `/api/anilist/popular?page=${page}&perPage=${perPage}`,
+        );
+
+        const res = await response.json();
+        if (!response.ok) {
+          console.error("Couldn't Fetch Trending Anime");
+          return;
+        }
+        if (res.success) {
+          return {
+            results: res.results as IAnimeResult[],
+            hasMore: res.hasNextPage,
+          };
+        }
+      } catch (error: any) {
+        throw new Error(error.message);
       }
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
+    },
+    onSuccess(data) {
+      if (data) {
+        setHasMore(data.hasMore);
+        setPopular((prev) => [...prev, ...data.results]);
+      }
+    },
+  });
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -60,18 +67,6 @@ const Page = () => {
           )}
         {loading && Array(10).map((_, i) => <StCardSkeleton key={i} />)}
       </div>
-      {/* <Fragment key={i}>
-            <Carousel animeList={popularList} />
-            <Separator className="max-w-[90%]" />
-          </Fragment> */}
-      {/* <InfiniteScroll
-        id="popular"
-        loading={loading}
-        setLoading={setLoading}
-        hasMore={hasMore}
-        page={page}
-        setPage={setPage}
-      /> */}
     </main>
   );
 };

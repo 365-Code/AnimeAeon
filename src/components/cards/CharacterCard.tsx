@@ -1,3 +1,4 @@
+"use client"
 import { IAnimeCharacter } from "@/utils";
 import React, { useEffect, useState } from "react";
 import ActorCard from "./ActorCard";

@@ -56,8 +56,7 @@ const VerticalCarousel = ({
           modifier: modifier || 1.2,
         }}
         modules={[EffectCoverflow, Pagination]}
-        height={props.height}
-        className="relative mt-2 h-fit"
+        className="relative max-h-[400px]"
       >
         {!animeList || animeList.length == 0
           ? Array(10)

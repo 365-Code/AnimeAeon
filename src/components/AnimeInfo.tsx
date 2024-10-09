@@ -1,6 +1,6 @@
 import { IAnimeInfoAnilit } from "@/utils";
 import React from "react";
-import AnimeEpisodes from "../list/AnimeEpisodes";
+import AnimeEpisodes from "./list/AnimeEpisodes";
 
 const AnimeInfo = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   return (

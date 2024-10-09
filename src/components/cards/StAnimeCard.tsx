@@ -10,7 +10,8 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
   const descRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (descRef.current) descRef.current.innerHTML = anime.description;
+    if (descRef.current && anime.description)
+      descRef.current.innerHTML = anime.description;
   }, []);
 
   return (
@@ -28,7 +29,7 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
               {toAnimeTitle(anime.title as ITitle)}
             </p>
           </div>
-          <Card className="mx-auto hidden w-full border-none bg-primary-foreground/80 min-[400px]:block">
+          <Card className="mx-auto hidden w-full rounded-none border-none bg-primary-foreground/80 min-[400px]:block sm:rounded-xl">
             <CardHeader>
               <div className="flex items-center gap-2 text-sm text-muted">
                 {anime.rating && (
@@ -52,37 +53,12 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
                 {toAnimeTitle(anime.title as ITitle)}
               </CardTitle>
               <CardDescription className="line-clamp-3 sm:line-clamp-none">
-                <span ref={descRef} className="line-clamp-3"/>
+                <span ref={descRef} className="line-clamp-3" />
               </CardDescription>
             </CardHeader>
           </Card>
         </div>
       </Card>
-      {/* <div className="group/epCard st-anime-card h-full">
-        <div className="h-full w-full">
-          <img src={anime.image || ""} className="cover-img" alt="" />
-        </div>
-        <div className="st-anime-card-detail relative overflow-hidden group-hover/epCard:min-h-[50%] ">
-          <h3 className="text-left font-semibold capitalize text-cyan-500 sm:text-2xl">
-            {toAnimeTitle(anime.title as ITitle)}
-          </h3>
-          <p className="flex flex-wrap items-center gap-1 text-lg font-medium text-white md:text-xl">
-            <span>{anime.type}</span>
-            <span className="h-2 w-2 rounded-full bg-white" />
-            <span>{anime.currentEpisode || anime.totalEpisodes}</span>
-            <span className="h-2 w-2 rounded-full bg-white" />
-            <span>{anime.status}</span>
-          </p>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: String(anime.description)
-                ?.replaceAll("<br>", "")
-                ?.replaceAll("\n", ""),
-            }}
-            className="no-scrollbar flex h-0 flex-wrap overflow-hidden hyphens-auto text-pretty font-normal transition-all group-hover/epCard:h-[150px] group-hover/epCard:overflow-y-scroll"
-          ></p>
-        </div>
-      </div> */}
     </Link>
   );
 };

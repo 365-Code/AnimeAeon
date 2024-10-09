@@ -23,12 +23,19 @@ import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
 
 interface CarouselProps extends SwiperProps {
-  animeList: IAnimeResult[];
+  animeList: IAnimeResult[] | undefined;
   title?: string;
   modifier?: number;
+  loading?: boolean;
 }
 
-const Carousel = ({ animeList, title, modifier, ...props }: CarouselProps) => {
+const Carousel = ({
+  animeList,
+  title,
+  modifier,
+  loading,
+  ...props
+}: CarouselProps) => {
   return (
     <div className="mx-auto max-w-7xl">
       {title && (
@@ -53,7 +60,7 @@ const Carousel = ({ animeList, title, modifier, ...props }: CarouselProps) => {
         modules={[EffectCoverflow, Pagination]}
         className="relative mt-2 h-fit"
       >
-        {!animeList || animeList.length == 0
+        {loading
           ? Array(10)
               .fill(0)
               .map((_, i) => (
@@ -61,7 +68,7 @@ const Carousel = ({ animeList, title, modifier, ...props }: CarouselProps) => {
                   <SkeletonSlide />
                 </SwiperSlide>
               ))
-          : animeList.map((anime, i) => (
+          : animeList?.map((anime, i) => (
               <SwiperSlide key={i} className="mx-auto h-fit max-w-[300px]">
                 <AnimeSlide anime={anime} />
               </SwiperSlide>
@@ -115,8 +122,8 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
           <CardContent>
             {anime.status && anime.status == "Not yet aired" ? (
               <Button className={``}>
-                BookMark
-                <Bookmark size={20} className="ml-2" />
+                Watchlist
+                <Bookmark size={15} className="ml-2" />
               </Button>
             ) : (
               <Link

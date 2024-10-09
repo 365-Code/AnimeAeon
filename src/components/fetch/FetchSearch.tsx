@@ -2,13 +2,12 @@
 import StAnimeCard from "@/components/cards/StAnimeCard";
 import { animeGenres, perPage } from "@/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import StCardSkeleton from "../skeletons/StCardSkeleton";
 import { IAnimeResult } from "@consumet/extensions";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -16,6 +15,8 @@ import {
 import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
+import { useMutation } from "@tanstack/react-query";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 
 const FetchSearch = () => {
   const searchParams = useSearchParams();
@@ -27,47 +28,63 @@ const FetchSearch = () => {
   const season = searchParams.get("season") || "";
 
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
   const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "All"}&sort=${sort || "All"}&genres=${genres || "All"}&status=${status || "All"}&season=${season || "All"}`;
-
-  const advanceSearch = async () => {
-    setLoading(true);
-    try {
-      const data = await fetch("/api/anilist/advance-search" + searchQuery);
-      const res = await data.json();
-      if (res.success) {
-        setHasMore(res.hasNextPage);
-        setLoading(false);
-        if (page == 1) {
-          setSearchResults(res.results);
-        } else {
-          setSearchResults((prev) => [...prev, ...res.results]);
-        }
-      }
-    } catch (error: any) {
-      throw new Error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setPage(1);
-    advanceSearch();
-  }, [searchQuery]);
-
-  useEffect(() => {
-    advanceSearch();
-  }, [page]);
 
   const [filter, setFilter] = useState({
     genres: genres || [],
     status: status,
     searchInput: query == "All" ? "" : query,
   });
+
+  const {
+    mutate: advanceSearch,
+    data,
+    isPending: loading,
+  } = useMutation({
+    mutationKey: ["advance-search"],
+    gcTime: 0,
+    mutationFn: async () => {
+      try {
+        const response = await fetch(
+          "/api/anilist/advance-search" + searchQuery,
+        );
+        const res = await response.json();
+        if (!response.ok) {
+          console.error("Couldn't Search");
+          return;
+        }
+        if (res.success) {
+          return {
+            result: res.results,
+            hasMore: res.hasNextPage,
+          };
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onSuccess(data) {
+      if (data?.result) {
+        setHasMore(data.hasMore);
+        if (page == 1) {
+          setSearchResults(data.result);
+        } else {
+          setSearchResults((prev) => [...prev, ...data.result]);
+        }
+      }
+    },
+  });
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      advanceSearch();
+    }, 1000);
+    return () => clearTimeout(debounce);
+  }, [searchQuery, page]);
 
   const handleGenre = (genre: string) => {
     const genres = filter.genres;
@@ -85,27 +102,12 @@ const FetchSearch = () => {
     }
   };
 
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const lastEleRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((enteries) => {
-        if (enteries[0].isIntersecting && hasMore) {
-          setPage((prev) => prev + 1);
-        }
-      });
-      if (node) {
-        observer.current.observe(node);
-      }
-    },
-    [loading, hasMore],
-  );
+  const { lastEleRef } = useInfiniteScroll({ loading, hasMore, setPage });
 
   const nav = useRouter();
   const handleFilters = () => {
-    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=${page}&perPage=${perPage}&format=${format || "All"}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
+    setPage(1);
+    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=1&perPage=${perPage}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
     nav.push(searchQuery);
   };
 
@@ -113,7 +115,7 @@ const FetchSearch = () => {
     <section className="flex-1">
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Filters</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">Filters</CardTitle>
           <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
             <Search />
             <Input
@@ -164,10 +166,16 @@ const FetchSearch = () => {
           )}
 
         {loading &&
+          hasMore &&
           Array(10)
             .fill(0)
             .map((_, i) => <StCardSkeleton key={i} />)}
       </div>
+      {!loading && data && data.result.length == 0 && (
+        <h1 className="gradient-text my-6 from-slate-200 to-slate-400 text-center">
+          Nothing Found
+        </h1>
+      )}
     </section>
   );
 };

@@ -11,7 +11,7 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
 
   return (
     <section className="relative flex max-h-[300px] w-full flex-col overflow-hidden rounded-xl bg-muted p-4 shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
-      <h3 className="mb-4 text-lg font-semibold text-muted-foreground">
+      <h3 className="gradient-text from-slate-200 to-slate-400 mb-4 text-base sm:text-lg md:text-xl font-semibold">
         Episodes
       </h3>
 

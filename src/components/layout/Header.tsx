@@ -13,28 +13,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
-import { Card } from "../ui/card";
 import FetchRecentEpisodes from "../fetch/FetchRecentEpisodes";
 import FetchContinue from "../fetch/FetchContinue";
 import FetchWatchList from "../fetch/FetchWatchList";
-import SideNav from "../Nav/SideNav";
+import SideNav from "./SideNav";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-const sectionList = [
-  {
-    title: "Recent Episodes",
-    component: <FetchRecentEpisodes />,
-  },
-  {
-    title: "Continue Watching",
-    component: <FetchContinue />,
-  },
-  {
-    title: "WatchList",
-    component: <FetchWatchList />,
-  },
-];
+import ThemeToggle from "../ThemeToggle";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +31,7 @@ export default function Header() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     nav.push("/search/results?query=" + searchInput);
+    setSearchInput("");
   };
 
   useEffect(() => {
@@ -87,19 +73,15 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto flex h-14 items-center gap-2 px-4 sm:px-0">
-        <div className="mr-4 hidden sm:flex">
-          <Link href="/">
-            <Image
-              width={500}
-              height={300}
-              alt="animeaeon"
-              // src={"/assets/anizone.png"}
-              src={logo}
-              className="h-[30px] w-[140px] invert"
-            />
-          </Link>
-        </div>
-
+        <Link href="/" className="mr-4 hidden sm:inline-block">
+          <Image
+            width={500}
+            height={300}
+            alt="animeaeon"
+            src={logo}
+            className="h-[30px] w-[140px] invert dark:invert-0"
+          />
+        </Link>
         <Sheet open={isNavOpen} onOpenChange={setIsNavOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="ml-auto">
@@ -108,7 +90,7 @@ export default function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side={"left"}>
-            <SideNav />
+            <SideNav closeNav={() => setIsNavOpen(false)} />
           </SheetContent>
         </Sheet>
         <form
@@ -134,7 +116,7 @@ export default function Header() {
               <span className="sr-only">Playlist</span>
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-full sm:w-auto">
+          <SheetContent className="w-full max-w-[400px]">
             <Accordion
               type="single"
               defaultValue="item-1"
@@ -150,7 +132,7 @@ export default function Header() {
                   <AccordionTrigger className="gradient-text flex w-full items-center justify-between from-red-600 to-blue-600 py-2 text-left text-lg font-medium">
                     {section.title}
                   </AccordionTrigger>
-                  <AccordionContent className="max-h-[400px] overflow-y-hidden">
+                  <AccordionContent className="max-h-[400px] overflow-y-auto custom-scrollbar">
                     {section.component}
                   </AccordionContent>
                 </AccordionItem>
@@ -158,7 +140,23 @@ export default function Header() {
             </Accordion>
           </SheetContent>
         </Sheet>
+        <ThemeToggle />
       </div>
     </header>
   );
 }
+
+const sectionList = [
+  {
+    title: "Recent Episodes",
+    component: <FetchRecentEpisodes />,
+  },
+  {
+    title: "Continue Watching",
+    component: <FetchContinue />,
+  },
+  {
+    title: "WatchList",
+    component: <FetchWatchList />,
+  },
+];

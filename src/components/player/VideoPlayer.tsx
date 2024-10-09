@@ -1,23 +1,15 @@
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import Player from "./Player";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { IAnimeEpisode } from "@consumet/extensions";
 import Link from "next/link";
 
 const VideoPlayer = ({
-  setWatch,
   episodes,
   totalEpisodes,
 }: {
-  setWatch: Dispatch<SetStateAction<boolean>>;
   episodes?: IAnimeEpisode[];
   totalEpisodes?: number;
 }) => {
@@ -58,50 +50,10 @@ const VideoPlayer = ({
           localStorage.setItem("continueList", JSON.stringify(list));
         }
       }
-    } else {
-      setWatch(false);
     }
   }, [episode]);
 
-  // const nav = useRouter();
-  // const handleSubDub = (e: ChangeEvent<HTMLSelectElement>) => {
-  //   const subDub = e.target.value as string;
-  //   if (subDub == "sub") {
-  //     setSubDub("sub");
-  //     nav.push("?episode=" + String(episode)?.replace("-dub", ""));
-  //   } else {
-  //     setSubDub("dub");
-  //     nav.push(
-  //       "?episode=" + String(episode)?.replace("-episode-", "-dub-episode-"),
-  //     );
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleDubbed();
-  // }, [episode]);
-
-  // const handleDubbed = async () => {
-  //   try {
-  //     const res = await (
-  //       await fetch(
-  //         "/api/anilist/episode-sources?episodeId=" +
-  //           String(episode)?.replace("-episode-", "-dub-episode-"),
-  //       )
-  //     ).json();
-  //     if (res.success) {
-  //       setIsDubbed(true);
-  //     } else {
-  //       setIsDubbed(false);
-  //     }
-  //   } catch (error: any) {
-  //     throw new Error(error.message);
-  //   }
-  // };
-
-  // const [subDub, setSubDub] = useState("sub");
-  // const [isDubbed, setIsDubbed] = useState(true);
-
+  const nav = useRouter();
   const [epNumber, setEpNumber] = useState(1);
 
   useEffect(() => {
@@ -115,10 +67,13 @@ const VideoPlayer = ({
     <div className="relative my-auto flex h-fit w-full flex-col">
       <div className="mb-2 flex w-full flex-wrap items-start justify-between gap-1">
         <Button
-          onClick={() => setWatch(false)}
+          onClick={() => nav.push("/anime/" + animeId)}
           className="group/back flex w-fit items-center gap-2 px-4 py-2 backdrop-blur-xl"
         >
-          <i className="fi fi-ss-arrow-left transition-all group-hover/back:-translate-x-1" />
+          <ArrowLeft
+            size={15}
+            className="transition-all group-hover/back:-translate-x-1"
+          />
           <span>Overview</span>
         </Button>
 
@@ -146,11 +101,11 @@ const VideoPlayer = ({
             </div>
           )}
       </div>
-      <div className="max-h-fit overflow-hidden rounded-xl">
-        <Player
-          source={epSources.find((e) => e.quality == "default")?.url || ""}
-        />
-      </div>
+      {/* <div className="max-h-fit overflow-hidden min-w-fit rounded-xl"> */}
+      <Player
+        source={epSources.find((e) => e.quality == "default")?.url || ""}
+      />
+      {/* </div> */}
     </div>
   );
 };

@@ -2,21 +2,29 @@
 import DisplayAnimeCards from "@/components/list/DisplayAnimeCards";
 import AnimeInfoCard from "@/components/cards/AnimeInfoCard";
 import { IAnimeInfoAnilit } from "@/utils";
-import { useParams, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import DisplayCharacters from "@/components/list/DisplayCharacters";
 import Watch from "@/components/player/Watch";
+import { Skeleton } from "@/components/ui/skeleton";
+import StCardSkeleton from "@/components/skeletons/StCardSkeleton";
 
-const Page = () => {
-  const params = useParams();
-  const animeId = params["id"] as string;
-  const [loading, setLoading] = useState(false)
+interface PageProps {
+  params: { id: string };
+  searchParams: { episode: string };
+}
 
+const Page = ({
+  params: { id: animeId },
+  searchParams: { episode },
+}: PageProps) => {
   const [animeInfo, setAnimeInfo] = useState<IAnimeInfoAnilit>(
     {} as IAnimeInfoAnilit,
   );
+
+  const [loading, setLoading] = useState(false);
+
   const fetchAnimeInfo = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const data = await fetch("/api/anilist/info?id=" + animeId);
       const res = await data.json();
@@ -25,8 +33,8 @@ const Page = () => {
       }
     } catch (error) {
       console.log(error);
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,29 +45,92 @@ const Page = () => {
     return () => clearTimeout(debounce);
   }, [animeId]);
 
-  const searchParams = useSearchParams();
-  const playing = searchParams.get("episode") as string;
-  const [watch, setWatch] = useState(playing ? true : false);
+  if (loading) {
+    return (
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
+        <AnimeBannerSkeleton />
+        <div className="flex items-center gap-4 overflow-x-scroll no-scrollbar">
+          {Array(4)
+            .fill(0)
+            .map((_, i) => (
+              <StCardSkeleton key={i} />
+            ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <section className="no-scrollbar mx-auto flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll mt-4">
-      {watch ? (
-        <Watch anime={animeInfo} setWatch={setWatch} />
+    <section className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll no-scrollbar">
+      {episode ? (
+        <Watch anime={animeInfo} />
       ) : (
-        <AnimeInfoCard setWatch={setWatch} anime={animeInfo} />
+        <AnimeInfoCard anime={animeInfo} />
       )}
-      <div className="mb-4 mt-2">
-        <DisplayAnimeCards
-          title="You Might Like"
-          animeList={animeInfo?.recommendations || []}
-        />
-      </div>
-      
-      <div className="mb-4">
-        <DisplayCharacters characterList={animeInfo?.characters || []} />
-      </div>
+      {animeInfo.recommendations && (
+        <div className="mb-4 mt-2">
+          <DisplayAnimeCards
+            title="You Might Like"
+            animeList={animeInfo.recommendations}
+          />
+        </div>
+      )}
+      {animeInfo.characters && (
+        <div className="mb-4">
+          <DisplayCharacters characterList={animeInfo.characters} />
+        </div>
+      )}
     </section>
   );
 };
 
 export default Page;
+
+const AnimeBannerSkeleton = () => {
+  return (
+    <section
+      className={`relative h-[412px] w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
+    >
+      {/* Image Skeleton */}
+      <Skeleton className="h-full w-full object-cover object-center" />
+
+      <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8">
+        {/* Genre Badges Skeleton */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+
+        {/* Title Skeleton */}
+        <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
+
+        {/* Studio and Info Skeleton */}
+        <div className="flex max-w-[50%] flex-col gap-2">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-6 w-48" />
+        </div>
+
+        {/* Rating Skeleton */}
+        <div className="flex flex-wrap items-center gap-1">
+          <Skeleton className="h-6 w-6 rounded-full" />
+          <Skeleton className="h-6 w-12" />
+        </div>
+
+        {/* Action Buttons Skeleton */}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <Skeleton className="h-10 w-32 rounded-md" />
+            <Skeleton className="h-10 w-48 rounded-md" />
+          </div>
+
+          {/* Arrow Buttons Skeleton */}
+          <div className="flex flex-wrap items-center gap-4">
+            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

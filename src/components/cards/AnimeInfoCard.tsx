@@ -3,8 +3,6 @@ import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
 import { useRouter } from "next/navigation";
 import React, {
-  Dispatch,
-  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -19,22 +17,17 @@ import {
   Star,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
-import { Skeleton } from "../ui/skeleton";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
 
 const AnimeInfoCard = ({
   anime,
-  setWatch,
+  // setWatch,
+  loading,
 }: {
   anime: IAnimeInfoAnilit;
-  setWatch: Dispatch<SetStateAction<boolean>>;
+  // setWatch: Dispatch<SetStateAction<boolean>>;
+  loading?: boolean;
 }) => {
   const banner = anime.artwork
     ? anime.artwork.filter((art) => art.type == "banner" && art.img)
@@ -51,9 +44,9 @@ const AnimeInfoCard = ({
 
   const handleWatch = () => {
     if (anime?.episodes && anime.episodes?.length != 0) {
-      setTimeout(() => {
-        setWatch(true);
-      }, 500);
+      // setTimeout(() => {
+      //   setWatch(true);
+      // }, 500);
       nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
     }
     const data = localStorage.getItem("continueList");
@@ -143,10 +136,6 @@ const AnimeInfoCard = ({
   const screenSize =
     typeof window != undefined && window.innerWidth <= 500 ? true : false;
 
-  if (!anime.id) {
-    return <AnimeBannerSkeleton />;
-  }
-
   return (
     <>
       <section
@@ -177,7 +166,7 @@ const AnimeInfoCard = ({
           <div className="mb-4 mt-auto flex flex-col gap-4 sm:basis-1/2">
             <div className="flex flex-wrap items-center gap-2">
               {anime.genres?.map((g, i) => (
-                <Badge key={i} className="rounded-full bg-transparent/50">
+                <Badge key={i} className="rounded-full bg-primary/50">
                   {g}
                 </Badge>
               ))}
@@ -223,29 +212,36 @@ const AnimeInfoCard = ({
                   </>
                 )}
               </div>
-              <p className="flex items-center gap-1 text-sm font-medium sm:text-lg">
+              <Badge className="w-fit gap-1 text-sm font-medium sm:text-lg">
                 <Star
                   fill={anime.color}
                   stroke={anime.color}
                   className="h-[20px] w-[20px]"
                 />
-                <span className="text-white">
+                <span
+                  style={{ color: anime.color || "white" }}
+                  className="text-white"
+                >
                   {anime.rating ? anime.rating + "%" : ""}
                 </span>
-              </p>
+              </Badge>
             </div>
           </div>
           {/* <div className="custom-scrollbar mb-2 mt-auto hidden overflow-y-auto sm:block sm:basis-1/2 md:max-h-[250px]"> */}
           <Card
             className={cn(
-              "border-none bg-gradient-to-br from-slate-200 to-slate-300",
-              "custom-scrollbar mb-2 mt-auto hidden overflow-y-auto scroll-smooth sm:block sm:basis-1/2 md:max-h-[250px]",
+              "border-none",
+              "mb-2 mt-auto hidden overflow-hidden scroll-smooth custom-scrollbar sm:block sm:basis-1/2 md:max-h-[250px]",
             )}
           >
-            <CardHeader>
+            <CardHeader className="max-h-[260px] flex-1 overflow-hidden">
               <CardTitle>Description</CardTitle>
-              <CardDescription className="font-medium" ref={paraRef}>
+              <CardDescription
+                className="h-full overflow-y-auto custom-scrollbar"
+                ref={paraRef}
+              >
                 {!anime.description && "Description Not Available"}
+                {/* {anime.description} */}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -301,51 +297,51 @@ const AnimeInfoCard = ({
 
 export default AnimeInfoCard;
 
-const AnimeBannerSkeleton = () => {
-  return (
-    <section
-      className={`relative h-[412px] w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
-    >
-      {/* Image Skeleton */}
-      <Skeleton className="h-full w-full object-cover object-center" />
+// const AnimeBannerSkeleton = () => {
+//   return (
+//     <section
+//       className={`relative h-[412px] w-full max-w-7xl overflow-hidden rounded-xl bg-black/20 shadow-sm shadow-black/80 backdrop-blur-sm`}
+//     >
+//       {/* Image Skeleton */}
+//       <Skeleton className="h-full w-full object-cover object-center" />
 
-      <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8">
-        {/* Genre Badges Skeleton */}
-        <div className="flex flex-wrap items-center gap-2">
-          <Skeleton className="h-6 w-16 rounded-full" />
-          <Skeleton className="h-6 w-16 rounded-full" />
-          <Skeleton className="h-6 w-16 rounded-full" />
-        </div>
+//       <div className="absolute bottom-0 left-0 flex w-full flex-col gap-4 p-8">
+//         {/* Genre Badges Skeleton */}
+//         <div className="flex flex-wrap items-center gap-2">
+//           <Skeleton className="h-6 w-16 rounded-full" />
+//           <Skeleton className="h-6 w-16 rounded-full" />
+//           <Skeleton className="h-6 w-16 rounded-full" />
+//         </div>
 
-        {/* Title Skeleton */}
-        <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
+//         {/* Title Skeleton */}
+//         <Skeleton className="h-10 w-3/4 sm:h-14 md:h-16" />
 
-        {/* Studio and Info Skeleton */}
-        <div className="flex max-w-[50%] flex-col gap-2">
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-6 w-48" />
-        </div>
+//         {/* Studio and Info Skeleton */}
+//         <div className="flex max-w-[50%] flex-col gap-2">
+//           <Skeleton className="h-6 w-32" />
+//           <Skeleton className="h-6 w-48" />
+//         </div>
 
-        {/* Rating Skeleton */}
-        <div className="flex flex-wrap items-center gap-1">
-          <Skeleton className="h-6 w-6 rounded-full" />
-          <Skeleton className="h-6 w-12" />
-        </div>
+//         {/* Rating Skeleton */}
+//         <div className="flex flex-wrap items-center gap-1">
+//           <Skeleton className="h-6 w-6 rounded-full" />
+//           <Skeleton className="h-6 w-12" />
+//         </div>
 
-        {/* Action Buttons Skeleton */}
-        <div className="flex flex-wrap items-center gap-4 justify-between">
-          <div className="flex flex-wrap items-center gap-4">
-            <Skeleton className="h-10 w-32 rounded-md" />
-            <Skeleton className="h-10 w-48 rounded-md" />
-          </div>
+//         {/* Action Buttons Skeleton */}
+//         <div className="flex flex-wrap items-center justify-between gap-4">
+//           <div className="flex flex-wrap items-center gap-4">
+//             <Skeleton className="h-10 w-32 rounded-md" />
+//             <Skeleton className="h-10 w-48 rounded-md" />
+//           </div>
 
-          {/* Arrow Buttons Skeleton */}
-          <div className="flex flex-wrap items-center gap-4">
-            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
-            <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+//           {/* Arrow Buttons Skeleton */}
+//           <div className="flex flex-wrap items-center gap-4">
+//             <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+//             <Skeleton className="h-[2.3rem] w-[2.3rem] rounded-full" />
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };

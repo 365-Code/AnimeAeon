@@ -11,27 +11,12 @@
 }
 
 body {
-  @apply scroll-smooth transition-all flex flex-col min-h-screen;
+  @apply flex min-h-screen flex-col scroll-smooth transition-all;
 }
 
 :root {
-  --sidenav-width: 50px;
   --st-min-w: 180px;
-  /* --st-min-w: 280px */
   --st-max-w: 320px;
-}
-
-#main-screen {
-  /* @apply md:p-8 max-w-screen-lg mx-auto h-full no-scrollbar overflow-y-scroll p-4 relative shadow-sm shadow-white/60 sm:shadow-none; */
-  @apply relative flex h-screen flex-col overflow-hidden px-10 py-6;
-}
-
-/* body::-webkit-scrollbar{
-  @apply w-0 h-0;
-} */
-
-.anime-image {
-  @apply h-full w-full rounded-lg object-cover object-center;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -39,49 +24,11 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply h-1 w-1 m-1;
+  @apply m-1 h-1 w-1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   @apply rounded-full bg-slate-400;
-}
-
-/* .btn {
-  @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06b149] bg-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6 hover:bg-[#06b149];
-} */
-
-.de-btn {
-  @apply flex w-fit items-center gap-2 rounded-full border-2 border-[#06c149] px-[20px] py-[5px] text-sm font-medium leading-6;
-}
-
-.grid-row-container {
-  display: grid;
-  grid-template-rows: 7vh 70vh 40vh;
-  gap: 2rem;
-}
-
-.grid-col-container {
-  display: grid;
-  grid-template-rows: 7vh 70vh 40vh;
-  gap: 2rem;
-}
-
-.grid-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-}
-
-.neon {
-  box-shadow: 0 0 20px 1px #06b149;
-}
-
-.logo {
-  font-family: "Turret Road", sans-serif;
-  font-style: normal;
-}
-
-.side-nav {
-  @apply fixed left-0 top-0 flex h-full w-[250px] flex-col gap-2 bg-slate-300 py-4 transition-all;
 }
 
 .animate-fade {
@@ -97,65 +44,10 @@ body {
 @keyframes animation-fade {
   0% {
     opacity: 0.3;
-    /* transform: translateX(100%); */
   }
   to {
     opacity: 0.5;
-    /* transform: translateX(0); */
   }
-}
-
-.animate-fade-visible {
-  @apply transition-all;
-  animation: animation-fade-visible 1s linear;
-  animation-fill-mode: forwards;
-}
-
-@keyframes animation-fade-visible {
-  0% {
-    opacity: 0.3;
-    /* transform: translateX(100%); */
-  }
-  to {
-    opacity: 1;
-    /* transform: translateX(0); */
-  }
-}
-
-.animate-pop {
-  @apply transition-all;
-  animation: animation-pop 1s linear;
-  animation-fill-mode: forwards;
-}
-@keyframes animation-pop {
-  from {
-    @apply rotate-90 opacity-30;
-  }
-  to {
-    @apply rotate-0 opacity-100;
-  }
-}
-/* Cards */
-
-.anime-card {
-  @apply relative flex h-[320px] w-[90vw] max-w-[580px] rounded-br-3xl bg-black/40 shadow-xl shadow-black backdrop-blur-sm 
-  sm:min-w-[380px]
-  sm:rounded-none
-  md:min-h-fit
-  md:min-w-[580px];
-}
-
-.anime-tag {
-  @apply absolute -left-3 -top-3 z-10 w-[250px] rounded-lg rounded-br-[60px] bg-white p-2 font-semibold text-black;
-}
-
-.anime-card-detail {
-  @apply relative flex flex-col justify-between px-2 pb-6 pl-4 pt-10 text-left text-white sm:flex-1 sm:pl-6;
-}
-
-.anime-card-detail h3 {
-  @apply max-h-[102px] min-h-fit text-left;
-  overflow: hidden;
 }
 
 .anime-card-img {
@@ -163,32 +55,8 @@ body {
   clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.st-anime-card {
-  @apply relative min-h-full min-w-[var(--st-min-w)] max-w-[var(--st-max-w)] overflow-hidden transition-all;
-}
-
-.st-anime-card-detail {
-  @apply no-scrollbar absolute bottom-0 left-0 h-fit max-h-full min-h-10 w-full overflow-y-scroll hyphens-auto bg-black/70 p-4 font-semibold transition-all;
-}
-
 .cover-img {
   @apply h-full w-full object-cover object-center;
-}
-
-.ep-card {
-  @apply h-full min-w-[280px] max-w-[320px];
-}
-
-.ep-card-skeleton {
-  @apply h-[420px] w-[280px] animate-pulse bg-black/40 backdrop-blur-sm;
-}
-
-.display-cards {
-  @apply grid items-start justify-start gap-4;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--st-min-w), var(--st-max-w))
-  );
 }
 
 @layer base {
@@ -220,6 +88,7 @@ body {
     --radius: 0.5rem;
   }
   .dark {
+  /* [data-theme="dark"] { */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;

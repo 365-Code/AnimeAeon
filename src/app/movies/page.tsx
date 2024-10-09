@@ -1,41 +1,47 @@
 "use client";
 import StAnimeCard from "@/components/cards/StAnimeCard";
-import Carousel from "@/components/carousel/carousel";
-import InfiniteScroll from "@/components/InfiniteScroll";
-import DisplayCards from "@/components/list/DisplayCards";
 import StCardSkeleton from "@/components/skeletons/StCardSkeleton";
-import { Separator } from "@/components/ui/separator";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import { ISearchResult, perPage } from "@/utils";
+import { perPage } from "@/utils";
 import { IAnimeResult } from "@consumet/extensions";
-import React, { Fragment, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  // const [movies, setMovies] = useState<IAnimeResult[][]>([]);
   const [movies, setMovies] = useState<IAnimeResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const fetchMovies = async () => {
-    try {
-      setLoading(true);
-      const res = await (
-        await fetch(`/api/anilist/movies?page=${page}&perPage=${perPage}`)
-      ).json();
-      if (res.success) {
-        setHasMore(res.hasNextPage);
-        setMovies((prev) => [...prev, ...res.results]);
-        // Carousel
-        // if (page % 2 == 1) setPage(page + 1);
-        // setMovies((prev) => [...prev, res.results]);
+  const { mutateAsync: fetchMovies, isPending: loading } = useMutation({
+    mutationKey: ["fetch-movies"],
+    mutationFn: async () => {
+      try {
+        const response = await fetch(
+          `/api/anilist/movies?page=${page}&perPage=${perPage}`,
+        );
+
+        const res = await response.json();
+        if (!response.ok) {
+          console.error("Couldn't Fetch Trending Anime");
+          return;
+        }
+        if (res.success) {
+          return {
+            results: res.results as IAnimeResult[],
+            hasMore: res.hasNextPage,
+          };
+        }
+      } catch (error: any) {
+        throw new Error(error.message);
       }
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    onSuccess(data) {
+      if (data) {
+        setHasMore(data.hasMore);
+        setMovies((prev) => [...prev, ...data.results]);
+      }
+    },
+  });
 
   useEffect(() => {
     const debounce = setTimeout(() => {

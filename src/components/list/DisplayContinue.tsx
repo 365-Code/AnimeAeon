@@ -4,6 +4,15 @@ import { ITitle } from "@consumet/extensions";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ListCardSkeleton from "../skeletons/ListCardSkeleton";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { Play } from "lucide-react";
 
 const DisplayContinue = ({
   animeEpList,
@@ -21,27 +30,26 @@ const DisplayContinue = ({
   }, []);
 
   return (
-    <div className=" no-scrollbar flex flex-col gap-4 overflow-y-scroll">
+    <>
       {animeEpList?.map((animeEp) => (
         <Link
           href={"/anime/" + animeEp.id + "?episode=" + animeEp.episodeId}
           key={animeEp?.id}
-          className="flex items-center justify-between gap-2"
         >
-          <div className="min-w-[64px] max-w-[64px]  overflow-hidden rounded-lg">
-            <img src={animeEp.image} alt="" className="cover-img" />
-          </div>
-          <div className="flex-1">
-            <p className="max-h-[52px] overflow-y-hidden">
-              {toAnimeTitle(animeEp?.title as ITitle)}
-            </p>
-            <p>Episode - {animeEp?.episodeNumber}</p>
-          </div>
-          <button className="rounded-full bg-white/10 p-4 text-sm transition-all hover:bg-white/20">
-            <i className="fi fi-ss-play" />
-          </button>
+          <Card className="relative mb-2 flex w-full items-center gap-4 overflow-hidden pr-4">
+            <CardHeader className="flex-1 p-4">
+              <CardTitle>{toAnimeTitle(animeEp?.title as ITitle)}</CardTitle>
+              <CardDescription>
+                Episode - {animeEp?.episodeNumber}
+              </CardDescription>
+            </CardHeader>
+            <Button className="h-[2rem] w-[2rem] rounded-full p-0">
+              <Play size={15} />
+            </Button>
+          </Card>
         </Link>
       ))}
+
       {!avl && animeEpList.length == 0
         ? [...Array(4)].map((x, i) => (
             <div
@@ -57,7 +65,7 @@ const DisplayContinue = ({
               Nothing To Continue
             </h2>
           )}
-    </div>
+    </>
   );
 };
 
