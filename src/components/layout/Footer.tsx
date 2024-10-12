@@ -29,7 +29,7 @@ export default function Footer() {
         <div className="mt-8 border-t border-gray-700 pt-8">
           <div className="flex flex-col items-center justify-between sm:flex-row">
             <p className="text-sm">
-              &copy; 2024 AnimeAeon. All rights reserved.
+              &copy; 2023 AnimeAeon. All rights reserved.
             </p>
           </div>
         </div>

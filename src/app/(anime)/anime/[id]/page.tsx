@@ -7,6 +7,8 @@ import DisplayCharacters from "@/components/list/DisplayCharacters";
 import Watch from "@/components/player/Watch";
 import { Skeleton } from "@/components/ui/skeleton";
 import StCardSkeleton from "@/components/skeletons/StCardSkeleton";
+import { toast } from "sonner";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: { id: string };
@@ -26,12 +28,25 @@ const Page = ({
   const fetchAnimeInfo = async () => {
     setLoading(true);
     try {
-      const data = await fetch("/api/anilist/info?id=" + animeId);
-      const res = await data.json();
-      if (res.success) {
+      const response = await fetch("/api/anilist/info?id=" + animeId);
+      // const data = await fetch("/api/anilist/info/" + animeId);
+
+      if (!response.ok) {
+        const response = await fetch("/api/anilist/info/" + animeId);
+        const res = await response.json();
+        if (!response.ok) {
+          toast.error("Couldn't Fetch Anime");
+          return;
+        }
         setAnimeInfo(res.result);
+      } else {
+        const res = await response.json();
+        if (res.success) {
+          setAnimeInfo(res.result);
+        }
       }
     } catch (error) {
+      toast("Error Occured");
       console.log(error);
     } finally {
       setLoading(false);
@@ -59,6 +74,11 @@ const Page = ({
       </div>
     );
   }
+
+  if (!loading && !animeInfo) {
+    return notFound();
+  }
+  console.log(animeInfo.characters);
 
   return (
     <section className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll no-scrollbar">
