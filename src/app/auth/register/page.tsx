@@ -9,7 +9,7 @@ const Page = () => {
       <img
         width={300}
         height={300}
-        src="/assets/anizone.png"
+        src="/assets/animeaeon.png"
         className="h-[200px] w-[200px] border rounded-full"
         alt="logo"
       />

@@ -25,7 +25,7 @@ const SideNav = ({ closeNav }: { closeNav?: () => void }) => {
         ? "/assets/series.png"
         : pathanme.includes("movies")
           ? "/assets/movies.png"
-          : "/assets/anizone.png";
+          : "/assets/animeaeon.png";
 
   return (
     <div className="mt-4">

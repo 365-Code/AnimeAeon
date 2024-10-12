@@ -1,4 +1,5 @@
 "use client";
+import StAnimeCard from "@/components/cards/StAnimeCard";
 import Carousel from "@/components/carousel/carousel";
 import { IRecentEpisode } from "@/utils";
 import { IAnimeResult } from "@consumet/extensions";
@@ -7,16 +8,12 @@ import React, { useEffect, useState } from "react";
 const Page = () => {
   const [watchList, setWatchList] = useState<IRecentEpisode[]>([]);
 
-  const data = () => {
+  useEffect(() => {
     const dta = localStorage.getItem("watchList");
     if (dta) {
       const list = JSON.parse(dta);
       setWatchList(list);
     }
-  };
-
-  useEffect(() => {
-    data();
   }, []);
 
   return (
@@ -28,12 +25,19 @@ const Page = () => {
           </h2>
         </div>
       ) : (
-        <>
-          <h1 className="bg-gradient-to-br from-slate-300 to-slate-400 bg-clip-text text-left text-2xl text-transparent sm:text-3xl md:text-5xl">
-            Watch List
-          </h1>
-          <Carousel animeList={watchList as IAnimeResult[]} />
-        </>
+        <div>
+          {watchList.length >= 5 ? (
+            <Carousel animeList={watchList as IAnimeResult[]} />
+          ) : (
+            <div className="grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
+              {watchList.map((anime, i) => (
+                <div className="max-w-[300px]" key={i}>
+                  <StAnimeCard anime={anime as IAnimeResult} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </section>
   );

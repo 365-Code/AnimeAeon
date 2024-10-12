@@ -62,7 +62,9 @@ export default function Header() {
           ? "/assets/series.png"
           : pathanme.includes("movies")
             ? "/assets/movies.png"
-            : "/assets/anizone.png";
+            : pathanme.includes("watchlist")
+              ? "/assets/watchlist.png"
+              : "/assets/animeaeon.png";
 
   return (
     <header
@@ -73,13 +75,13 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto flex h-14 items-center gap-2 px-4 sm:px-0">
-        <Link href="/" className="mr-4 hidden sm:inline-block">
+        <Link href="/" className="hidden sm:inline-block">
           <Image
             width={500}
             height={300}
             alt="animeaeon"
             src={logo}
-            className="h-[30px] w-[140px] invert dark:invert-0"
+            className="my-auto h-[30px] w-[140px] object-fill invert dark:invert-0"
           />
         </Link>
         <Sheet open={isNavOpen} onOpenChange={setIsNavOpen}>

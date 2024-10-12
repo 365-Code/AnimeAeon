@@ -9,7 +9,7 @@ export default function Footer() {
             <Image
               width={500}
               height={300}
-              src={"/assets/anizone.png"}
+              src={"/assets/animeaeon.png"}
               alt="anizone"
               className="h-[75px] invert dark:invert-0"
             />
