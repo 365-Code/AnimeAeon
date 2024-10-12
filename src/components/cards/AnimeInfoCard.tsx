@@ -1,7 +1,6 @@
 "use client";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import { ITitle } from "@consumet/extensions";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -31,7 +30,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
 
   const [currEpisode, setCurrEpisode] = useState({
     number: 0,
-    continue?: false,
+    continue: false,
   });
   useEffect(() => {
     const data = localStorage.getItem("continueList");
@@ -47,36 +46,11 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
       if (continueEpisode != -1) {
         setCurrEpisode({
           number: continueList[continueEpisode].episodeNumber - 1,
-          continue: true
+          continue: true,
         });
       }
     }
   }, []);
-
-  const nav = useRouter();
-
-  // const handleWatch = () => {
-  //   if (anime?.episodes && anime.episodes?.length != 0) {
-  //     nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
-  //   }
-  //   const data = localStorage.getItem("continueList");
-  //   const epData = {
-  //     id: anime.id,
-  //     title: anime.title,
-  //     image: anime.image,
-  //     episodeNumber: 1,
-  //     episodeId: null,
-  //   };
-  //   if (data) {
-  //     const list = JSON.parse(data) as Array<any>;
-  //     const exist = list.findIndex((v) => v.id == anime.id);
-  //     if (exist == -1) {
-  //       localStorage.setItem("continueList", JSON.stringify([...list, epData]));
-  //     }
-  //   } else {
-  //     localStorage.setItem("continueList", JSON.stringify([epData]));
-  //   }
-  // };
 
   const handleWatchList = () => {
     const data = localStorage.getItem("watchList");
@@ -289,10 +263,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                 className="flex items-center gap-1 sm:p-6"
               >
                 <PlayCircle size={15} className="m-0 p-0" />
-                {
-                  currEpisode.continue ? "Continue Watching" :
-                  "Watch Now"
-                }
+                {currEpisode.continue ? "Continue Watching" : "Watch Now"}
               </Button>
             </Link>
             <Button
