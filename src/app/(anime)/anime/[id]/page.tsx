@@ -29,17 +29,19 @@ const Page = ({
     setLoading(true);
     try {
       const response = await fetch("/api/anilist/info?id=" + animeId);
+      console.log("Res = ", response.ok);
 
       if (!response.ok) {
         const response = await fetch("/api/anilist/info/" + animeId);
         const res = await response.json();
         if (!response.ok) {
           toast.error("Couldn't Fetch Anime");
-          return;
+          return notFound();
         }
         setAnimeInfo(res.result);
       } else {
         const res = await response.json();
+        console.log("Result = ", res);
         if (res.success) {
           setAnimeInfo(res.result);
         }

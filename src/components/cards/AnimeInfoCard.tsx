@@ -248,24 +248,31 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
 
         <div className="z-[1] flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-            <Link
-              href={
-                anime.episodes
-                  ? "/anime/" +
-                    anime.id +
-                    "?episode=" +
-                    anime.episodes[currEpisode.number].id
-                  : ""
-              }
-            >
+            {anime.episodes && anime.episodes?.length != 0 ? (
+              <Link
+                href={
+                  "/anime/" +
+                  anime.id +
+                  "?episode=" +
+                  anime.episodes[currEpisode.number].id
+                }
+              >
+                <Button
+                  // onClick={handleWatch}
+                  className="flex items-center gap-1 sm:p-6"
+                >
+                  <PlayCircle size={15} className="m-0 p-0" />
+                  {currEpisode.continue ? "Continue Watching" : "Watch Now"}
+                </Button>
+              </Link>
+            ) : (
               <Button
                 // onClick={handleWatch}
                 className="flex items-center gap-1 sm:p-6"
               >
-                <PlayCircle size={15} className="m-0 p-0" />
-                {currEpisode.continue ? "Continue Watching" : "Watch Now"}
+                Not Available Now
               </Button>
-            </Link>
+            )}
             <Button
               onClick={handleWatchList}
               className="flex items-center gap-1 sm:p-6"
