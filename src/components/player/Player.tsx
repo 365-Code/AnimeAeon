@@ -23,7 +23,7 @@ const useHls = (src: string, options: Options | null) => {
       if (hasQuality.current) return; // early quit if already set
       const levels = hls.current.levels;
       const quality: Options["quality"] = {
-        default: levels[levels.length - 1].height,
+        default: levels[levels.length - 2].height,
         options: levels.map((level) => level.height),
         forced: true,
         onChange: (newQuality: number) => {

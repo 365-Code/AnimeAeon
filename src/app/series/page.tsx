@@ -8,7 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  // const [series, setSeries] = useState<IAnimeResult[][]>([]);
   const [series, setSeries] = useState<IAnimeResult[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);

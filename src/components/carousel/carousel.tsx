@@ -147,12 +147,9 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
 };
 
 const SkeletonSlide = () => {
-  // const images = ["bg.jpeg", "bg1.jpg", "bg2.jpg", "placeholder.jpg"];
-
   return (
     <Card className="relative h-[400px] w-full overflow-hidden border-none transition-all">
       <img
-        // src={"/placeholder/" + images[Math.floor(Math.random() * 4)]}
         src={"/placeholder/loader.jpg"}
         loading="lazy"
         alt="slide_image"

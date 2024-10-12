@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
 import EpisodeHandler from "./EpisodeHandler";
+import { LoaderPinwheel } from "lucide-react";
 
 const VideoPlayer = ({
   episodes,
@@ -23,6 +24,7 @@ const VideoPlayer = ({
   const episode = searchParams.get("episode") as string;
   const params = useParams();
   const animeId = Number(params["id"]);
+  const [loading, setLoading] = useState(true);
   const [epSources, setEpSources] = useState([
     {
       quality: "default",
@@ -31,6 +33,7 @@ const VideoPlayer = ({
   ]);
 
   const fetchEpisode = async () => {
+    setLoading(true);
     try {
       const res = await (
         await fetch("/api/anilist/episode-sources?episodeId=" + episode)
@@ -40,6 +43,8 @@ const VideoPlayer = ({
       }
     } catch (error: any) {
       throw new Error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,7 +63,6 @@ const VideoPlayer = ({
       }
     }
   }, [episode]);
-
 
   return (
     <div className="relative my-auto flex h-fit w-full flex-col">
@@ -88,9 +92,16 @@ const VideoPlayer = ({
         />
       </div>
       {/* <div className="max-h-fit overflow-hidden min-w-fit rounded-xl"> */}
-      <Player
-        source={epSources.find((e) => e.quality == "default")?.url || ""}
-      />
+      <div className="relative">
+        <Player
+          source={epSources.find((e) => e.quality == "default")?.url || ""}
+        />
+        {loading && (
+          <div className="absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-white/50">
+            <LoaderPinwheel className="animate-spin" size={55} />
+          </div>
+        )}
+      </div>
       {/* </div> */}
     </div>
   );

@@ -29,7 +29,6 @@ const Page = ({
     setLoading(true);
     try {
       const response = await fetch("/api/anilist/info?id=" + animeId);
-      // const data = await fetch("/api/anilist/info/" + animeId);
 
       if (!response.ok) {
         const response = await fetch("/api/anilist/info/" + animeId);

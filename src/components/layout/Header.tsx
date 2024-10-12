@@ -105,7 +105,6 @@ export default function Header() {
             placeholder="Search anime..."
             className={cn(
               "w-full border-none bg-transparent text-base outline-none focus-visible:ring-0",
-              // isScrolled ? "bg-background" : "bg-background/20",
             )}
           />
         </form>

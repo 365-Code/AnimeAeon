@@ -18,12 +18,8 @@ import { cn } from "@/lib/utils";
 
 const AnimeInfoCard = ({
   anime,
-  // setWatch,
-  loading,
 }: {
   anime: IAnimeInfoAnilit;
-  // setWatch: Dispatch<SetStateAction<boolean>>;
-  loading?: boolean;
 }) => {
   const banner = anime.artwork
     ? anime.artwork.filter((art) => art.type == "banner" && art.img)
@@ -40,9 +36,6 @@ const AnimeInfoCard = ({
 
   const handleWatch = () => {
     if (anime?.episodes && anime.episodes?.length != 0) {
-      // setTimeout(() => {
-      //   setWatch(true);
-      // }, 500);
       nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
     }
     const data = localStorage.getItem("continueList");
@@ -154,10 +147,24 @@ const AnimeInfoCard = ({
                 "/placeholder/bg.jpeg"
               }
               alt={toAnimeTitle(anime.title as ITitle)}
-              className={`h-full w-full object-cover object-center`}
+              className={`absolute left-0 top-0 -z-0 h-full w-full object-cover object-center opacity-40 transition-all`}
             />
           </div>
         ))}
+        {banner.length == 0 && (
+          <div
+            className={
+              "absolute left-0 top-0 -z-0 h-full w-full opacity-40 transition-all"
+            }
+          >
+            <img
+              id="carousel"
+              src={anime.image || "/placeholder/bg.jpeg"}
+              alt={toAnimeTitle(anime.title as ITitle)}
+              className={`absolute left-0 top-0 -z-0 h-full w-full object-cover object-center opacity-40 transition-all`}
+            />
+          </div>
+        )}
         <div className="z-[1] flex-1 justify-between gap-6 overflow-hidden sm:flex">
           <div className="mb-4 mt-auto flex flex-col gap-4 sm:basis-1/2">
             <div className="flex flex-wrap items-center gap-2">

@@ -12,10 +12,6 @@ export async function GET(req: NextRequest) {
         : undefined;
     const page = Number(searchParams.get("page")) || 1;
     const perPage = Number(searchParams.get("perPage")) || 20;
-    // const format =
-    //   searchParams.get("format") != "All"
-    //     ? searchParams.get("format") || undefined
-    //     : undefined;
 
     const genres =
       searchParams.get("genres") != "All"

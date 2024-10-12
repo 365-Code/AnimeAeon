@@ -5,8 +5,6 @@ import { IAnimeResult } from "@consumet/extensions";
 import { useQuery } from "@tanstack/react-query";
 
 const FetchUpcoming = () => {
-  // const [upcoming, setUpcoming] = useState<IAnimeResult[]>([]);
-
   const { data: upcoming, isLoading } = useQuery({
     queryKey: ["fetch-upcoming"],
     queryFn: async () => {
@@ -24,22 +22,6 @@ const FetchUpcoming = () => {
       }
     },
   });
-
-  // const fetchUpcoming = async () => {
-  //   try {
-  //     const res = await (await fetch("/api/anilist/upcoming")).json();
-  //     if (res.success) {
-  //       setUpcoming(res.results);
-  //     }
-  //   } catch (error: any) {
-  //     throw new Error(error.message);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchUpcoming();
-  // }, []);
-
   return (
     <section className="relative mb-6">
       <HeroCarousel animeList={upcoming} loading={isLoading} modifier={0.5} />

@@ -7,7 +7,6 @@ export async function GET(
   { params }: { params: { id: string } },
 ) {
   try {
-    // const anime = new ANIME.Gogoanime();
     const anime = new META.Anilist();
     const animeId = params.id;
     const result = await anime.fetchAnilistInfoById(animeId);

@@ -28,7 +28,6 @@ const FetchSearch = () => {
   const season = searchParams.get("season") || "";
 
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>([]);
-  // const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 

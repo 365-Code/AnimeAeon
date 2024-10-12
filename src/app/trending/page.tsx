@@ -3,13 +3,11 @@ import StAnimeCard from "@/components/cards/StAnimeCard";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { perPage } from "@/utils";
 import { IAnimeResult } from "@consumet/extensions";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  // const [trending, setTrending] = useState<IAnimeResult[][]>([]);
   const [trending, setTrending] = useState<IAnimeResult[]>([]);
-  // const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
@@ -22,7 +20,6 @@ const Page = () => {
         );
         const res = await response.json();
         if (!response.ok) {
-          // throw Error("Couldn't Fetch Trending Anime");
           console.error("Couldn't Fetch Trending Anime");
           return;
         }
