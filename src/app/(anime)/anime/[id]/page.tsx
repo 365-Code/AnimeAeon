@@ -77,11 +77,11 @@ const Page = ({
   if (!loading && !animeInfo) {
     return notFound();
   }
-  
+
   return (
     <section className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll no-scrollbar">
       {episode ? (
-        <Watch anime={animeInfo} />
+        <Watch anime={animeInfo} episode={episode} />
       ) : (
         <AnimeInfoCard anime={animeInfo} />
       )}

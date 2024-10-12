@@ -51,16 +51,6 @@ const VideoPlayer = ({
   useEffect(() => {
     if (episode) {
       fetchEpisode();
-      const data = localStorage.getItem("continueList");
-      if (data) {
-        let list = JSON.parse(data) as Array<any>;
-        const exist = list.findIndex((v) => v.id == animeId) || -1;
-        if (exist != -1) {
-          list[exist].episodeId = episode;
-          list[exist].episodeNumber = Number(episode.split("episode-").at(-1));
-          localStorage.setItem("continueList", JSON.stringify(list));
-        }
-      }
     }
   }, [episode]);
 

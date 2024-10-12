@@ -15,12 +15,9 @@ import {
 import { Badge } from "../ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-const AnimeInfoCard = ({
-  anime,
-}: {
-  anime: IAnimeInfoAnilit;
-}) => {
+const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   const banner = anime.artwork
     ? anime.artwork.filter((art) => art.type == "banner" && art.img)
     : [];
@@ -32,30 +29,54 @@ const AnimeInfoCard = ({
     setCurrentBanner((prev) => (prev + n) % banner.length);
   };
 
+  const [currEpisode, setCurrEpisode] = useState({
+    number: 0,
+    continue?: false,
+  });
+  useEffect(() => {
+    const data = localStorage.getItem("continueList");
+    if (data) {
+      const continueList = JSON.parse(data) as Array<{
+        id: string;
+        episodeId: string;
+        episodeNumber: number;
+      }>;
+      const continueEpisode = continueList.findIndex(
+        (conti) => conti.id == anime.id,
+      );
+      if (continueEpisode != -1) {
+        setCurrEpisode({
+          number: continueList[continueEpisode].episodeNumber - 1,
+          continue: true
+        });
+      }
+    }
+  }, []);
+
   const nav = useRouter();
 
-  const handleWatch = () => {
-    if (anime?.episodes && anime.episodes?.length != 0) {
-      nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
-    }
-    const data = localStorage.getItem("continueList");
-    const epData = {
-      id: anime.id,
-      title: anime.title,
-      image: anime.image,
-      episodeNumber: 1,
-      episodeId: null,
-    };
-    if (data) {
-      const list = JSON.parse(data) as Array<any>;
-      const exist = list.findIndex((v) => v.id == anime.id);
-      if (exist == -1) {
-        localStorage.setItem("continueList", JSON.stringify([...list, epData]));
-      }
-    } else {
-      localStorage.setItem("continueList", JSON.stringify([epData]));
-    }
-  };
+  // const handleWatch = () => {
+  //   if (anime?.episodes && anime.episodes?.length != 0) {
+  //     nav.push("/anime/" + anime.id + "?episode=" + anime.episodes[0].id);
+  //   }
+  //   const data = localStorage.getItem("continueList");
+  //   const epData = {
+  //     id: anime.id,
+  //     title: anime.title,
+  //     image: anime.image,
+  //     episodeNumber: 1,
+  //     episodeId: null,
+  //   };
+  //   if (data) {
+  //     const list = JSON.parse(data) as Array<any>;
+  //     const exist = list.findIndex((v) => v.id == anime.id);
+  //     if (exist == -1) {
+  //       localStorage.setItem("continueList", JSON.stringify([...list, epData]));
+  //     }
+  //   } else {
+  //     localStorage.setItem("continueList", JSON.stringify([epData]));
+  //   }
+  // };
 
   const handleWatchList = () => {
     const data = localStorage.getItem("watchList");
@@ -253,13 +274,27 @@ const AnimeInfoCard = ({
 
         <div className="z-[1] flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-            <Button
-              onClick={handleWatch}
-              className="flex items-center gap-1 sm:p-6"
+            <Link
+              href={
+                anime.episodes
+                  ? "/anime/" +
+                    anime.id +
+                    "?episode=" +
+                    anime.episodes[currEpisode.number].id
+                  : ""
+              }
             >
-              <PlayCircle size={15} className="m-0 p-0" />
-              Watch Now
-            </Button>
+              <Button
+                // onClick={handleWatch}
+                className="flex items-center gap-1 sm:p-6"
+              >
+                <PlayCircle size={15} className="m-0 p-0" />
+                {
+                  currEpisode.continue ? "Continue Watching" :
+                  "Watch Now"
+                }
+              </Button>
+            </Link>
             <Button
               onClick={handleWatchList}
               className="flex items-center gap-1 sm:p-6"
