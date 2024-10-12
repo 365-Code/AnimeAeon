@@ -118,14 +118,14 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
 };
 
 const SkeletonSlide = () => {
-  const images = ["bg.jpeg", "bg1.jpg", "bg2.jpg"];
   // const images = ["bg.jpeg", "bg1.jpg", "bg2.jpg", "placeholder.jpg"];
 
   return (
     <Card className="group relative h-[400px] w-full overflow-hidden border-none transition-all">
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
       <img
-        src={"/placeholder/" + images[Math.floor(Math.random() * 3)]}
+        // src={"/placeholder/" + images[Math.floor(Math.random() * 3)]}
+        src={"/placeholder/bg.jpg"}
         alt={"anime-image-loader"}
         className="absolute h-full w-full object-cover object-center opacity-20 transition-all"
       />

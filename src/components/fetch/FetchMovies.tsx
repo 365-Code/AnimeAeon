@@ -12,24 +12,6 @@ const DynamicCarousel = dynamic(
 );
 
 const FetchMovies = () => {
-  // const [movies, setMovies] = useState<ISearchResult[]>([]);
-  // const [movies, setMovies] = useState<IAnimeResult[]>([]);
-
-  // const fetchMovies = async () => {
-  //   try {
-  //     const res = await (await fetch(`/api/anilist/movies?page=1`)).json();
-  //     if (res.success) {
-  //       setMovies(res.results);
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchMovies();
-  // }, []);
-
   const { data: movies, isLoading } = useQuery({
     queryKey: ["fetch-movies"],
     queryFn: async () => {
@@ -53,7 +35,6 @@ const FetchMovies = () => {
       <DynamicCarousel animeList={movies} loading={isLoading} title="Movies" />
     </section>
   );
-  // return <DisplayCards animeList={movies} title="Movies" />;
 };
 
 export default FetchMovies;

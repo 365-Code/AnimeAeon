@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IAnimeResult } from "@consumet/extensions";
 import dynamic from "next/dynamic";
 import { useQuery } from "@tanstack/react-query";
@@ -12,24 +12,6 @@ const DynamicCarousel = dynamic(
 );
 
 const FetchPopular = () => {
-  // const [popular, setPopular] = useState<ISearchResult[]>([]);
-  // const [popular, setPopular] = useState<IAnimeResult[]>([]);
-
-  // const fetchPopular = async () => {
-  //   try {
-  //     const res = await (await fetch(`/api/anilist/trending?page=1`)).json();
-  //     if (res.success) {
-  //       setPopular(res.results);
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchPopular();
-  // }, []);
-
   const { data: popular, isLoading } = useQuery({
     queryKey: ["fetch-popular"],
     queryFn: async () => {

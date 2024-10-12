@@ -101,7 +101,8 @@ const config: Config = {
           display: "none",
         },
         ".custom-scrollbar": {
-          padding: "0px 4px 4px 0px"
+          "padding-right": "4px",
+          "padding-bottom": "4px",
         },
         ".custom-scrollbar::-webkit-scrollbar": {
           width: "1px",

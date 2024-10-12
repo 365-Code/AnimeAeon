@@ -78,8 +78,7 @@ const Page = ({
   if (!loading && !animeInfo) {
     return notFound();
   }
-  console.log(animeInfo.characters);
-
+  
   return (
     <section className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-4 overflow-y-scroll no-scrollbar">
       {episode ? (
