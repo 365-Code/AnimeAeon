@@ -17,7 +17,7 @@ const Page = () => {
   }, []);
 
   return (
-    <section className="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col">
+    <section className="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col justify-center">
       {!watchList || watchList.length == 0 ? (
         <div className="flex h-full flex-1 flex-col items-center justify-center">
           <h2 className="gradient-text from-red-500 to-blue-500 text-center text-xl font-medium sm:text-3xl md:text-5xl">
@@ -29,7 +29,7 @@ const Page = () => {
           {watchList.length >= 5 ? (
             <Carousel animeList={watchList as IAnimeResult[]} />
           ) : (
-            <div className="grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
+            <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
               {watchList.map((anime, i) => (
                 <div className="max-w-[300px]" key={i}>
                   <StAnimeCard anime={anime as IAnimeResult} />

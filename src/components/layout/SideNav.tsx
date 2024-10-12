@@ -39,17 +39,12 @@ const SideNav = ({ closeNav }: { closeNav?: () => void }) => {
 
       <nav>
         {navLinks.map((link, i) => (
-          <Link
-            key={i}
-            onClick={closeNav}
-            title={link.title}
-            href={link.url}
-          >
+          <Link key={i} onClick={closeNav} title={link.title} href={link.url}>
             <Button
               type="button"
-              variant={pathanme == link.url ? "default" : "outline"}
+              variant={pathanme == link.url ? "secondary" : "outline"}
               className={cn(
-                "w-full justify-start gap-2 rounded-none border-none text-left text-base capitalize outline-none py-6",
+                "w-full justify-start gap-2 rounded-none border-none py-6 text-left text-base capitalize outline-none",
               )}
             >
               <link.icon
