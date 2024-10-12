@@ -29,7 +29,6 @@ const Page = ({
     setLoading(true);
     try {
       const response = await fetch("/api/anilist/info?id=" + animeId);
-      console.log("Res = ", response.ok);
 
       if (!response.ok) {
         const response = await fetch("/api/anilist/info/" + animeId);
@@ -41,7 +40,6 @@ const Page = ({
         setAnimeInfo(res.result);
       } else {
         const res = await response.json();
-        console.log("Result = ", res);
         if (res.success) {
           setAnimeInfo(res.result);
         }
@@ -87,7 +85,7 @@ const Page = ({
       ) : (
         <AnimeInfoCard anime={animeInfo} />
       )}
-      {animeInfo.recommendations && (
+      {animeInfo.recommendations && animeInfo.recommendations.length != 0 && (
         <div className="mb-4 mt-2">
           <DisplayAnimeCards
             title="You Might Like"
@@ -95,7 +93,7 @@ const Page = ({
           />
         </div>
       )}
-      {animeInfo.characters && (
+      {animeInfo.characters && animeInfo.characters?.length != 0 && (
         <div className="mb-4">
           <DisplayCharacters characterList={animeInfo.characters} />
         </div>
