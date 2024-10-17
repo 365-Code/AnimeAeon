@@ -75,7 +75,12 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           "watchList",
           JSON.stringify([
             ...list,
-            { id: anime.id, image: anime.image, title: anime.title },
+            {
+              id: anime.id,
+              image: anime.image,
+              title: anime.title,
+              genres: anime.genres,
+            },
           ]),
         );
       }
@@ -83,7 +88,12 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
       localStorage.setItem(
         "watchList",
         JSON.stringify([
-          { id: anime.id, image: anime.image, title: anime.title },
+          {
+            id: anime.id,
+            image: anime.image,
+            title: anime.title,
+            genres: anime.genres,
+          },
         ]),
       );
     }

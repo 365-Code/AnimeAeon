@@ -29,14 +29,19 @@ const VideoPlayer = ({
   const episode = searchParams.get("episode") as string;
   const params = useParams();
   const animeId = Number(params["id"]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [epSources, setEpSources] = useState<
     { quality: string; url: string }[]
-  >([]);
+  >([
+    {
+      quality: "default",
+      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    },
+  ]);
 
-  const fetchEpisode = async () => {
-    setIsLoading(true);
-    try {
+  const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
+    mutationKey: ["fetch-episode"],
+    mutationFn: async () => {
       const response = await fetch(
         "/api/anilist/episode-sources?episodeId=" + episode,
       );
@@ -49,30 +54,8 @@ const VideoPlayer = ({
       if (res.success) {
         setEpSources(res.sources);
       }
-    } catch (error: any) {
-      throw new Error(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
-  //   mutationKey: ["fetch-episode"],
-  //   mutationFn: async () => {
-  //     const response = await fetch(
-  //       "/api/anilist/episode-sources?episodeId=" + episode,
-  //     );
-
-  //     if (!response.ok) {
-  //       toast.error("Couldn't Fetch The episode");
-  //       return;
-  //     }
-  //     const res = await response.json();
-  //     if (res.success) {
-  //       setEpSources(res.sources);
-  //     }
-  //   },
-  // });
+    },
+  });
 
   useEffect(() => {
     if (episode) {
@@ -106,7 +89,6 @@ const VideoPlayer = ({
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-
         <EpisodeHandler
           episode={episode}
           episodes={episodes}

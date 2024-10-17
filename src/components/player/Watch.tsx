@@ -63,7 +63,11 @@ const Watch = ({
         <DynamicVideoPlayer
           animeTitle={anime.title}
           episodes={anime.episodes}
-          totalEpisodes={anime.totalEpisodes || anime.episodes?.length}
+          totalEpisodes={
+            anime.currentEpisode ||
+            anime.totalEpisodes ||
+            anime.episodes?.length
+          }
         />
       </div>
       <div className="col-span-1">
