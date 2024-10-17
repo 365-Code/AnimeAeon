@@ -12,7 +12,9 @@ export async function GET(
     const animeId = params.id;
     const result = await anime.fetchAnilistInfoById(animeId);
     const animeSlug = toAnimeId(result.title as ITitle);
-    const episodes = [...Array(result.totalEpisodes || 0)].map((_, ep) => ({
+    const episodes = [
+      ...Array(result.currentEpisode || result.totalEpisodes || 0),
+    ].map((_, ep) => ({
       id: `${animeSlug}-episode-${ep + 1}`,
       title: `EP ${ep + 1}`,
       number: ep + 1,

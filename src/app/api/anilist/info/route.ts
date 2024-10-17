@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       result.episodes &&
       result.episodes.length == 0
     ) {
-      let episodes = [...Array(result.totalEpisodes || 0)].map((_, ep) => ({
+      let episodes = [...Array(result.currentEpisode || result.totalEpisodes || 0)].map((_, ep) => ({
         id: `${animeSlug}-episode-${ep + 1}`,
         title: `EP ${ep + 1}`,
         number: ep + 1,
