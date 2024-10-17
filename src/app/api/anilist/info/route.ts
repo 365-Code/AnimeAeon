@@ -11,7 +11,12 @@ export async function GET(req: NextRequest) {
 
     let animeInfo = result;
     const animeSlug = toAnimeId(result.title as ITitle);
-    if (result.episodes && result.episodes.length == 0) {
+    if (
+      result.status &&
+      String(result.status) != "NOT_YET_RELEASED" &&
+      result.episodes &&
+      result.episodes.length == 0
+    ) {
       let episodes = [...Array(result.totalEpisodes || 0)].map((_, ep) => ({
         id: `${animeSlug}-episode-${ep + 1}`,
         title: `EP ${ep + 1}`,
