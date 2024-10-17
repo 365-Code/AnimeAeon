@@ -1295,6 +1295,11 @@ electron-to-chromium@^1.4.668:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.745.tgz#9c202ce9cbf18a5b5e0ca47145fd127cc4dd2290"
   integrity sha512-tRbzkaRI5gbUn5DEvF0dV4TQbMZ5CLkWeTAXmpC9IrYT+GE+x76i9p+o3RJ5l9XmdQlI1pPhVtE9uNcJJ0G0EA==
 
+eme-encryption-scheme-polyfill@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.5.tgz#86338bdd3b13f04ba02fa36758501c7c6c122efe"
+  integrity sha512-z9BKXV4TCYjmar0wiZLObZ0J8HE13VIg7Zq/iyPWdbEfROtxVXEJalknWKtBR5XNezzy15/zWS964TGbcAWlPg==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -3001,6 +3006,13 @@ set-function-name@^2.0.1, set-function-name@^2.0.2:
     es-errors "^1.3.0"
     functions-have-names "^1.2.3"
     has-property-descriptors "^1.0.2"
+
+shaka-player@^4.11.7:
+  version "4.11.7"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.11.7.tgz#da49dc6c3c0e4cc0281b677b4580b162b3bbcf10"
+  integrity sha512-jNsdQd4pa24w2QwXHGNBs8MQ33YajYiZclWaSuGt+dLJ7/D9+NG1LJQGnTrGd0G1aDdbEzmEpppG3ic4OsGpyw==
+  dependencies:
+    eme-encryption-scheme-polyfill "^2.1.5"
 
 shebang-command@^2.0.0:
   version "2.0.0"

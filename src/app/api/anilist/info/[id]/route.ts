@@ -1,4 +1,5 @@
-import { ANIME, ITitle, META } from "@consumet/extensions";
+import { toAnimeId } from "@/utils";
+import { ITitle, META } from "@consumet/extensions";
 import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -45,40 +46,3 @@ export async function GET(
     );
   }
 }
-
-const removeChars = (aName: string, characters: string[]) => {
-  let animeId = aName;
-  characters.forEach((element) => {
-    if (animeId) animeId = animeId.replaceAll(element, "");
-  });
-  return animeId;
-};
-
-const toAnimeId = (animeTitle: ITitle) => {
-  // const animId = (animeTitle?.romaji || animeTitle?.english || animeTitle?.userPreferred)?.toLowerCase().replaceAll(' ', '-');
-  const animId = (
-    animeTitle.english?.includes("Hunter")
-      ? animeTitle.english
-      : animeTitle?.romaji || animeTitle?.english || animeTitle?.userPreferred
-  )
-    ?.toLowerCase()
-    .replaceAll("-", " ")
-    .replaceAll("-", " ");
-  return removeChars(animId as string, [
-    ",",
-    ":",
-    "?",
-    "!",
-    ".",
-    "(",
-    ")",
-    "{",
-    "}",
-    "[",
-    "]",
-    "/",
-    "\\",
-  ])
-    ?.replace(/\s+/g, " ")
-    .replaceAll(" ", "-");
-};

@@ -124,3 +124,41 @@ export const getWords = (str: string, count: number) => {
 
   return ans.trim();
 };
+
+
+const removeChars = (aName: string, characters: string[]) => {
+  let animeId = aName;
+  characters.forEach((element) => {
+    if (animeId) animeId = animeId.replaceAll(element, "");
+  });
+  return animeId;
+};
+
+export const toAnimeId = (animeTitle: ITitle) => {
+  // const animId = (animeTitle?.romaji || animeTitle?.english || animeTitle?.userPreferred)?.toLowerCase().replaceAll(' ', '-');
+  const animId = (
+    animeTitle.english?.includes("Hunter")
+      ? animeTitle.english
+      : animeTitle?.romaji || animeTitle?.english || animeTitle?.userPreferred
+  )
+    ?.toLowerCase()
+    .replaceAll("-", " ")
+    .replaceAll("-", " ");
+  return removeChars(animId as string, [
+    ",",
+    ":",
+    "?",
+    "!",
+    ".",
+    "(",
+    ")",
+    "{",
+    "}",
+    "[",
+    "]",
+    "/",
+    "\\",
+  ])
+    ?.replace(/\s+/g, " ")
+    .replaceAll(" ", "-");
+};

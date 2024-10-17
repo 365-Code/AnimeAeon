@@ -61,6 +61,7 @@ const Watch = ({
     <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
       <div className="col-span-2">
         <DynamicVideoPlayer
+          animeTitle={anime.title}
           episodes={anime.episodes}
           totalEpisodes={anime.totalEpisodes || anime.episodes?.length}
         />

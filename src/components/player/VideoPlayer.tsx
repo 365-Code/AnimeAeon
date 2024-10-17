@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Player from "./Player";
 import { useParams, useSearchParams } from "next/navigation";
-import { IAnimeEpisode } from "@consumet/extensions";
+import { IAnimeEpisode, ITitle } from "@consumet/extensions";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,41 +12,67 @@ import {
 } from "../ui/breadcrumb";
 import EpisodeHandler from "./EpisodeHandler";
 import { LoaderPinwheel } from "lucide-react";
+import { toast } from "sonner";
+import { toAnimeTitle } from "@/utils";
+import { useMutation } from "@tanstack/react-query";
 
 const VideoPlayer = ({
   episodes,
   totalEpisodes,
+  animeTitle,
 }: {
   episodes?: IAnimeEpisode[];
   totalEpisodes?: number;
+  animeTitle: ITitle | string;
 }) => {
   const searchParams = useSearchParams();
   const episode = searchParams.get("episode") as string;
   const params = useParams();
   const animeId = Number(params["id"]);
-  const [loading, setLoading] = useState(true);
-  const [epSources, setEpSources] = useState([
-    {
-      quality: "default",
-      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    },
-  ]);
+  // const [isLoading, setIsLoading] = useState(true);
+  const [epSources, setEpSources] = useState<
+    { quality: string; url: string }[]
+  >([]);
 
-  const fetchEpisode = async () => {
-    setLoading(true);
-    try {
-      const res = await (
-        await fetch("/api/anilist/episode-sources?episodeId=" + episode)
-      ).json();
+  // const fetchEpisode = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await fetch(
+  //       "/api/anilist/episode-sources?episodeId=" + episode,
+  //     );
+
+  //     if (!response.ok) {
+  //       toast.error("Couldn't Fetch The episode");
+  //       return;
+  //     }
+  //     const res = await response.json();
+  //     if (res.success) {
+  //       setEpSources(res.sources);
+  //     }
+  //   } catch (error: any) {
+  //     throw new Error(error.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
+    mutationKey: ["fetch-episode"],
+    mutationFn: async () => {
+      const response = await fetch(
+        "/api/anilist/episode-sources?episodeId=" + episode,
+      );
+
+      if (!response.ok) {
+        toast.error("Couldn't Fetch The episode");
+        return;
+      }
+      const res = await response.json();
       if (res.success) {
         setEpSources(res.sources);
       }
-    } catch (error: any) {
-      throw new Error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
 
   useEffect(() => {
     if (episode) {
@@ -64,13 +90,19 @@ const VideoPlayer = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={"/anime/" + animeId}>
-                {animeId}
+              <BreadcrumbLink
+                className="line-clamp-1"
+                href={"/anime/" + animeId}
+              >
+                {/* {animeId} */}
+                {toAnimeTitle(animeTitle as ITitle)}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{episode}</BreadcrumbPage>
+              <BreadcrumbPage className="line-clamp-1">
+                {episode}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -84,9 +116,13 @@ const VideoPlayer = ({
       {/* <div className="max-h-fit overflow-hidden min-w-fit rounded-xl"> */}
       <div className="relative">
         <Player
-          source={epSources.find((e) => e.quality == "default")?.url || ""}
+          source={
+            epSources.length > 0
+              ? epSources.find((e) => e.quality == "default")?.url || ""
+              : ""
+          }
         />
-        {loading && (
+        {isLoading && (
           <div className="absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-white/50">
             <LoaderPinwheel className="animate-spin" size={55} />
           </div>

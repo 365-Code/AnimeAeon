@@ -63,8 +63,8 @@ const Page = ({
     return (
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <AnimeBannerSkeleton />
-        <div className="flex items-center gap-4 overflow-x-scroll no-scrollbar">
-          {Array(4)
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 items-center flex-wrap gap-4 overflow-x-scroll no-scrollbar">
+          {Array(6)
             .fill(0)
             .map((_, i) => (
               <StCardSkeleton key={i} />

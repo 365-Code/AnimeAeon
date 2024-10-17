@@ -112,46 +112,55 @@ const FetchSearch = () => {
 
   return (
     <section className="flex-1">
-      <Card className="mb-4">
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Filters</CardTitle>
-          <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
-            <Search />
-            <Input
-              type="search"
-              value={filter.searchInput}
-              onChange={(e) =>
-                setFilter((prev) => ({
-                  ...prev,
-                  searchInput: e.target.value,
-                }))
-              }
-              placeholder="Search anime..."
-              className="w-full border-none bg-transparent text-base outline-none focus-visible:ring-0"
-            />
-          </Card>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-4">
-            {animeGenres.map((g, i) => (
-              <Button
-                key={i}
-                onClick={() => handleGenre(g)}
-                variant={
-                  filter.genres.findIndex((genre) => genre == g) != -1
-                    ? "default"
-                    : "secondary"
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleFilters();
+        }}
+      >
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle className="text-lg sm:text-xl">Filters</CardTitle>
+            <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
+              <Search />
+              <Input
+                type="search"
+                value={filter.searchInput}
+                onChange={(e) =>
+                  setFilter((prev) => ({
+                    ...prev,
+                    searchInput: e.target.value,
+                  }))
                 }
-              >
-                {g}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleFilters}>Filter</Button>
-        </CardFooter>
-      </Card>
+                placeholder="Search anime..."
+                className="w-full border-none bg-transparent text-base outline-none focus-visible:ring-0"
+              />
+            </Card>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-4">
+              {animeGenres.map((g, i) => (
+                <Button
+                  key={i}
+                  type="button"
+                  onClick={() => handleGenre(g)}
+                  variant={
+                    filter.genres.findIndex((genre) => genre == g) != -1
+                      ? "default"
+                      : "secondary"
+                  }
+                >
+                  {g}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button type="submit">Filter</Button>
+          </CardFooter>
+        </Card>
+      </form>
+
       <div className="grid flex-1 grid-cols-2 justify-between gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
         {searchResults.length > 0 &&
           searchResults.map((anime, i) =>
