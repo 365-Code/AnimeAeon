@@ -18,9 +18,9 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
 
       {/* Scrollable List of Episodes */}
       <CardContent className="h-full flex-1 overflow-auto custom-scrollbar">
-        <div className="flex flex-row items-start md:flex-wrap">
+        <div className="flex flex-row items-start md:flex-wrap gap-4 pr-1">
           {episodeList?.map((ep, i) => (
-            <Link href={"?episode=" + ep.id} key={i} className="pr-3">
+            <Link href={"?episode=" + ep.id} key={i}>
               <Button
                 type="button"
                 variant={episodeId == ep.id ? "default" : "secondary"}

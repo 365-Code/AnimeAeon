@@ -66,36 +66,12 @@ const VideoPlayer = ({
   return (
     <div className="relative my-auto flex h-fit w-full flex-col">
       <div className="mb-2 flex w-full flex-wrap items-center justify-between gap-1">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                className="line-clamp-1"
-                href={"/anime/" + animeId}
-              >
-                {/* {animeId} */}
-                {toAnimeTitle(animeTitle as ITitle)}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="line-clamp-1">
-                {episode}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <EpisodeHandler
           episode={episode}
           episodes={episodes}
           totalEpisodes={totalEpisodes}
         />
       </div>
-      {/* <div className="max-h-fit overflow-hidden min-w-fit rounded-xl"> */}
       <div className="relative">
         <Player
           source={

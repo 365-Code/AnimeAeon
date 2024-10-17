@@ -16,9 +16,15 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
+const screenSize =
+  typeof window != undefined && window.innerWidth <= 500 ? true : false;
+
 const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
+  const animeTitle = toAnimeTitle(anime.title as ITitle);
   const banner = anime.artwork
-    ? anime.artwork.filter((art) => art.type == "banner" && art.img)
+    ? anime.artwork.filter(
+        (art) => art.type == "banner" && art.img && art.providerId != "kitsu",
+      )
     : [];
 
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -127,9 +133,6 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
     }
   }, [anime.description]);
 
-  const screenSize =
-    typeof window != undefined && window.innerWidth <= 500 ? true : false;
-
   return (
     <>
       <section
@@ -151,7 +154,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                 anime.image ||
                 "/placeholder/bg.jpeg"
               }
-              alt={toAnimeTitle(anime.title as ITitle)}
+              alt={animeTitle}
               className={`absolute left-0 top-0 -z-0 h-full w-full object-cover object-center opacity-40 transition-all`}
             />
           </div>
@@ -165,13 +168,13 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
             <img
               id="carousel"
               src={anime.image || "/placeholder/bg.jpeg"}
-              alt={toAnimeTitle(anime.title as ITitle)}
+              alt={animeTitle}
               className={`absolute left-0 top-0 -z-0 h-full w-full object-cover object-center opacity-40 transition-all`}
             />
           </div>
         )}
         <div className="z-[1] flex-1 justify-between gap-6 overflow-hidden sm:flex">
-          <div className="mb-4 mt-auto flex flex-col gap-4 sm:basis-1/2">
+          <div className="mb-4 flex h-fit max-w-full flex-col gap-4 text-wrap sm:basis-1/2">
             <div className="flex flex-wrap items-center gap-2">
               {anime.genres?.map((g, i) => (
                 <Badge key={i} className="rounded-full bg-primary/50">
@@ -179,15 +182,16 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                 </Badge>
               ))}
             </div>
-            <h2 className="text-3xl font-semibold sm:text-4xl md:text-5xl">
-              {toAnimeTitle(anime.title as ITitle)}
+            {/* <h2 className={`text-3xl font-semibold sm:text-4xl md:text-[5rem]`}> */}
+            <h2 className={`text-3xl font-semibold sm:text-4xl`}>
+              {animeTitle}
             </h2>
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               {anime.studios?.map((studio, i) => (
                 <Badge
-                  className="w-fit text-base sm:text-lg md:text-xl"
+                  className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
                   key={i}
-                  style={{ color: anime.color || "white" }}
+                  style={{ color: anime.color }}
                 >
                   {studio}
                 </Badge>
@@ -220,40 +224,95 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                   </>
                 )}
               </div>
-              <Badge className="w-fit gap-1 text-sm font-medium sm:text-lg">
+              <Badge
+                className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
+              >
                 <Star
                   fill={anime.color}
                   stroke={anime.color}
-                  className="h-[20px] w-[20px]"
+                  className={`h-[20px] w-[20px] ${!anime.color && "fill-rose-600 text-rose-600"}`}
                 />
-                <span
-                  style={{ color: anime.color || "white" }}
-                  className="text-white"
-                >
+                <span style={{ color: anime.color }} className="font-semibold">
                   {anime.rating ? anime.rating + "%" : ""}
                 </span>
               </Badge>
-            </div>
+            </div> */}
           </div>
-          {/* <div className="custom-scrollbar mb-2 mt-auto hidden overflow-y-auto sm:block sm:basis-1/2 md:max-h-[250px]"> */}
-          <Card
-            className={cn(
-              "border-none",
-              "mb-2 mt-auto hidden overflow-hidden scroll-smooth custom-scrollbar sm:block sm:basis-1/2 md:max-h-[250px]",
-            )}
-          >
-            <CardHeader className="max-h-[260px] flex-1 overflow-hidden">
-              <CardTitle>Description</CardTitle>
-              <CardDescription
-                className="h-full overflow-y-auto custom-scrollbar"
-                ref={paraRef}
-              >
-                {!anime.description && "Description Not Available"}
-                {/* {anime.description} */}
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          {/* </div> */}
+          <div className="w-fit">
+            <div className="mb-2 flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                {anime.studios?.map((studio, i) => (
+                  <Badge
+                    className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
+                    key={i}
+                    style={{ color: anime.color }}
+                  >
+                    {studio}
+                  </Badge>
+                ))}
+
+                <Badge
+                  className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
+                >
+                  <Star
+                    fill={anime.color}
+                    stroke={anime.color}
+                    className={`h-[20px] w-[20px] ${!anime.color && "fill-rose-600 text-rose-600"}`}
+                  />
+                  <span
+                    style={{ color: anime.color }}
+                    className="font-semibold"
+                  >
+                    {anime.rating ? anime.rating + "%" : ""}
+                  </span>
+                </Badge>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {anime.season && <Badge>{anime.season}</Badge>}
+
+                {anime.releaseDate && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.releaseDate}</Badge>
+                  </>
+                )}
+                {anime.type && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.type}</Badge>
+                  </>
+                )}
+                {(anime.totalEpisodes || anime.currentEpisode) && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
+                  </>
+                )}
+                {anime.status && (
+                  <>
+                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                    <Badge>{anime.status}</Badge>
+                  </>
+                )}
+              </div>
+            </div>
+            <Card
+              className={
+                "mb-2 mt-auto hidden overflow-hidden scroll-smooth border-none custom-scrollbar sm:block sm:basis-1/2 md:max-h-[250px]"
+              }
+            >
+              <CardHeader className="max-h-[260px] flex-1 overflow-hidden">
+                <CardTitle>Description</CardTitle>
+                <CardDescription
+                  className="h-full overflow-y-auto custom-scrollbar"
+                  ref={paraRef}
+                >
+                  {!anime.description && "Description Not Available"}
+                  {/* {anime.description} */}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         </div>
 
         <div className="z-[1] flex flex-wrap items-center justify-between gap-4">

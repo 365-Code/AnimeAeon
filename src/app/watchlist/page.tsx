@@ -50,7 +50,7 @@ const Page = () => {
     if (!filterInput && !filterGenres.length && AllWatchList.length) {
       setWatchList(AllWatchList);
       return;
-    }
+    };
 
     if (filterGenres.length != 0) {
       const list: WatchlistType[] = [];
