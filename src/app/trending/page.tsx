@@ -20,7 +20,7 @@ const Page = () => {
         );
         const res = await response.json();
         if (!response.ok) {
-          console.error("Couldn't Fetch Trending Anime");
+          console.info("Couldn't Fetch Trending Anime");
           return;
         }
         if (res.success) {

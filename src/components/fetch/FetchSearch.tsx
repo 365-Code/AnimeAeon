@@ -18,14 +18,32 @@ import { Input } from "../ui/input";
 import { useMutation } from "@tanstack/react-query";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 
-const FetchSearch = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query") || "";
-  const format = searchParams.get("format")?.toString() || "";
-  const sort = searchParams.get("sort")?.split(",") || ["TRENDING_DESC"] || "";
-  const genres = searchParams.get("genres")?.split(",") || "";
-  const status = searchParams.get("status") || "";
-  const season = searchParams.get("season") || "";
+type SearchProps = {
+  query?: string;
+  format?: string;
+  sort?: string;
+  genres?: string;
+  status?: string;
+  season?: string;
+};
+
+const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
+  // const searchParams = useSearchParams();
+  // const query = searchParams.get("query") || "";
+  // const format = searchParams.get("format")?.toString() || "";
+  // const sort = searchParams.get("sort")?.split(",") || ["TRENDING_DESC"] || "";
+  // const genres = searchParams.get("genres")?.split(",") || "";
+  // const status = searchParams.get("status") || "";
+  // const season = searchParams.get("season") || "";
+
+  const query = searchParams["query"] || "";
+  const format = searchParams["format"] || "";
+  const sort = searchParams["sort"]?.split(",") || ["TRENDING_DESC"] || "";
+  const genres = searchParams["genres"]?.split(",") || "";
+  const status = searchParams["status"] || "";
+  const season = searchParams["season"] || "";
+
+  console.log(query, format, sort, genres, status, season);
 
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -36,6 +54,7 @@ const FetchSearch = () => {
   const [filter, setFilter] = useState({
     genres: genres || [],
     status: status,
+    type: format.toLowerCase() || "all",
     searchInput: query == "All" ? "" : query,
   });
 
@@ -45,7 +64,7 @@ const FetchSearch = () => {
     isPending: loading,
   } = useMutation({
     mutationKey: ["advance-search"],
-    gcTime: 0,
+    gcTime: 1000 * 3,
     mutationFn: async () => {
       try {
         const response = await fetch(
@@ -53,7 +72,7 @@ const FetchSearch = () => {
         );
         const res = await response.json();
         if (!response.ok) {
-          console.error("Couldn't Search");
+          console.info("Couldn't Search");
           return;
         }
         if (res.success) {
@@ -63,7 +82,7 @@ const FetchSearch = () => {
           };
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
     onSuccess(data) {
@@ -106,7 +125,7 @@ const FetchSearch = () => {
   const nav = useRouter();
   const handleFilters = () => {
     setPage(1);
-    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=1&perPage=${perPage}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
+    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=1&perPage=${perPage}&format=${filter.type.toUpperCase()}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
     nav.push(searchQuery);
   };
 
@@ -138,6 +157,23 @@ const FetchSearch = () => {
             </Card>
           </CardHeader>
           <CardContent>
+            <CardTitle className="mb-2">Type</CardTitle>
+            <div className="flex flex-wrap gap-4">
+              {["all", "movie", "tv", "ona", "ova"].map((type, i) => (
+                <Button
+                  key={i}
+                  type="button"
+                  className="capitalize"
+                  onClick={() => setFilter((prev) => ({ ...prev, type }))}
+                  variant={filter.type == type ? "default" : "secondary"}
+                >
+                  {type}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+          <CardContent>
+            <CardTitle className="mb-2">Genres</CardTitle>
             <div className="flex flex-wrap gap-4">
               {animeGenres.map((g, i) => (
                 <Button

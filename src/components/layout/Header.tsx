@@ -35,6 +35,7 @@ export default function Header() {
   };
 
   useEffect(() => {
+    if (typeof window === undefined) return;
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setIsScrolled(true);

@@ -89,11 +89,11 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
 
   return (
     <Card className="group relative h-[400px] w-full overflow-hidden border-none transition-all">
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary to-transparent/80" />
       <img
         src={anime.image}
         alt={toAnimeTitle(anime.title as ITitle)}
-        className="absolute h-full w-full object-cover object-center opacity-20 transition-all"
+        className="absolute h-full w-full object-cover object-center opacity-70 transition-all"
       />
       <div className="absolute inset-0 flex items-end">
         <CardContent className="w-full space-y-4 p-6">

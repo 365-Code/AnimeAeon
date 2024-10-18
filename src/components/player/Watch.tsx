@@ -73,8 +73,8 @@ const Watch = ({
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
+          <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbSeparator />
             <BreadcrumbLink
               className="line-clamp-1"
               href={"/anime/" + anime.id}
@@ -83,10 +83,10 @@ const Watch = ({
               {toAnimeTitle(anime.title as ITitle)}
             </BreadcrumbLink>
           </BreadcrumbItem>
+          <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbSeparator />
             <BreadcrumbPage className="line-clamp-1">
-              {"Episode " + episode.split("episode-")[1]}
+              {"Episode " + episode.split("-episode-")[1]}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -94,7 +94,6 @@ const Watch = ({
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
         <div className="col-span-2">
           <DynamicVideoPlayer
-            animeTitle={anime.title}
             episodes={anime.episodes}
             totalEpisodes={
               anime.currentEpisode ||

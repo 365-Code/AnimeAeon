@@ -1,43 +1,24 @@
 import { useEffect, useState } from "react";
 import Player from "./Player";
-import { useParams, useSearchParams } from "next/navigation";
-import { IAnimeEpisode, ITitle } from "@consumet/extensions";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "../ui/breadcrumb";
+import { useSearchParams } from "next/navigation";
+import { IAnimeEpisode } from "@consumet/extensions";
 import EpisodeHandler from "./EpisodeHandler";
 import { LoaderPinwheel } from "lucide-react";
 import { toast } from "sonner";
-import { toAnimeTitle } from "@/utils";
 import { useMutation } from "@tanstack/react-query";
 
 const VideoPlayer = ({
   episodes,
   totalEpisodes,
-  animeTitle,
 }: {
   episodes?: IAnimeEpisode[];
   totalEpisodes?: number;
-  animeTitle: ITitle | string;
 }) => {
   const searchParams = useSearchParams();
   const episode = searchParams.get("episode") as string;
-  const params = useParams();
-  const animeId = Number(params["id"]);
-  // const [isLoading, setIsLoading] = useState(true);
   const [epSources, setEpSources] = useState<
-    { quality: string; url: string }[]
-  >([
-    {
-      quality: "default",
-      url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    },
-  ]);
+    { isM3U8: Boolean; quality: string; url: string }[]
+  >([]);
 
   const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
     mutationKey: ["fetch-episode"],
@@ -58,9 +39,10 @@ const VideoPlayer = ({
   });
 
   useEffect(() => {
-    if (episode) {
-      fetchEpisode();
-    }
+    const debounce = setTimeout(() => {
+      if (episode) fetchEpisode();
+    }, 1000);
+    return () => clearTimeout(debounce);
   }, [episode]);
 
   return (

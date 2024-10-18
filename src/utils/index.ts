@@ -1,7 +1,7 @@
 import { Genres, IAnimeInfo, ITitle } from "@consumet/extensions";
 
 export const perPage = 18;
-export const animeGenres = Object.values(Genres)
+export const animeGenres = Object.values(Genres);
 export interface IArtWork {
   img: string;
   type: string;
@@ -125,6 +125,14 @@ export const getWords = (str: string, count: number) => {
   return ans.trim();
 };
 
+export default function pauseFunction(delay: number) {
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Done!");
+    }, delay);
+  });
+  return promise;
+}
 
 const removeChars = (aName: string, characters: string[]) => {
   let animeId = aName;

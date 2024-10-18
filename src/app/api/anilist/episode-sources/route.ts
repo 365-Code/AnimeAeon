@@ -1,4 +1,5 @@
 import { META } from "@consumet/extensions";
+import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -10,15 +11,25 @@ export async function GET(req: NextRequest) {
     if (!result) {
       return NextResponse.json({ success: false }, { status: 404 });
     }
-    return NextResponse.json({
-      success: true,
-      headers: result.headers,
-      sources: result.sources,
-    });
-  } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 },
+      {
+        success: true,
+        headers: result.headers,
+        sources: result.sources,
+      },
+      { status: 200 },
     );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return NextResponse.json(
+        { success: false, message: error.message },
+        { status: 500 },
+      );
+    } else {
+      return NextResponse.json(
+        { success: false, message: "Internal Server Error" },
+        { status: 500 },
+      );
+    }
   }
 }

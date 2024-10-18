@@ -12,8 +12,35 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AnimeAeon",
-  description: "An anime streaming app",
+  title: {
+    default: "Your Anime Destination | AnimeAeon",
+    template: "%s | AnimeAeon",
+  },
+  description:
+    "An anime streaming app featuring a vast collection of anime shows and movies.",
+  openGraph: {
+    title: "AnimeAeon",
+    description:
+      "An anime streaming app featuring a vast collection of anime shows and movies.",
+    url: "https://animeaeon.vercel.com", // Replace with your actual website URL
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AnimeAeon",
+    description:
+      "An anime streaming app featuring a vast collection of anime shows and movies.",
+    images: "/assets/logo.jpg", // Replace with your actual logo or promotional image
+  },
+  keywords: [
+    "anime",
+    "streaming",
+    "anime shows",
+    "anime movies",
+    "animeAeon",
+    "anime aeon",
+    "aeon",
+  ],
 };
 
 export default function RootLayout({

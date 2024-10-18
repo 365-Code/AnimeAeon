@@ -13,11 +13,10 @@ import {
 } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const screenSize =
-  typeof window != undefined && window.innerWidth <= 500 ? true : false;
+  typeof window !== undefined && window.innerWidth <= 500 ? true : false;
 
 const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   const animeTitle = toAnimeTitle(anime.title as ITitle);
@@ -86,6 +85,8 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               image: anime.image,
               title: anime.title,
               genres: anime.genres,
+              description: anime.description,
+              type: anime.type?.toLowerCase(),
             },
           ]),
         );
@@ -99,6 +100,8 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
             image: anime.image,
             title: anime.title,
             genres: anime.genres,
+            description: anime.description,
+            type: anime.type?.toLowerCase(),
           },
         ]),
       );
@@ -186,61 +189,8 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
             <h2 className={`text-3xl font-semibold sm:text-4xl`}>
               {animeTitle}
             </h2>
-            {/* <div className="flex flex-col gap-2">
-              {anime.studios?.map((studio, i) => (
-                <Badge
-                  className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
-                  key={i}
-                  style={{ color: anime.color }}
-                >
-                  {studio}
-                </Badge>
-              ))}
-              <div className="flex flex-wrap items-center gap-2">
-                {anime.season && <Badge>{anime.season}</Badge>}
-
-                {anime.releaseDate && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.releaseDate}</Badge>
-                  </>
-                )}
-                {anime.type && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.type}</Badge>
-                  </>
-                )}
-                {(anime.totalEpisodes || anime.currentEpisode) && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
-                  </>
-                )}
-                {anime.status && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.status}</Badge>
-                  </>
-                )}
-              </div>
-              <Badge
-                className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
-              >
-                <Star
-                  fill={anime.color}
-                  stroke={anime.color}
-                  className={`h-[20px] w-[20px] ${!anime.color && "fill-rose-600 text-rose-600"}`}
-                />
-                <span style={{ color: anime.color }} className="font-semibold">
-                  {anime.rating ? anime.rating + "%" : ""}
-                </span>
-              </Badge>
-            </div> */}
-          </div>
-          <div className="w-fit">
-            <div className="mb-2 flex flex-col gap-2">
-              <div className="flex flex-wrap items-center gap-2">
+            {String(toAnimeTitle(anime.title as ITitle))?.length <= 50 && (
+              <div className="flex flex-col gap-2">
                 {anime.studios?.map((studio, i) => (
                   <Badge
                     className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
@@ -250,7 +200,36 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                     {studio}
                   </Badge>
                 ))}
+                <div className="flex flex-wrap items-center gap-2">
+                  {anime.season && <Badge>{anime.season}</Badge>}
 
+                  {anime.releaseDate && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.releaseDate}</Badge>
+                    </>
+                  )}
+                  {anime.type && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.type}</Badge>
+                    </>
+                  )}
+                  {(anime.totalEpisodes || anime.currentEpisode) && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>
+                        {anime.currentEpisode || anime.totalEpisodes}
+                      </Badge>
+                    </>
+                  )}
+                  {anime.status && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.status}</Badge>
+                    </>
+                  )}
+                </div>
                 <Badge
                   className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
                 >
@@ -267,35 +246,70 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                   </span>
                 </Badge>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                {anime.season && <Badge>{anime.season}</Badge>}
+            )}
+          </div>
+          <div className="w-fit">
+            {String(toAnimeTitle(anime.title as ITitle))?.length > 50 && (
+              <div className="mb-2 flex flex-col gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  {anime.studios?.map((studio, i) => (
+                    <Badge
+                      className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
+                      key={i}
+                      style={{ color: anime.color }}
+                    >
+                      {studio}
+                    </Badge>
+                  ))}
 
-                {anime.releaseDate && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.releaseDate}</Badge>
-                  </>
-                )}
-                {anime.type && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.type}</Badge>
-                  </>
-                )}
-                {(anime.totalEpisodes || anime.currentEpisode) && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
-                  </>
-                )}
-                {anime.status && (
-                  <>
-                    <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                    <Badge>{anime.status}</Badge>
-                  </>
-                )}
+                  <Badge
+                    className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
+                  >
+                    <Star
+                      fill={anime.color}
+                      stroke={anime.color}
+                      className={`h-[20px] w-[20px] ${!anime.color && "fill-rose-600 text-rose-600"}`}
+                    />
+                    <span
+                      style={{ color: anime.color }}
+                      className="font-semibold"
+                    >
+                      {anime.rating ? anime.rating + "%" : ""}
+                    </span>
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {anime.season && <Badge>{anime.season}</Badge>}
+
+                  {anime.releaseDate && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.releaseDate}</Badge>
+                    </>
+                  )}
+                  {anime.type && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.type}</Badge>
+                    </>
+                  )}
+                  {(anime.totalEpisodes || anime.currentEpisode) && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>
+                        {anime.currentEpisode || anime.totalEpisodes}
+                      </Badge>
+                    </>
+                  )}
+                  {anime.status && (
+                    <>
+                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
+                      <Badge>{anime.status}</Badge>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
             <Card
               className={
                 "mb-2 mt-auto hidden overflow-hidden scroll-smooth border-none custom-scrollbar sm:block sm:basis-1/2 md:max-h-[250px]"
@@ -330,15 +344,12 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                   // onClick={handleWatch}
                   className="flex items-center gap-1 sm:p-6"
                 >
-                  <PlayCircle size={15} className="m-0 p-0" />
+                  <PlayCircle size={20} className="m-0 p-0" />
                   {currEpisode.continue ? "Continue Watching" : "Watch Now"}
                 </Button>
               </Link>
             ) : (
-              <Button
-                // onClick={handleWatch}
-                className="flex items-center gap-1 sm:p-6"
-              >
+              <Button className="flex items-center gap-1 sm:p-6">
                 Not Available Now
               </Button>
             )}
@@ -346,8 +357,20 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               onClick={handleWatchList}
               className="flex items-center gap-1 sm:p-6"
             >
-              {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
-              Add to WatchList
+              {inWatch ? (
+                <>
+                  <BookmarkCheck
+                    fill="white"
+                    className="stroke-secondary text-primary"
+                    size={20}
+                  />{" "}
+                  Remove Watch
+                </>
+              ) : (
+                <>
+                  <Bookmark size={20} /> Add to WatchList
+                </>
+              )}
             </Button>
           </div>
           <div className="flex items-center gap-4">

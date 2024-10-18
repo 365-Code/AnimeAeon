@@ -5,27 +5,28 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { animeGenres, IRecentEpisode, toAnimeTitle } from "@/utils";
+import { animeGenres, toAnimeTitle } from "@/utils";
 import { IAnimeResult, ITitle } from "@consumet/extensions";
 import { Search } from "lucide-react";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-type WatchlistType = {
-  id: string;
-  title: string | ITitle;
-  genres: string[];
-  image: string;
-};
+// type WatchlistType = {
+//   id: string;
+//   title: string | ITitle;
+//   description: string
+//   genres: string[];
+//   image: string;
+// };
 
 const Page = () => {
-  const [AllWatchList, setAllWatchList] = useState<WatchlistType[]>([]);
-  const [watchList, setWatchList] = useState<WatchlistType[]>([]);
+  const [AllWatchList, setAllWatchList] = useState<IAnimeResult[]>([]);
+  const [watchList, setWatchList] = useState<IAnimeResult[]>([]);
 
+  const [filterType, setFilterType] = useState<string>("all");
   const [filterGenres, setFilterGenres] = useState<string[]>([]);
   const [filterInput, setFilterInput] = useState<string>("");
 
@@ -47,21 +48,36 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    if (!filterInput && !filterGenres.length && AllWatchList.length) {
+    if (!filterInput && !filterGenres.length && filterType == "all" && AllWatchList.length) {
       setWatchList(AllWatchList);
       return;
-    };
-
+    }
     if (filterGenres.length != 0) {
-      const list: WatchlistType[] = [];
-      filterGenres.forEach((g) => {
-        AllWatchList.forEach((a) => {
-          if (a.genres?.length && a.genres.includes(g)) {
-            list.push(a);
+      const list: IAnimeResult[] = [];
+      // filterGenres.forEach((g) => {
+      //   AllWatchList.forEach((a) => {
+      //     if (a.genres?.length && a.genres.includes(g)) list.push(a);
+      //   });
+      // });
+      let flag = true;
+      AllWatchList.forEach((anime) => {
+        flag = true;
+        if (anime.genres) {
+          for (let i = 0; i < filterGenres.length; i++) {
+            if (
+              anime.genres.findIndex((g: string) => g == filterGenres[i]) == -1
+            )
+              flag = false;
           }
-        });
+          if (flag) {
+            list.push(anime);
+          }
+        }
       });
       setWatchList(() => list);
+    }
+    if (filterType != "all") {
+      setWatchList(AllWatchList.filter((anime) => anime.type == filterType));
     }
     if (filterInput) {
       setWatchList(() =>
@@ -72,7 +88,7 @@ const Page = () => {
         ),
       );
     }
-  }, [filterGenres, filterInput]);
+  }, [filterGenres, filterInput, filterType]);
 
   return (
     <section className="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col justify-center">
@@ -100,6 +116,23 @@ const Page = () => {
               </Card>
             </CardHeader>
             <CardContent>
+              <CardTitle className="mb-2">Type</CardTitle>
+              <div className="flex flex-wrap gap-4">
+                {["all", "movie", "tv", "ova", "ona"].map((t, i) => (
+                  <Button
+                    key={i}
+                    type="button"
+                    onClick={() => setFilterType(t)}
+                    className="capitalize"
+                    variant={filterType == t ? "default" : "secondary"}
+                  >
+                    {t}
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+            <CardContent>
+              <CardTitle className="mb-2">Genres</CardTitle>
               <div className="flex flex-wrap gap-4">
                 {animeGenres.map((g, i) => (
                   <Button
@@ -117,9 +150,6 @@ const Page = () => {
                 ))}
               </div>
             </CardContent>
-            <CardFooter>
-              <Button type="submit">Filter</Button>
-            </CardFooter>
           </Card>
           <div>
             {watchList.length == 0 && (
