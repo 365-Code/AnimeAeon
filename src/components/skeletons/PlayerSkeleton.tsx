@@ -29,7 +29,8 @@ export default function PlayerSkeleton() {
       </CardContent>
       <CardFooter className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          We're having trouble loading this episode. Please try again later.
+          We&apos;re having trouble loading this episode. Please try again
+          later.
         </div>
         <Button
           variant="outline"
