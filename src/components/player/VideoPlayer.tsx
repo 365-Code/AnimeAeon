@@ -6,6 +6,7 @@ import { LoaderPinwheel } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { toast } from "sonner";
+import Player from "./Player";
 
 const DynamicPlayer = dynamic(() => import("./Player"), {
   ssr: false,
@@ -72,7 +73,8 @@ const VideoPlayer = ({
         />
       </div>
       <div className="relative">
-        {epSource && <DynamicPlayer source={epSource} />}
+        {/* <DynamicPlayer source={epSource} /> */}
+        <Player source={epSource} />
         {/* <Player source={epSources.length > 0 ? epSource : ""} /> */}
         {isLoading && (
           <div className="plyr-react absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-transparent/50">
