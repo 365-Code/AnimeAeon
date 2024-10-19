@@ -16,7 +16,6 @@ export default function PlayerSkeleton({
   loading?: boolean;
 }) {
   const nav = useRouter();
-
   return (
     <Card className="mx-auto flex h-full w-full flex-col items-center justify-center">
       {!loading && (

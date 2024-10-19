@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import AnimeEpisodes from "../list/AnimeEpisodes";
 import {
@@ -100,7 +100,7 @@ const Watch = ({
             />
         </div>
         <div className="col-span-1">
-          <AnimeEpisodes episodeList={anime.episodes || []} />
+          <AnimeEpisodes episodeId={episode} episodeList={anime.episodes || []} />
         </div>
       </section>
     </>

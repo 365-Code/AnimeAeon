@@ -1,14 +1,22 @@
 "use client";
 import { IAnimeEpisode } from "@consumet/extensions";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
-const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
-  const searchParams = useSearchParams();
-  const episodeId = searchParams.get("episode") as string;
+const AnimeEpisodes = ({
+  episodeList,
+  episodeId,
+}: {
+  episodeList: IAnimeEpisode[];
+  episodeId: string;
+}) => {
+  const epRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (epRef.current) epRef.current.scrollIntoView(true);
+  }, [episodeId]);
 
   return (
     <Card className="relative w-full overflow-hidden shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
@@ -23,6 +31,7 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
             <Link href={"?episode=" + ep.id} key={i}>
               <Button
                 type="button"
+                ref={episodeId == ep.id ? epRef : null}
                 variant={episodeId == ep.id ? "default" : "secondary"}
                 // className="hover:bg-primary hover:text-primary-foreground"
               >

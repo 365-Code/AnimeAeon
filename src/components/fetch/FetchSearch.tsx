@@ -141,6 +141,7 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
             <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
               <Search />
               <Input
+                autoFocus={true}
                 type="search"
                 value={filter.searchInput}
                 onChange={(e) =>
