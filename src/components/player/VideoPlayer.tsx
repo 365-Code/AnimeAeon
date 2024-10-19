@@ -3,6 +3,7 @@ import EpisodeHandler from "./EpisodeHandler";
 import { toast } from "sonner";
 import Player from "./Player";
 import { notFound } from "next/navigation";
+import PlayerSkeleton from "../skeletons/PlayerSkeleton";
 
 const fetchEpisode = async (episode: string) => {
   try {
@@ -21,9 +22,10 @@ const fetchEpisode = async (episode: string) => {
         epSources.find((e) => e.quality == "360")?.url ||
         epSources.find((e) => e.quality == "480")?.url ||
         epSources.find((e) => e.quality == "720")?.url ||
-        "";
+        "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
       return source;
     }
+    return "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
   } catch (error) {
     throw error;
   }
@@ -40,7 +42,12 @@ const VideoPlayer = async ({
 }) => {
   const epSource = await fetchEpisode(episode);
 
-  if (!epSource) notFound();
+  if (!epSource)
+    return (
+      <div className="h-full w-full">
+        <PlayerSkeleton />
+      </div>
+    );
 
   return (
     <div className="relative my-auto flex h-fit w-full flex-col">
@@ -52,7 +59,7 @@ const VideoPlayer = async ({
         />
       </div>
       <div className="relative">
-        <Player source={epSource} />
+        <Player source={String(epSource)} />
       </div>
       {/* </div> */}
     </div>
