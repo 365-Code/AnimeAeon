@@ -72,12 +72,7 @@ const VideoPlayer = ({
         />
       </div>
       <div className="relative">
-        {!isLoading && !epSource && (
-          <div className="my-6 text-center text-3xl text-white">
-            Couldn&apos;t Fetch Episode
-          </div>
-        )}
-        <DynamicPlayer source={epSource} />
+        {epSource && <DynamicPlayer source={epSource} />}
         {/* <Player source={epSources.length > 0 ? epSource : ""} /> */}
         {isLoading && (
           <div className="plyr-react absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-transparent/50">
