@@ -30,7 +30,9 @@ const useHls = (src: string, options: Options | null) => {
   }, [options]);
 
   React.useEffect(() => {
-    hls.current.loadSource(src);
+    hls.current.loadSource(
+      src || "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    );
     hls.current.attachMedia(document.querySelector(".plyr-react")!);
     hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
       if (hasQuality.current) return; // early quit if already set

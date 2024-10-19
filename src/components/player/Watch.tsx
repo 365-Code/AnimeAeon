@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import AnimeEpisodes from "../list/AnimeEpisodes";
-import dynamic from "next/dynamic";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,10 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
 import { ITitle } from "@consumet/extensions";
-
-const DynamicVideoPlayer = dynamic(() => import("./VideoPlayer"), {
-  ssr: false,
-});
+import VideoPlayer from "./VideoPlayer";
 
 const Watch = ({
   anime,
@@ -93,7 +89,7 @@ const Watch = ({
       </Breadcrumb>
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
         <div className="col-span-2">
-          <DynamicVideoPlayer
+          <VideoPlayer
             episode={episode}
             episodes={anime.episodes}
             totalEpisodes={
