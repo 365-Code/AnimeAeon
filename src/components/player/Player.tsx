@@ -123,8 +123,11 @@ const CustomPlyrInstance = React.forwardRef<
 const Player = ({ source }: { source: string }) => {
   const ref = React.useRef<APITypes>(null);
   const supported = Hls.isSupported();
+  const mountRef = React.useRef<boolean>(false);
 
-  if (!source) return;
+  React.useEffect(() => {
+    if (!mountRef.current) mountRef.current = true;
+  }, [source]);
 
   return (
     <div className="wrapper h-full w-full overflow-hidden rounded-xl object-scale-down">
