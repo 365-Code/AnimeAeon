@@ -43,13 +43,11 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
   const status = searchParams["status"] || "";
   const season = searchParams["season"] || "";
 
-  console.log(query, format, sort, genres, status, season);
-
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "All"}&sort=${sort || "All"}&genres=${genres || "All"}&status=${status || "All"}&season=${season || "All"}`;
+  const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "ALL"}&sort=${sort || "All"}&genres=${genres || "All"}&status=${status || "All"}&season=${season || "All"}`;
 
   const [filter, setFilter] = useState({
     genres: genres || [],

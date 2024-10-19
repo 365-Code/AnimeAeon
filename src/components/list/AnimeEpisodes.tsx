@@ -17,14 +17,14 @@ const AnimeEpisodes = ({ episodeList }: { episodeList: IAnimeEpisode[] }) => {
       </CardHeader>
 
       {/* Scrollable List of Episodes */}
-      <CardContent className="h-full flex-1 overflow-auto custom-scrollbar pr-2 pb-2">
-        <div className="flex flex-row items-start md:flex-wrap gap-4">
+      <CardContent className="mr-4 h-full flex-1 overflow-auto custom-scrollbar sm:m-auto">
+        <div className="flex flex-row items-start gap-3 pb-2 md:flex-wrap">
           {episodeList?.map((ep, i) => (
             <Link href={"?episode=" + ep.id} key={i}>
               <Button
                 type="button"
                 variant={episodeId == ep.id ? "default" : "secondary"}
-                className="hover:bg-primary hover:text-primary-foreground"
+                // className="hover:bg-primary hover:text-primary-foreground"
               >
                 {ep.title}
               </Button>
