@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { IAnimeEpisode } from "@consumet/extensions";
 import EpisodeHandler from "./EpisodeHandler";
 import { LoaderPinwheel } from "lucide-react";
@@ -7,10 +6,6 @@ import { useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { toast } from "sonner";
 import Player from "./Player";
-
-const DynamicPlayer = dynamic(() => import("./Player"), {
-  ssr: false,
-});
 
 const VideoPlayer = ({
   episodes,
@@ -73,9 +68,7 @@ const VideoPlayer = ({
         />
       </div>
       <div className="relative">
-        {/* <DynamicPlayer source={epSource} /> */}
-        <Player source={epSource} />
-        {/* <Player source={epSources.length > 0 ? epSource : ""} /> */}
+        <Player source={epSources.length > 0 ? epSource : ""} />
         {isLoading && (
           <div className="plyr-react absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-transparent/50">
             <LoaderPinwheel className="animate-spin" size={55} />
