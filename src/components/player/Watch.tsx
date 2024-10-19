@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { IAnimeInfoAnilit, toAnimeTitle } from "@/utils";
 import AnimeEpisodes from "../list/AnimeEpisodes";
 import {
@@ -89,15 +89,15 @@ const Watch = ({
       </Breadcrumb>
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
         <div className="col-span-2">
-          <VideoPlayer
-            episode={episode}
-            episodes={anime.episodes}
-            totalEpisodes={
-              anime.currentEpisode ||
-              anime.totalEpisodes ||
-              anime.episodes?.length
-            }
-          />
+            <VideoPlayer
+              episode={episode}
+              episodes={anime.episodes}
+              totalEpisodes={
+                anime.currentEpisode ||
+                anime.totalEpisodes ||
+                anime.episodes?.length
+              }
+            />
         </div>
         <div className="col-span-1">
           <AnimeEpisodes episodeList={anime.episodes || []} />

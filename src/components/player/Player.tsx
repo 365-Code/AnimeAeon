@@ -30,9 +30,8 @@ const useHls = (src: string, options: Options | null) => {
   }, [options]);
 
   React.useEffect(() => {
-    hls.current.loadSource(
-      src || "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    );
+    if (!src) return;
+    hls.current.loadSource(src);
     hls.current.attachMedia(document.querySelector(".plyr-react")!);
     hls.current.on(Hls.Events.MANIFEST_PARSED, () => {
       if (hasQuality.current) return; // early quit if already set
@@ -91,6 +90,12 @@ const useHls = (src: string, options: Options | null) => {
       });
       hasQuality.current = true;
     });
+
+    return () => {
+      if (hls.current) {
+        hls.current.destroy();
+      }
+    };
   }, [src]);
 
   const updateQuality = (newQuality: number) => {
@@ -126,7 +131,8 @@ const Player = ({ source }: { source: string }) => {
   const ref = React.useRef<APITypes>(null);
   const supported = Hls.isSupported();
   const mountRef = React.useRef<boolean>(false);
-
+  console.log("Source = ", source);
+  
   React.useEffect(() => {
     if (!mountRef.current) mountRef.current = true;
   }, [source]);
