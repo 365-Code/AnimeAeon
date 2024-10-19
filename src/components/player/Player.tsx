@@ -124,6 +124,8 @@ const Player = ({ source }: { source: string }) => {
   const ref = React.useRef<APITypes>(null);
   const supported = Hls.isSupported();
 
+  if (!source) return;
+
   return (
     <div className="wrapper h-full w-full overflow-hidden rounded-xl object-scale-down">
       {supported ? (
