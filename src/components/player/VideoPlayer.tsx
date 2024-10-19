@@ -68,7 +68,13 @@ const VideoPlayer = ({
         />
       </div>
       <div className="relative">
-        <Player source={epSources.length > 0 ? epSource : ""} />
+        <Player
+          source={
+            epSources.length > 0
+              ? epSource
+              : "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+          }
+        />
         {isLoading && (
           <div className="plyr-react absolute left-0 top-0 flex h-full w-full animate-pulse flex-col items-center justify-center rounded-xl bg-transparent/50">
             <LoaderPinwheel className="animate-spin" size={55} />
