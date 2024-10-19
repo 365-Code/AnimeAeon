@@ -2,14 +2,7 @@ import { IAnimeEpisode } from "@consumet/extensions";
 import EpisodeHandler from "./EpisodeHandler";
 import { toast } from "sonner";
 import PlayerSkeleton from "../skeletons/PlayerSkeleton";
-import dynamic from "next/dynamic";
-
-const DynamicPlayer = dynamic(() => import("./Player"), {
-  ssr: false,
-  loading() {
-    return <PlayerSkeleton loading={true} />;
-  },
-});
+import Player from "./Player";
 
 const fetchEpisode = async (episode: string) => {
   try {
@@ -65,8 +58,7 @@ const VideoPlayer = async ({
         />
       </div>
       <div className="relative">
-        {/* <Player source={String(epSource)} /> */}
-        <DynamicPlayer source={String(epSource)} />
+        <Player source={String(epSource)} />
       </div>
       {/* </div> */}
     </div>
