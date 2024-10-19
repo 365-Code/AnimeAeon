@@ -12,11 +12,7 @@ const AnimeEpisodes = ({
   episodeList: IAnimeEpisode[];
   episodeId: string;
 }) => {
-  const epRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
-    if (epRef.current) epRef.current.scrollIntoView(true);
-  }, [episodeId]);
 
   return (
     <Card className="relative w-full overflow-hidden shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
@@ -31,7 +27,6 @@ const AnimeEpisodes = ({
             <Link href={"?episode=" + ep.id} key={i}>
               <Button
                 type="button"
-                ref={episodeId == ep.id ? epRef : null}
                 variant={episodeId == ep.id ? "default" : "secondary"}
                 // className="hover:bg-primary hover:text-primary-foreground"
               >

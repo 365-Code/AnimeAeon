@@ -29,7 +29,6 @@ export default function PlayerSkeleton({
       {loading && (
         <CardContent className="h-full w-full pt-4">
           <Skeleton className="aspect-video w-full rounded-md" />
-          <Skeleton className="mt-4 h-4 w-full" />
         </CardContent>
       )}
       {!loading && (

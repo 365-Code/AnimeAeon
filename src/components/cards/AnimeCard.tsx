@@ -6,7 +6,22 @@ import React from "react";
 import { Badge } from "../ui/badge";
 import { Star } from "lucide-react";
 
+const colors = [
+  "#ef4444",
+  "#f97316",
+  "#f59e0b",
+  "#84cc16",
+  "#10b981",
+  "#0ea5e9",
+  "#3b82f6",
+  "#d946ef",
+  "#ec4899",
+  "#f43f5e",
+];
+
 const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
+  const animeTitle = toAnimeTitle(anime.title as ITitle);
+  const color = colors[Math.floor(Math.random() * 10) % 10]
   return (
     <div className="snap-start pl-3 pt-3">
       {/* <div className="anime-card"> */}
@@ -21,7 +36,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           width={400}
           height={400}
           src={anime?.image || ""}
-          alt={toAnimeTitle(anime.title as ITitle)}
+          alt={animeTitle}
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
         <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 font-semibold">
@@ -39,36 +54,28 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               Episodes
             </Badge>
           )}
-          {/* </div> */}
-          {/* {anime.genres && anime.genres.length > 0 ? (
-            anime.genres?.map(
-              (g, i) =>
-                (i < 2 ? g : "") +
-                (anime?.genres?.length && anime?.genres?.length > 1 && i < 1
-                  ? ", "
-                  : ""),
-            )
-          ) : (
-            <span className="invisible">Genres: N/A</span>
-          )} */}
         </div>
-        {/* <div className="anime-card-detail"> */}
         <div className="relative flex flex-col justify-between px-2 pb-6 pl-4 pt-10 text-left sm:flex-1 sm:pl-6">
           <div className="flex flex-col gap-2">
             <Link href={"/anime/" + anime.id}>
-              <h3 className="gradient-text line-clamp-3 from-slate-200 to-slate-400 text-lg font-semibold sm:text-3xl">
-                {toAnimeTitle(anime.title as ITitle)}
+              <h3 className=" line-clamp-3 text-lg font-semibold sm:text-3xl">
+                {animeTitle}
               </h3>
             </Link>
-            <p className="text-sm font-medium text-orange-500">
+            <Badge className="w-fit text-orange-500">
               {(anime.studios && anime.studios[0]) ||
                 anime.status ||
                 "Studio: N/A"}
-            </p>
+            </Badge>
           </div>
           <div className="flex flex-col gap-2">
-            <Badge className="w-fit gap-2 text-sm sm:text-lg md:text-xl">
-              <Star stroke="#f97316" fill="#f97316" />
+            <Badge
+              style={{
+                color: color
+              }}
+              className="w-fit gap-2 text-sm sm:text-lg md:text-xl"
+            >
+              <Star stroke={color} fill={color} />
               {anime.rating ? anime.rating + "%" : "Rating: N/A"}
             </Badge>
             <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
@@ -85,7 +92,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
             width={500}
             height={500}
             src={anime.image || ""}
-            alt={toAnimeTitle(anime.title as ITitle)}
+            alt={animeTitle}
             className="h-full w-full object-cover object-center"
           />
         </div>

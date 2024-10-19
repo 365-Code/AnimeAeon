@@ -1,7 +1,19 @@
 import React, { useEffect, useRef } from "react";
-import Hls from "hls.js";
+import Hls, { HlsConfig } from "hls.js";
 import Plyr, { Options } from "plyr";
 import "plyr/dist/plyr.css";
+
+const hlsConfig = {
+  maxBufferLength: 20, // Reduce buffer size to improve loading time
+  maxMaxBufferLength: 60, // Limit the max buffer length
+  maxBufferSize: 60 * 1000 * 1000, // Cap buffer size at 60MB
+  maxBufferHole: 0.5, // Manage buffer gaps better
+  lowLatencyMode: true, // Enable low-latency streaming for faster start
+  startLevel: 1, // Start with a lower quality level
+  autoStartLoad: true, // Auto start loading the stream
+  startFragPrefetch: true, // Prefetch the next fragment to avoid buffering
+  capLevelOnFPSDrop: true, // Adjust quality if FPS drops
+} as HlsConfig;
 
 const Player: React.FC<{ source: string }> = ({ source }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -21,7 +33,7 @@ const Player: React.FC<{ source: string }> = ({ source }) => {
       playerRef.current = new Plyr(video, defaultOptions);
     } else {
       // Initialize Hls.js
-      hlsRef.current = new Hls();
+      hlsRef.current = new Hls(hlsConfig);
       hlsRef.current.loadSource(source);
 
       hlsRef.current.on(Hls.Events.MANIFEST_PARSED, () => {
