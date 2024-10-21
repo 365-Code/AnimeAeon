@@ -337,7 +337,9 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                   "/anime/" +
                   anime.id +
                   "?episode=" +
-                  anime.episodes[currEpisode.number].id
+                  anime.episodes[currEpisode.number].id +
+                  "&ep=" +
+                  (currEpisode.number + 1)
                 }
               >
                 <Button

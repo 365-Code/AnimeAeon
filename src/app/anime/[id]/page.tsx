@@ -46,8 +46,11 @@ export async function generateMetadata({
   const animeInfo = (await fetchAnimeInfo(params.id)) as IAnimeInfoAnilit;
   const animeTitle = animeInfo.title as ITitle;
   const metaTitle =
-    toAnimeTitle(animeInfo.title as ITitle) +
-    (searchParams.episode ? searchParams.episode : "");
+    (searchParams.episode
+      ? "Episode-" +
+        String(searchParams.episode).split("-episode-").at(-1) +
+        " | "
+      : "") + toAnimeTitle(animeInfo.title as ITitle);
   const metaUrl =
     "https://animeaeon.vercel.app/anime/" +
     animeInfo.id +

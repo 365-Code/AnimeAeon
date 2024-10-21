@@ -1,7 +1,7 @@
 "use client";
 import { IAnimeEpisode } from "@consumet/extensions";
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
@@ -12,8 +12,6 @@ const AnimeEpisodes = ({
   episodeList: IAnimeEpisode[];
   episodeId: string;
 }) => {
-
-
   return (
     <Card className="relative w-full overflow-hidden shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
       <CardHeader>

@@ -4,7 +4,8 @@ import { ITitle } from "@consumet/extensions";
 import Link from "next/link";
 import React from "react";
 import { Badge } from "../ui/badge";
-import { Star } from "lucide-react";
+import { Bookmark, BookmarkCheck, Star } from "lucide-react";
+import useWatchList from "@/hooks/useWatchList";
 
 const colors = [
   "#ef4444",
@@ -21,7 +22,10 @@ const colors = [
 
 const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   const animeTitle = toAnimeTitle(anime.title as ITitle);
-  const color = colors[Math.floor(Math.random() * 10) % 10]
+  const color = colors[Math.floor(Math.random() * 10) % 10];
+
+  const { inWatch, handleWatchList } = useWatchList({ anime });
+
   return (
     <div className="snap-start pl-3 pt-3">
       {/* <div className="anime-card"> */}
@@ -40,6 +44,9 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
         <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 font-semibold">
+          <Badge onClick={handleWatchList}>
+            {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
+          </Badge>
           {anime.season && (
             <Badge className="h-fit w-fit">{anime.season}</Badge>
           )}
@@ -71,7 +78,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           <div className="flex flex-col gap-2">
             <Badge
               style={{
-                color: color
+                color: color,
               }}
               className="w-fit gap-2 text-sm sm:text-lg md:text-xl"
             >

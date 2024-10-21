@@ -8,7 +8,11 @@ const queryClient = new QueryClient();
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem={true}
+      >
         {children}
         <Toaster richColors />
       </ThemeProvider>

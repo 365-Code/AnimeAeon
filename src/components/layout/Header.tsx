@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import Link from "next/link";
-import { Menu, Search, Play, Tv, TvMinimal } from "lucide-react";
+import { Menu, Search, TvMinimal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -15,14 +15,14 @@ import {
 import Image from "next/image";
 import FetchRecentEpisodes from "../fetch/FetchRecentEpisodes";
 import FetchContinue from "../fetch/FetchContinue";
-import FetchWatchList from "../fetch/FetchWatchList";
 import SideNav from "./SideNav";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "../ThemeToggle";
+import { ScrollArea } from "../ui/scroll-area";
+import { CardTitle } from "../ui/card";
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -111,42 +111,50 @@ export default function Header() {
             )}
           />
         </form>
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="ml-auto">
-              <TvMinimal className={`h-6 w-6`} />
-              <span className="sr-only">Playlist</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="w-full max-w-[400px]">
-            <Accordion
-              type="single"
-              defaultValue="item-1"
-              collapsible
-              className="mt-4 h-full w-full"
-            >
-              {sectionList.map((section, index) => (
-                <AccordionItem
-                  key={index}
-                  value={"item-" + index + 1}
-                  className="overflow-hidden px-2"
-                >
-                  <AccordionTrigger className="gradient-text flex w-full items-center justify-between from-red-600 to-blue-600 py-2 text-left text-lg font-medium">
-                    {section.title}
-                  </AccordionTrigger>
-                  <AccordionContent className="max-h-[400px] overflow-y-auto custom-scrollbar">
-                    {section.component}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </SheetContent>
-        </Sheet>
+        <Playlist />
         <ThemeToggle />
       </div>
     </header>
   );
 }
+
+const Playlist = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="ml-auto">
+          <TvMinimal className={`h-6 w-6`} />
+          <span className="sr-only">Playlist</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="h-full w-full max-w-[400px]">
+        <Accordion
+          type="single"
+          defaultValue="item-1"
+          collapsible
+          className="mt-4 flex h-full w-full flex-col overflow-hidden"
+        >
+          {sectionList.map((section, index) => (
+            <AccordionItem
+              key={index}
+              value={"item-" + index + 1}
+              className="max-h-full overflow-hidden"
+            >
+              <AccordionTrigger className="text-lg font-medium">
+                <CardTitle>{section.title}</CardTitle>
+              </AccordionTrigger>
+              <AccordionContent className="flex-1">
+                {section.component}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 const sectionList = [
   {
@@ -155,10 +163,14 @@ const sectionList = [
   },
   {
     title: "Continue Watching",
-    component: <FetchContinue />,
+    component: (
+      <ScrollArea className="h-[calc(100vh-200px)]">
+        <FetchContinue />,
+      </ScrollArea>
+    ),
   },
-  {
-    title: "WatchList",
-    component: <FetchWatchList />,
-  },
+  // {
+  //   title: "WatchList",
+  //   component: <FetchWatchList />,
+  // },
 ];

@@ -12,7 +12,7 @@ const DisplayAnimeCards = ({
   return (
     <section id="disp" className="relative snap-start space-y-4">
       {title && (
-        <h2 className="gradient-text from-red-500 to-blue-500 text-xl sm:text-2xl md:text-3xl">
+        <h2 className="text-xl sm:text-2xl md:text-3xl">
           {title}
         </h2>
       )}

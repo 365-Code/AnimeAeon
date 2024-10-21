@@ -27,8 +27,13 @@ export default function PlayerSkeleton({
         </CardHeader>
       )}
       {loading && (
-        <CardContent className="h-full w-full pt-4">
-          <Skeleton className="aspect-video w-full rounded-md" />
+        <CardContent className=" h-fit w-full p-4">
+          <Skeleton className="relative my-auto aspect-video w-full rounded-md">
+            <Skeleton className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full" />
+            <div className="absolute bottom-4 h-fit w-full">
+              <Skeleton className="mx-auto h-4 w-[95%]" />
+            </div>
+          </Skeleton>
         </CardContent>
       )}
       {!loading && (
@@ -37,9 +42,9 @@ export default function PlayerSkeleton({
             We&apos;re having trouble loading this episode. Please try again
             later.
           </div>
-          <Button onClick={() => nav.refresh()}>
+          {/* <Button onClick={() => nav.refresh()}>
             Retry <RefreshCcw size={15} className="ml-2" />
-          </Button>
+          </Button> */}
         </CardFooter>
       )}
     </Card>

@@ -2,16 +2,12 @@
 import StAnimeCard from "@/components/cards/StAnimeCard";
 import Carousel from "@/components/carousel/carousel";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { animeGenres, toAnimeTitle } from "@/utils";
 import { IAnimeResult, ITitle } from "@consumet/extensions";
 import { Search } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 // type WatchlistType = {
@@ -48,7 +44,12 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    if (!filterInput && !filterGenres.length && filterType == "all" && AllWatchList.length) {
+    if (
+      !filterInput &&
+      !filterGenres.length &&
+      filterType == "all" &&
+      AllWatchList.length
+    ) {
       setWatchList(AllWatchList);
       return;
     }
@@ -95,7 +96,7 @@ const Page = () => {
       {/* {!watchList || watchList.length == 0 ? ( */}
       {!AllWatchList || AllWatchList.length == 0 ? (
         <div className="flex h-full flex-1 flex-col items-center justify-center">
-          <h2 className="gradient-text from-red-500 to-blue-500 text-center text-xl font-medium sm:text-3xl md:text-5xl">
+          <h2 className="text-center text-xl font-medium sm:text-3xl md:text-5xl">
             You didn&apos;t like anything yet
           </h2>
         </div>
@@ -153,11 +154,15 @@ const Page = () => {
           </Card>
           <div>
             {watchList.length == 0 && (
-              <h2 className="my-8 text-center text-3xl sm:text-4xl md:text-5xl">
-                Nothing Found
-              </h2>
+              <Image
+                width={300}
+                height={200}
+                alt="notthing-found"
+                src={"/assets/nothing-found.png"}
+                className="mx-auto my-[2rem] invert dark:invert-0"
+              />
             )}
-            {watchList.length >= 5 ? (
+            {watchList.length >= 12 ? (
               <Carousel animeList={watchList as IAnimeResult[]} />
             ) : (
               <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">

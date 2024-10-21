@@ -36,8 +36,12 @@ const DisplayContinue = ({
           href={"/anime/" + animeEp.id + "?episode=" + animeEp.episodeId}
           key={animeEp?.id}
         >
-          <Card className="relative mb-2 flex w-full items-center gap-4 overflow-hidden pr-4">
-            <CardHeader className="flex-1 p-4">
+          <Card className="group/recent relative mb-2 flex w-full items-center gap-4 overflow-hidden pr-4">
+            <img
+              className="absolute left-0 top-0 -z-0 h-full w-full object-cover object-center opacity-0 group-hover/recent:opacity-25 transition-all"
+              src={animeEp.image}
+            />
+            <CardHeader className="z-[1] flex-1 p-4">
               <CardTitle>{toAnimeTitle(animeEp?.title as ITitle)}</CardTitle>
               <CardDescription>
                 Episode - {animeEp?.episodeNumber}
@@ -61,9 +65,11 @@ const DisplayContinue = ({
             </div>
           ))
         : animeEpList.length == 0 && (
-            <h2 className="gradient-text from-slate-200 to-slate-800 p-4 text-center text-xl">
-              Nothing To Continue
-            </h2>
+            <CardHeader>
+              <CardTitle className="text-center text-xl">
+                Nothing To Continue
+              </CardTitle>
+            </CardHeader>
           )}
     </>
   );

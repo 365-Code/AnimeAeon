@@ -39,9 +39,9 @@ const Carousel = ({
   return (
     <div className="mx-auto max-w-7xl">
       {title && (
-        <h1 className="bg-gradient-to-br from-red-600 to-blue-600 bg-clip-text text-left text-2xl text-transparent sm:text-3xl md:text-5xl">
+        <h2 className="text-left text-2xl font-semibold sm:text-3xl md:text-4xl">
           {title}
-        </h1>
+        </h2>
       )}
       <Swiper
         effect={"coverflow"}

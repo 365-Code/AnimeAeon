@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useRef } from "react";
 import Hls, { HlsConfig } from "hls.js";
 import Plyr, { Options } from "plyr";
@@ -25,7 +26,10 @@ const Player: React.FC<{ source: string }> = ({ source }) => {
 
     if (!video) return;
 
-    const defaultOptions = {} as Options;
+    const defaultOptions = {
+      seekTime: 5,
+      keyboard: { focused: true, global: true },
+    } as Options;
 
     if (!Hls.isSupported()) {
       // Fallback for browsers that do not support HLS
@@ -48,6 +52,7 @@ const Player: React.FC<{ source: string }> = ({ source }) => {
           "progress",
           "current-time",
           "mute",
+          "volume",
           "captions",
           "settings",
           "rewind",
@@ -55,7 +60,7 @@ const Player: React.FC<{ source: string }> = ({ source }) => {
           "fullscreen",
         ];
 
-        if (window.innerWidth < 600) {
+        if (window.innerWidth < 600 && window.innerHeight < 400) {
           const filteredControls = controls.filter(
             (control) => control !== "volume",
           );

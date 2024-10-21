@@ -83,7 +83,10 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
 
   useEffect(() => {
     if (descRef.current) {
-      descRef.current.innerHTML = anime.description;
+      descRef.current.innerHTML = String(anime.description).replaceAll(
+        "<br>",
+        " ",
+      );
     }
   }, []);
 

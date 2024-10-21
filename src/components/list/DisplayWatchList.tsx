@@ -51,7 +51,7 @@ const DisplayWatchList = ({
             </div>
           ))
         : animeEpList.length == 0 && (
-            <h2 className="gradient-text from-slate-200 to-slate-800 p-4 text-center text-xl">
+            <h2 className="p-4 text-center text-xl">
               Nothing In WatchList
             </h2>
           )}

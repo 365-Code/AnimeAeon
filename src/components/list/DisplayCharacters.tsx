@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { Badge } from "../ui/badge";
 
 const DisplayCharacters = ({
   characterList,
@@ -15,9 +16,7 @@ const DisplayCharacters = ({
 }) => {
   return (
     <section className="w-full space-y-4 overflow-hidden">
-      <h2 className="gradient-text from-red-500 to-blue-500 text-xl sm:text-2xl md:text-3xl">
-        Characters
-      </h2>
+      <h2 className="text-xl sm:text-2xl md:text-3xl">Characters</h2>
       <div className="relative mx-auto flex w-fit flex-wrap justify-center gap-2 overflow-x-scroll no-scrollbar">
         {characterList?.map(
           (character, i) =>
@@ -43,14 +42,18 @@ const RoundCharacterCard = ({ character }: { character: IAnimeCharacter }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <div className="h-[7rem] w-[7rem] overflow-hidden rounded-full">
+          <div className="">
             <img
               width={400}
               height={400}
               alt={charName}
               src={character.image}
-              className="h-full w-full object-cover object-center"
+              className="h-[7rem] w-[7rem] overflow-hidden rounded-full object-cover object-center"
             />
+            <div className="text-center sm:hidden">
+              <Badge className="block text-center">{charName}</Badge>
+              <Badge className="text-center text-xs">{character.role}</Badge>
+            </div>
           </div>
         </TooltipTrigger>
         <TooltipContent>

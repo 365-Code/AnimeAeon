@@ -37,9 +37,7 @@ const VerticalCarousel = ({
   return (
     <div className="mx-auto max-w-7xl">
       {title && (
-        <h1 className="bg-gradient-to-br from-red-600 to-blue-600 bg-clip-text text-left text-2xl text-transparent sm:text-3xl md:text-5xl">
-          {title}
-        </h1>
+        <h1 className=" text-left text-2xl sm:text-3xl md:text-5xl">{title}</h1>
       )}
       <Swiper
         effect={"coverflow"}
@@ -82,7 +80,7 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
   const swiperSlide = useSwiperSlide();
 
   return (
-    <Card className="relative h-[300px] w-full overflow-hidden border-none transition-all">
+    <Card className="relative max-h-[300px] w-full overflow-hidden border-none transition-all">
       <img
         src={anime?.image || ""}
         loading="lazy"
@@ -110,7 +108,7 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
                 </Badge>
               )}
             </div>
-            <CardTitle className="line-clamp-2 text-lg sm:text-xl md:text-2xl">
+            <CardTitle className="line-clamp-2 text-lg sm:text-xl">
               {toAnimeTitle(anime.title as ITitle)}
             </CardTitle>
             <CardDescription>
@@ -142,23 +140,22 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
 };
 
 const SkeletonSlide = () => {
-
   return (
     <Card className="relative h-[300px] w-full overflow-hidden border-none transition-all">
       <img
         src={"/placeholder/loader.jpg"}
         loading="lazy"
         alt="slide_image"
-        className="h-full w-full object-cover object-center opacity-20"
+        className="h-full w-full object-cover object-center opacity-40"
       />
       <div className="absolute bottom-0 left-0 mx-auto h-fit w-full p-4">
         <div className="flex flex-col gap-2">
           <div className="flex items-stretch gap-2">
-            <Skeleton className="h-4 w-[40px] rounded-full bg-black" />
-            <Skeleton className="flex h-4 w-[80px] rounded-full bg-black" />
+            <Skeleton className="h-4 w-[40px] rounded-full bg-transparent/40" />
+            <Skeleton className="flex h-4 w-[80px] rounded-full bg-transparent/40" />
           </div>
-          <Skeleton className="h-6 w-[80%] bg-black" />
-          <Skeleton className="h-6 w-[120px] bg-black" />
+          <Skeleton className="h-6 w-[80%] bg-transparent/40" />
+          <Skeleton className="h-6 w-[120px] bg-transparent/40" />
         </div>
       </div>
     </Card>

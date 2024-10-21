@@ -17,6 +17,7 @@ import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { useMutation } from "@tanstack/react-query";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import Image from "next/image";
 
 type SearchProps = {
   query?: string;
@@ -38,7 +39,9 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
 
   const query = searchParams["query"] || "";
   const format = searchParams["format"] || "";
-  const sort = searchParams["sort"]?.split(",") || ["TRENDING_DESC"] || "";
+  const sort =
+    searchParams["sort"]?.split(",") || ["START_DATE_DESC", "TRENDING_DESC"] ||
+    "";
   const genres = searchParams["genres"]?.split(",") || "";
   const status = searchParams["status"] || "";
   const season = searchParams["season"] || "";
@@ -215,9 +218,13 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
             .map((_, i) => <StCardSkeleton key={i} />)}
       </div>
       {!loading && data && data.result.length == 0 && (
-        <h1 className="gradient-text my-6 from-slate-200 to-slate-400 text-center">
-          Nothing Found
-        </h1>
+        <Image
+          width={300}
+          height={200}
+          alt="notthing-found"
+          src={"/assets/nothing-found.png"}
+          className="mx-auto my-[2rem] invert dark:invert-0"
+        />
       )}
     </section>
   );

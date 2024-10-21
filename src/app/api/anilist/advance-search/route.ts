@@ -1,5 +1,4 @@
 import { META } from "@consumet/extensions";
-import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

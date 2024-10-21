@@ -100,18 +100,17 @@ const config: Config = {
         ".no-scrollbar::-webkit-scrollbar": {
           display: "none",
         },
-        // ".custom-scrollbar": {
-        //   "padding-right": "4px",
-        //   "padding-bottom": "4px",
-        // },
+        ".custom-scrollbar": {
+          "padding-right": "0.5rem",
+          "padding-bottom": "0.5rem",
+        },
         ".custom-scrollbar::-webkit-scrollbar": {
-          width: "1px",
-          height: "1px",
-          padding: "4px",
+          width: "4px",
+          height: "4px",
         },
         ".custom-scrollbar::-webkit-scrollbar-thumb": {
           "border-radius": "50px",
-          margin: "4px",
+          "background-color": "#94a3b8",
         },
       };
       addUtilities(newUtilities);

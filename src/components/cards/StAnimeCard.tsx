@@ -11,7 +11,10 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
 
   useEffect(() => {
     if (descRef.current && anime.description)
-      descRef.current.innerHTML = anime.description;
+      descRef.current.innerHTML = String(anime.description).replaceAll(
+        "<br>",
+        " ",
+      );
   }, []);
 
   return (
