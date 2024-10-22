@@ -38,6 +38,7 @@ import {
 import Hls from "hls.js";
 import Link from "next/link";
 import { IAnimeEpisode } from "@consumet/extensions";
+import { Switch } from "../ui/switch";
 
 const formatTime = (value: number) => {
   if (isNaN(value)) {
@@ -67,6 +68,9 @@ const CustomReactPlayer = ({
   source: string;
   currentEpisode?: string;
 }) => {
+  const [autoPlayNext, setAutoPlayNext] = useState(
+    currentEpisode ? true : false,
+  );
   const [playing, setPlaying] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -92,6 +96,7 @@ const CustomReactPlayer = ({
   const [isMobile, setIsMobile] = useState(false);
 
   const playerRef = useRef<ReactPlayer>(null);
+  const nextSourceRef = useRef<HTMLAnchorElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const skipRef = useRef<NodeJS.Timeout | null>(null);
@@ -346,10 +351,23 @@ const CustomReactPlayer = ({
     }
   }, [episodes, currentEpisode]);
 
+  const handleAutoPlayNext = () => {
+    setAutoPlayNext(!autoPlayNext);
+    localStorage.setItem("auto-play", String(!autoPlayNext));
+  };
+
+  useEffect(() => {
+    const data = localStorage.getItem("auto-play");
+    if (data) {
+      setAutoPlayNext(Boolean(data));
+    }
+  }, []);
+
   const hasPrev = epNumber <= 1 ? false : true;
   const hasNext = episodes && epNumber >= episodes.length ? false : true;
 
   const [isLoading, setIsLoading] = useState(true);
+
   const handleReady = () => {
     setIsLoading(false);
   };
@@ -395,6 +413,9 @@ const CustomReactPlayer = ({
         onReady={handleReady}
         onBuffer={handleBuffer}
         onBufferEnd={handleBufferEnd}
+        onEnded={() => {
+          if (hasNext && autoPlayNext) nextSourceRef.current?.click();
+        }}
       />
       <div className="absolute left-0 top-0 h-full w-full">
         <div className="flex h-full w-full flex-col">
@@ -577,6 +598,7 @@ const CustomReactPlayer = ({
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Link
+                              ref={nextSourceRef}
                               href={
                                 hasNext
                                   ? "?episode=" + episodes[epNumber].id
@@ -598,7 +620,7 @@ const CustomReactPlayer = ({
                           </TooltipTrigger>
                           {hasNext && (
                             <TooltipContent className="text-xs font-medium">
-                              Episode - {epNumber}
+                              Episode - {epNumber + 1}
                             </TooltipContent>
                           )}
                         </Tooltip>
@@ -656,6 +678,22 @@ const CustomReactPlayer = ({
                       </span>
                     </div>
                     <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center">
+                          <Switch
+                            checked={autoPlayNext}
+                            onCheckedChange={handleAutoPlayNext}
+                            id="autoplay-toggle"
+                            Icon={{
+                              toggleOff: Pause,
+                              toggleOn: Play,
+                            }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent className="font-semibold">
+                          Autoplay is {autoPlayNext ? "On" : "Off"}
+                        </TooltipContent>
+                      </Tooltip>
                       <VideoSettingsMenu
                         qualities={qualities}
                         onQualityChange={handleQualityChange}

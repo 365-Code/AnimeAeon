@@ -50,7 +50,7 @@ const EpisodeHandler = ({
                 Next
                 <ChevronRight size={15} className="ml-2" />
               </Button>
-            </Link> 
+            </Link>
           </div>
         )}
     </>

@@ -13,14 +13,14 @@ const AnimeEpisodes = ({
   episodeId: string;
 }) => {
   return (
-    <Card className="relative w-full overflow-hidden shadow-md backdrop-blur-md md:h-full md:max-h-[512px]">
+    <Card className="relative w-full overflow-hidden shadow-md backdrop-blur-md md:h-full md:max-h-[480px]">
       <CardHeader>
         <CardTitle>Episodes</CardTitle>
       </CardHeader>
 
       {/* Scrollable List of Episodes */}
-      <CardContent className="mr-4 h-full flex-1 overflow-auto custom-scrollbar sm:m-auto">
-        <div className="flex flex-row items-start gap-3 pb-2 md:flex-wrap">
+      <CardContent className="  h-full flex-1 overflow-auto custom-scrollbar sm:m-auto">
+        <div className="flex flex-row items-start gap-2 md:flex-wrap">
           {episodeList?.map((ep, i) => (
             <Link href={"?episode=" + ep.id} key={i}>
               <Button

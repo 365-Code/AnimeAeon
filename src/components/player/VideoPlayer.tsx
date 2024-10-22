@@ -72,19 +72,10 @@ const VideoPlayer = ({
 
   return (
     <div className="relative my-auto flex h-fit w-full flex-col">
-      {/* <div className="mb-2 flex w-full flex-wrap items-center justify-between gap-1">
-        <EpisodeHandler
-          episode={episode}
-          episodes={episodes}
-          totalEpisodes={totalEpisodes}
-        />
-      </div> */}
       {isLoading ? (
-        // <PlayerSkeleton loading={isLoading || true} />
         <VideoPlayerSkeleton />
       ) : (
         <div className="relative">
-          {/* <DynamicPlayer source={String(epSource)} /> */}
           <DynamicReactPlayer
             source={String(epSource)}
             episodes={episodes}

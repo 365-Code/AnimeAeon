@@ -6,6 +6,7 @@ import React from "react";
 import { Badge } from "../ui/badge";
 import { Bookmark, BookmarkCheck, Star } from "lucide-react";
 import useWatchList from "@/hooks/useWatchList";
+import { Button } from "../ui/button";
 
 const colors = [
   "#ef4444",
@@ -43,23 +44,24 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           alt={animeTitle}
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
-        <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 font-semibold">
-          <Badge onClick={handleWatchList}>
+        <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 text-xs font-semibold text-secondary">
+          <Button
+            className="h-fit p-1 hover:bg-secondary hover:text-secondary-foreground"
+            onClick={handleWatchList}
+          >
             {inWatch ? <BookmarkCheck size={15} /> : <Bookmark size={15} />}
-          </Badge>
-          {anime.season && (
-            <Badge className="h-fit w-fit">{anime.season}</Badge>
-          )}
+          </Button>
+          {anime.season && <span className="h-fit w-fit">{anime.season}</span>}
           {anime.releaseDate && (
-            <Badge className="h-fit w-fit">{anime.releaseDate}</Badge>
+            <span className="h-fit w-fit">{anime.releaseDate}</span>
           )}
-          <Badge className="h-fit w-fit">{anime.type}</Badge>
+          <span className="h-fit w-fit">{anime.type}</span>
           {!anime.season && (
-            <Badge className="h-fit w-fit gap-1">
+            <span className="flex h-fit w-fit items-center gap-1">
               {String(anime?.episodes)}
-              <span className="h-1 w-1 rounded-full bg-primary-foreground" />
+              <span className="h-1 w-1 rounded-full bg-secondary" />
               Episodes
-            </Badge>
+            </span>
           )}
         </div>
         <div className="relative flex flex-col justify-between px-2 pb-6 pl-4 pt-10 text-left sm:flex-1 sm:pl-6">

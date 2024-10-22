@@ -1,41 +1,78 @@
+"use client";
+
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import {
+  Play,
+  Maximize,
+  SkipBack,
+  SkipForward,
+  Settings,
+  Loader2,
+  Volume,
+} from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
-export default function ReactPlayerSkeleton() {
+const CustomReactPlayer = () => {
   return (
-    <Card className="relative aspect-video w-full overflow-hidden rounded-xl border-none outline-none">
-      <div className="absolute inset-0 bg-primary/10">
-        {/* Pulsing animation for the main video area */}
-        <div className="absolute inset-0  animate-pulse" />
+    <Card
+      className="relative aspect-video w-full overflow-hidden rounded-xl border-none bg-primary outline-none"
+      tabIndex={0}
+    >
+      <div className="absolute inset-0 flex items-center justify-center bg-transparent/50">
+        <Loader2 size={50} className="animate-spin text-white" />
       </div>
+      {/* Controls */}
+      <div className="absolute bottom-0 left-0 w-full">
+        <div className="bg-gradient-to-t from-black to-transparent p-2">
+          <Skeleton className="mb-2 h-[4px] w-full bg-primary" />
+          <div className="flex items-center justify-between text-white">
+            <div className="flex items-center gap-6 px-2">
+              <SkipBack
+                fill="white"
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+              />
 
-      {/* Controls skeleton */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/30 to-transparent p-4">
-        {/* Progress bar skeleton */}
-        <Skeleton className="mb-4 h-1 w-full" />
+              <Play
+                fill="white"
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+              />
+              <SkipForward
+                fill="white"
+                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+              />
 
-        <div className="flex items-center justify-between">
-          {/* Left controls */}
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-4 w-16" />
-          </div>
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                <Volume
+                  fill="white"
+                  className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+                />
 
-          {/* Right controls */}
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-8 rounded-full" />
+                {/* volume */}
+                <Skeleton className="relative hidden h-2 w-24 sm:flex" />
+              </div>
+              <span className="text-xs sm:text-sm">00:00 / 00:00</span>
+            </div>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Button
+                variant="button"
+                size="icon"
+                className="group/settings h-8 w-8 transition-colors hover:bg-white/10 sm:h-10 sm:w-10"
+              >
+                <Settings
+                  className={`relative h-4 w-4 transition-all sm:h-5 sm:w-5 md:h-6 md:w-6`}
+                />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <Maximize className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Center play button skeleton */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <Skeleton className="h-16 w-16 -translate-y-4 rounded-full sm:translate-y-0" />
-      </div>
     </Card>
   );
-}
+};
+
+export default CustomReactPlayer;

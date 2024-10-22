@@ -200,36 +200,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                     {studio}
                   </Badge>
                 ))}
-                <div className="flex flex-wrap items-center gap-2">
-                  {anime.season && <Badge>{anime.season}</Badge>}
-
-                  {anime.releaseDate && (
-                    <>
-                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                      <Badge>{anime.releaseDate}</Badge>
-                    </>
-                  )}
-                  {anime.type && (
-                    <>
-                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                      <Badge>{anime.type}</Badge>
-                    </>
-                  )}
-                  {(anime.totalEpisodes || anime.currentEpisode) && (
-                    <>
-                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                      <Badge>
-                        {anime.currentEpisode || anime.totalEpisodes}
-                      </Badge>
-                    </>
-                  )}
-                  {anime.status && (
-                    <>
-                      <span className="min-h-2 min-w-2 rounded-full bg-white" />
-                      <Badge>{anime.status}</Badge>
-                    </>
-                  )}
-                </div>
+                <MetaDetails anime={anime} />
                 <Badge
                   className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
                 >
@@ -406,3 +377,32 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
 };
 
 export default AnimeInfoCard;
+
+const MetaDetails = ({ anime }: { anime: IAnimeInfoAnilit }) => {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {anime.season && <Badge>{anime.season}</Badge>}
+      {anime.season && anime.releaseDate && (
+        <span className="min-h-2 min-w-2 rounded-full bg-white" />
+      )}
+      {anime.releaseDate && <Badge>{anime.releaseDate}</Badge>}
+      {(anime.season || anime.releaseDate) && anime.type && (
+        <span className="min-h-2 min-w-2 rounded-full bg-white" />
+      )}
+      {anime.type && <Badge>{anime.type}</Badge>}
+      {(anime.season || anime.releaseDate || anime.type) &&
+        (anime.currentEpisode || anime.totalEpisodes) && (
+          <span className="min-h-2 min-w-2 rounded-full bg-white" />
+        )}
+      {(anime.totalEpisodes || anime.currentEpisode) && (
+        <Badge>{anime.currentEpisode || anime.totalEpisodes}</Badge>
+      )}
+      {(anime.season || anime.releaseDate || anime.type) &&
+        (anime.currentEpisode || anime.totalEpisodes) &&
+        anime.status && (
+          <span className="min-h-2 min-w-2 rounded-full bg-white" />
+        )}
+      {anime.status && <Badge>{anime.status}</Badge>}
+    </div>
+  );
+};
