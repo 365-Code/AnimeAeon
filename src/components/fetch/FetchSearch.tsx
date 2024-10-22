@@ -24,7 +24,7 @@ type SearchProps = {
   format?: string;
   sort?: string;
   genres?: string;
-  status?: string;
+  animeStatus?: string;
   season?: string;
 };
 
@@ -43,14 +43,14 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
     searchParams["sort"]?.split(",") || ["START_DATE_DESC", "TRENDING_DESC"] ||
     "";
   const genres = searchParams["genres"]?.split(",") || "";
-  const status = searchParams["status"] || "";
+  const status = searchParams["animeStatus"] || "";
   const season = searchParams["season"] || "";
 
   const [searchResults, setSearchResults] = useState<IAnimeResult[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState(1);
 
-  const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "ALL"}&sort=${sort || "All"}&genres=${genres || "All"}&status=${status || "All"}&season=${season || "All"}`;
+  const searchQuery = `?query=${query || "All"}&page=${page}&perPage=${perPage}&format=${format || "ALL"}&sort=${sort || "All"}&genres=${genres || "All"}&animeStatus=${status || "All"}&season=${season || "All"}`;
 
   const [filter, setFilter] = useState({
     genres: genres || [],
@@ -126,7 +126,7 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
   const nav = useRouter();
   const handleFilters = () => {
     setPage(1);
-    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=1&perPage=${perPage}&format=${filter.type.toUpperCase()}&sort=${sort || "All"}&status=${status || "All"}&season=${season || "All"}`;
+    const searchQuery = `?query=${filter.searchInput || "All"}&genres=${filter.genres.join(",") || "All"}&page=1&perPage=${perPage}&format=${filter.type.toUpperCase()}&sort=${sort || "All"}&animeStatus=${status || "All"}&season=${season || "All"}`;
     nav.push(searchQuery);
   };
 

@@ -7,22 +7,22 @@ type SearchType = {
   format: string;
   sort: string;
   genres: string;
-  status: string;
+  animeStatus: string;
   season: string;
 };
 
 export async function generateMetadata({
-  searchParams: { query, format, sort, genres, status, season },
+  searchParams,
 }: {
   searchParams: SearchType;
 }): Promise<Metadata> {
+  const { query, format, sort, genres, animeStatus, season } = searchParams;
   const title = query ? `${query} - Search Results` : "Search Results";
-
   const filters = [
     format ? `format: ${format}` : null,
     sort ? `sorted by: ${sort}` : null,
     genres ? `genres: ${genres}` : null,
-    status ? `status: ${status}` : null,
+    animeStatus ? `status: ${animeStatus}` : null,
     season ? `season: ${season}` : null,
   ]
     .filter(Boolean)
@@ -37,7 +37,7 @@ export async function generateMetadata({
     format,
     sort,
     genres,
-    status,
+    animeStatus,
     season,
     "anime",
     "anime search",
@@ -51,10 +51,14 @@ export async function generateMetadata({
   };
 }
 
-const Page = ({ searchParams }: { searchParams: SearchType }) => {
+const Page = async ({
+  searchParams: queryParams,
+}: {
+  searchParams: SearchType;
+}) => {
   return (
     <main className="mx-auto my-8 max-w-7xl">
-      <FetchSearch searchParams={searchParams} />
+      <FetchSearch searchParams={queryParams} />
     </main>
   );
 };

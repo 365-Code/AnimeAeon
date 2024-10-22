@@ -28,9 +28,9 @@ export async function GET(req: NextRequest) {
         ? (searchParams.get("sort") as string)?.split(",")
         : undefined;
 
-    const status =
-      searchParams.get("status") != "All"
-        ? searchParams.get("status") || undefined
+    const animeStatus =
+      searchParams.get("animeStatus") != "All"
+        ? searchParams.get("animeStatus") || undefined
         : undefined;
 
     const season =
@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
         genres,
         undefined,
         undefined,
-        status,
+        animeStatus,
         season,
       );
 
