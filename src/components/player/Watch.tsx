@@ -13,6 +13,7 @@ import {
 import { ITitle } from "@consumet/extensions";
 import VideoPlayer from "./VideoPlayer";
 import EpisodesCombo from "../EpisodesCombo";
+import { cn } from "@/lib/utils";
 
 const Watch = ({
   anime,
@@ -93,7 +94,9 @@ const Watch = ({
         </BreadcrumbList>
       </Breadcrumb>
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
-        <div className="col-span-2">
+        <div
+          className={anime.totalEpisodes == 1 ? "col-span-full" : "col-span-2"}
+        >
           <VideoPlayer
             episode={episode}
             episodes={anime.episodes}
@@ -104,7 +107,12 @@ const Watch = ({
             }
           />
         </div>
-        <div className="col-span-1 hidden sm:block">
+        <div
+          className={cn(
+            "hidden",
+            anime.totalEpisodes == 1 ? "hidden" : "col-span-1 sm:block",
+          )}
+        >
           <AnimeEpisodes
             episodeId={episode}
             episodeList={anime.episodes || []}

@@ -30,13 +30,19 @@ const Switch = React.forwardRef<
         <div className="absolute flex h-full w-full flex-col items-center justify-center">
           <Icon.toggleOn
             size={10}
-            className={cn("h-2 w-2", props.checked ? "absolute" : "opacity-0")}
-            fill="white"
+            className={cn(
+              "h-2 w-2",
+              props.checked ? "absolute" : "opacity-0",
+              "fill-primary stroke-primary",
+            )}
           />
           <Icon.toggleOff
             size={10}
-            className={cn("h-2 w-2", props.checked ? "opacity-0" : "absolute")}
-            fill="white"
+            className={cn(
+              "h-2 w-2",
+              props.checked ? "opacity-0" : "absolute",
+              "fill-primary stroke-primary",
+            )}
           />
         </div>
       )}

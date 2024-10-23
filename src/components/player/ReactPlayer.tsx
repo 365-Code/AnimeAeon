@@ -30,7 +30,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectScrollUpButton,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -329,7 +331,7 @@ const CustomReactPlayer = ({
     };
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 640); // Adjust this breakpoint as needed
+      setIsMobile(window.innerWidth <= 768); // Adjust this breakpoint as needed
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -420,7 +422,7 @@ const CustomReactPlayer = ({
         <div className="flex h-full w-full flex-col">
           {(showControls || !isFullscreen) && (
             <div className="absolute inset-0 flex items-center justify-center ">
-              <div className="z-30 flex h-fit w-fit items-center gap-4">
+              <div className="z-30 flex h-fit w-fit items-center gap-4 md:hidden">
                 {/* Prev */}
                 <Link
                   href={
@@ -430,12 +432,12 @@ const CustomReactPlayer = ({
                   }
                   className={cn(
                     !hasPrev ? "pointer-events-none" : "",
-                    "sm:hidden",
+                    "md:hidden",
                   )}
                 >
                   <Button
                     size="icon"
-                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30 sm:hidden"
+                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30"
                     disabled={!hasPrev}
                   >
                     <SkipBack className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
@@ -444,7 +446,7 @@ const CustomReactPlayer = ({
                 {/* PlayPause */}
                 <Button
                   onClick={handlePlayPause}
-                  className=" z-20 h-12 w-12 cursor-pointer rounded-full bg-transparent/50 p-4 hover:bg-transparent/30 sm:hidden sm:p-4"
+                  className=" z-20 h-12 w-12 cursor-pointer rounded-full bg-transparent/50 p-4 hover:bg-transparent/30 sm:p-4"
                 >
                   {playing ? (
                     <Pause className="h-5 w-5 fill-white text-white sm:h-6 sm:w-6" />
@@ -460,15 +462,12 @@ const CustomReactPlayer = ({
                       ? "?episode=" + episodes[epNumber].id
                       : ""
                   }
-                  className={cn(
-                    !hasNext ? "pointer-events-none" : "",
-                    "sm:hidden",
-                  )}
+                  className={cn(!hasNext ? "pointer-events-none" : "")}
                 >
                   <Button
                     size="icon"
                     // className="h-8 w-8 sm:h-10 sm:w-10"
-                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30 sm:hidden"
+                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30"
                     disabled={!hasNext}
                   >
                     <SkipForward className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
@@ -575,8 +574,10 @@ const CustomReactPlayer = ({
                     >
                       <Card className="mb-1 hidden aspect-video w-[200px] overflow-hidden sm:mb-2 sm:block">
                         <ReactPlayer
+                          pip={false}
                           ref={thumbnailRef}
-                          playing={hoverTime ? true : false}
+                          playing={false}
+                          onReady={() => thumbnailRef.current?.seekTo(1)}
                           onSeek={() => thumbnailRef.current?.seekTo(hoverTime)}
                           url={source}
                           muted={true}
@@ -594,6 +595,7 @@ const CustomReactPlayer = ({
                 <TooltipProvider>
                   <div className="flex items-center justify-between text-white">
                     <div className="flex items-center space-x-1 sm:space-x-2">
+                      {/* Prev */}
                       {episodes && (
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -605,13 +607,13 @@ const CustomReactPlayer = ({
                               }
                               className={cn(
                                 !hasPrev ? "pointer-events-none" : "",
-                                "hidden sm:block",
+                                "hidden md:block",
                               )}
                             >
                               <Button
                                 variant="button"
                                 size="icon"
-                                className="h-8 w-8 sm:h-10 sm:w-10"
+                                className={"h-8 w-8 sm:h-10 sm:w-10"}
                                 disabled={!hasPrev}
                               >
                                 <SkipBack className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
@@ -625,13 +627,13 @@ const CustomReactPlayer = ({
                           )}
                         </Tooltip>
                       )}
-
+                      {/* PlayPause */}
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
                             size="icon"
                             variant="button"
-                            className="h-8 w-8 sm:h-10 sm:w-10"
+                            className="hidden h-8 w-8 sm:h-10 sm:w-10 md:flex"
                             onClick={handlePlayPause}
                           >
                             {playing ? (
@@ -645,6 +647,7 @@ const CustomReactPlayer = ({
                           {playing ? "Pause" : "Play"}
                         </TooltipContent>
                       </Tooltip>
+                      {/* Next */}
                       {episodes && (
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -657,7 +660,7 @@ const CustomReactPlayer = ({
                               }
                               className={cn(
                                 !hasNext ? "pointer-events-none" : "",
-                                "hidden sm:block",
+                                "hidden md:block",
                               )}
                             >
                               <Button
@@ -841,16 +844,21 @@ const VideoSettingsMenu = ({
               <SelectTrigger className="w-24 border-white/20 bg-transparent text-xs text-white">
                 <SelectValue placeholder="Quality" />
               </SelectTrigger>
-              <SelectContent className="border-white/20 bg-black bg-opacity-80 text-white">
-                {qualities.map((quality) => (
-                  <SelectItem
-                    key={quality}
-                    value={quality}
-                    className="text-white hover:bg-white/10"
-                  >
-                    {quality === "auto" ? "Auto" : `${quality}p`}
-                  </SelectItem>
-                ))}
+              <SelectContent
+                side="top"
+                className="border-white/20 bg-black bg-opacity-80 text-white"
+              >
+                <SelectGroup>
+                  {qualities.map((quality) => (
+                    <SelectItem
+                      key={quality}
+                      value={quality}
+                      className="text-white hover:bg-white/10"
+                    >
+                      {quality === "auto" ? "Auto" : `${quality}p`}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -863,16 +871,21 @@ const VideoSettingsMenu = ({
               <SelectTrigger className="w-24 border-white/20 bg-transparent text-xs text-white">
                 <SelectValue placeholder="Speed" />
               </SelectTrigger>
-              <SelectContent className="border-white/20 bg-black bg-opacity-80 text-white">
-                {[0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
-                  <SelectItem
-                    key={speed}
-                    value={String(speed)}
-                    className="text-white hover:bg-white/10"
-                  >
-                    {speed}x
-                  </SelectItem>
-                ))}
+              <SelectContent
+                side="top"
+                className="border-white/20 bg-black bg-opacity-80 text-white"
+              >
+                <SelectGroup>
+                  {[0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
+                    <SelectItem
+                      key={speed}
+                      value={String(speed)}
+                      className="text-white hover:bg-white/10"
+                    >
+                      {speed}x
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>

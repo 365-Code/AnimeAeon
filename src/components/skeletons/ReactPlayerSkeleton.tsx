@@ -20,8 +20,16 @@ const CustomReactPlayer = () => {
       className="relative aspect-video w-full overflow-hidden rounded-xl border-none bg-primary outline-none"
       tabIndex={0}
     >
-      <div className="absolute inset-0 flex items-center justify-center bg-transparent/50">
+      <div className="absolute inset-0 flex items-center justify-center gap-4 bg-transparent/50">
+        <SkipBack
+          fill="white"
+          className="h-4 w-4 sm:h-5 sm:w-5 md:hidden md:h-6 md:w-6 "
+        />
         <Loader2 size={50} className="animate-spin text-white" />
+        <SkipForward
+          fill="white"
+          className="h-4 w-4 sm:h-5 sm:w-5 md:hidden md:h-6 md:w-6 "
+        />
       </div>
       {/* Controls */}
       <div className="absolute bottom-0 left-0 w-full">
@@ -31,7 +39,7 @@ const CustomReactPlayer = () => {
             <div className="flex items-center gap-6 px-2">
               <SkipBack
                 fill="white"
-                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+                className="hidden h-4 w-4 sm:h-5 sm:w-5 md:block md:h-6 md:w-6"
               />
 
               <Play
@@ -40,7 +48,7 @@ const CustomReactPlayer = () => {
               />
               <SkipForward
                 fill="white"
-                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+                className="hidden h-4 w-4 sm:h-5 sm:w-5 md:block md:h-6 md:w-6"
               />
 
               <div className="flex items-center space-x-1 sm:space-x-2">

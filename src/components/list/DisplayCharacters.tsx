@@ -56,7 +56,7 @@ const RoundCharacterCard = ({ character }: { character: IAnimeCharacter }) => {
             </div>
           </div>
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent className="sm:block hidden">
           <p className="text-center">{charName}</p>
           <p className="text-center text-xs">{character.role}</p>
         </TooltipContent>
