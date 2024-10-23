@@ -6,7 +6,9 @@ const NotFound = () => {
   return (
     <div className="-z-0 flex h-screen flex-col items-center justify-center overflow-hidden">
       <div className="absolute left-0 top-0 flex h-full w-full opacity-10">
-        <img
+        <Image
+          width={1000}
+          height={1000}
           className="h-full w-full flex-1 object-center"
           src={"/placeholder/bg.jpg"}
           alt="bg"

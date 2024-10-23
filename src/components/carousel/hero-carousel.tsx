@@ -17,6 +17,7 @@ import { IAnimeResult, ITitle } from "@consumet/extensions";
 import { toAnimeTitle } from "@/utils";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 interface HeroCarouselProps {
   animeList: IAnimeResult[] | undefined;
@@ -95,6 +96,7 @@ const HeroSlide = ({ anime }: { anime: IAnimeResult }) => {
       <div className="absolute inset-0 bg-gradient-to-b from-primary to-transparent/80" />
       <img
         src={anime.image}
+        loading="lazy"
         alt={toAnimeTitle(anime.title as ITitle)}
         className="absolute h-full w-full object-cover object-center opacity-70 transition-all"
       />
@@ -124,7 +126,9 @@ const SkeletonSlide = () => {
   return (
     <Card className="group relative h-[400px] w-full overflow-hidden border-none transition-all">
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-      <img
+      <Image
+        width={300}
+        height={400}
         src={"/placeholder/bg.jpg"}
         alt={"anime-image-loader"}
         className="absolute h-full w-full object-cover object-center opacity-20 transition-all"

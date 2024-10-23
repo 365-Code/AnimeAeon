@@ -20,6 +20,7 @@ import { toAnimeTitle } from "@/utils";
 import { cn } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 interface CarouselProps extends SwiperProps {
   animeList: IAnimeResult[];
@@ -142,7 +143,9 @@ const AnimeSlide = ({ anime }: { anime: IAnimeResult }) => {
 const SkeletonSlide = () => {
   return (
     <Card className="relative h-[300px] w-full overflow-hidden border-none transition-all">
-      <img
+      <Image
+        width={300}
+        height={300}
         src={"/placeholder/loader.jpg"}
         loading="lazy"
         alt="slide_image"

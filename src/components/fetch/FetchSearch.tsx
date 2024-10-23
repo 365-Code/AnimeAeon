@@ -65,7 +65,7 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
     isPending: loading,
   } = useMutation({
     mutationKey: ["advance-search"],
-    gcTime: 1000 * 3,
+    gcTime: 1000,
     mutationFn: async () => {
       try {
         const response = await fetch(

@@ -42,6 +42,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           height={400}
           src={anime?.image || ""}
           alt={animeTitle}
+          loading="lazy"
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
         <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 text-xs font-semibold text-secondary">
@@ -98,6 +99,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
         </div>
         <div className="anime-card-img ">
           <img
+            loading="lazy"
             width={500}
             height={500}
             src={anime.image || ""}

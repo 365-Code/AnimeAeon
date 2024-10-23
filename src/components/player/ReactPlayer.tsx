@@ -26,7 +26,6 @@ import {
   Settings,
   Loader2,
   Volume1,
-  Volume,
 } from "lucide-react";
 import {
   Select,
@@ -39,6 +38,7 @@ import Hls from "hls.js";
 import Link from "next/link";
 import { IAnimeEpisode } from "@consumet/extensions";
 import { Switch } from "../ui/switch";
+import { cn } from "@/lib/utils";
 
 const formatTime = (value: number) => {
   if (isNaN(value)) {
@@ -50,8 +50,8 @@ const formatTime = (value: number) => {
   let minutes = String(Math.floor(totalSeconds / 60));
   let seconds = String(Math.floor(totalSeconds % 60));
   seconds = seconds.padStart(2, "0");
+  minutes = minutes.padStart(2, "0");
   if (hours > 0) {
-    minutes = minutes.padStart(2, "0");
     return `${hours}:${minutes}:${seconds}`;
   } else {
     return `${minutes}:${seconds}`;
@@ -101,6 +101,7 @@ const CustomReactPlayer = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const skipRef = useRef<NodeJS.Timeout | null>(null);
   const volumeRef = useRef<NodeJS.Timeout | null>(null);
+  const thumbnailRef = useRef<ReactPlayer | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePlayPause = () => {
@@ -358,9 +359,7 @@ const CustomReactPlayer = ({
 
   useEffect(() => {
     const data = localStorage.getItem("auto-play");
-    if (data) {
-      setAutoPlayNext(Boolean(data));
-    }
+    if (data) setAutoPlayNext(data == "true");
   }, []);
 
   const hasPrev = epNumber <= 1 ? false : true;
@@ -417,20 +416,65 @@ const CustomReactPlayer = ({
           if (hasNext && autoPlayNext) nextSourceRef.current?.click();
         }}
       />
-      <div className="absolute left-0 top-0 h-full w-full">
+      <div className=" absolute left-0 top-0 h-full w-full">
         <div className="flex h-full w-full flex-col">
           {(showControls || !isFullscreen) && (
             <div className="absolute inset-0 flex items-center justify-center ">
-              <Button
-                onClick={handlePlayPause}
-                className=" z-40 h-12 w-12 cursor-pointer rounded-full bg-transparent/50 p-4 hover:bg-transparent/30 sm:hidden sm:p-4"
-              >
-                {playing ? (
-                  <Pause className="h-5 w-5 fill-white text-white sm:h-6 sm:w-6" />
-                ) : (
-                  <Play className="h-5 w-5 fill-white text-white sm:h-6 sm:w-6" />
-                )}
-              </Button>
+              <div className="z-30 flex h-fit w-fit items-center gap-4">
+                {/* Prev */}
+                <Link
+                  href={
+                    hasPrev && episodes
+                      ? "?episode=" + episodes[epNumber - 2].id
+                      : ""
+                  }
+                  className={cn(
+                    !hasPrev ? "pointer-events-none" : "",
+                    "sm:hidden",
+                  )}
+                >
+                  <Button
+                    size="icon"
+                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30 sm:hidden"
+                    disabled={!hasPrev}
+                  >
+                    <SkipBack className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                  </Button>
+                </Link>
+                {/* PlayPause */}
+                <Button
+                  onClick={handlePlayPause}
+                  className=" z-20 h-12 w-12 cursor-pointer rounded-full bg-transparent/50 p-4 hover:bg-transparent/30 sm:hidden sm:p-4"
+                >
+                  {playing ? (
+                    <Pause className="h-5 w-5 fill-white text-white sm:h-6 sm:w-6" />
+                  ) : (
+                    <Play className="h-5 w-5 fill-white text-white sm:h-6 sm:w-6" />
+                  )}
+                </Button>
+                {/* Next */}
+                <Link
+                  ref={nextSourceRef}
+                  href={
+                    hasNext && episodes
+                      ? "?episode=" + episodes[epNumber].id
+                      : ""
+                  }
+                  className={cn(
+                    !hasNext ? "pointer-events-none" : "",
+                    "sm:hidden",
+                  )}
+                >
+                  <Button
+                    size="icon"
+                    // className="h-8 w-8 sm:h-10 sm:w-10"
+                    className="h-10 w-10 cursor-pointer rounded-full bg-transparent/50 hover:bg-transparent/30 sm:hidden"
+                    disabled={!hasNext}
+                  >
+                    <SkipForward className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           )}
           {(isLoading || isBuffering) && (
@@ -522,15 +566,29 @@ const CustomReactPlayer = ({
                     onValueChange={handleSeekChange}
                   />
                   {hoverTime !== null && (
-                    <Badge
-                      className="absolute bottom-full mb-1 rounded px-1 py-0.5 text-xs  sm:mb-2 sm:px-2 sm:py-1"
+                    <div
                       style={{
-                        left: `${(hoverTime / duration) * 100}%`,
+                        left: `${Math.max(12, Math.min(88, (hoverTime / duration) * 100))}%`,
                         transform: "translateX(-50%)",
                       }}
+                      className="absolute bottom-full mb-1 flex w-fit flex-col sm:mb-2"
                     >
-                      {formatTime(hoverTime)}
-                    </Badge>
+                      <Card className="mb-1 hidden aspect-video w-[200px] overflow-hidden sm:mb-2 sm:block">
+                        <ReactPlayer
+                          ref={thumbnailRef}
+                          playing={hoverTime ? true : false}
+                          onSeek={() => thumbnailRef.current?.seekTo(hoverTime)}
+                          url={source}
+                          muted={true}
+                          width={"100%"}
+                          height={"100%"}
+                        />
+                        {formatTime(Math.max(hoverTime, 0))}
+                      </Card>
+                      <Badge className="mx-auto rounded px-1 py-0.5 text-xs sm:px-2 sm:py-1">
+                        {formatTime(Math.max(hoverTime, 0))}
+                      </Badge>
+                    </div>
                   )}
                 </div>
                 <TooltipProvider>
@@ -545,19 +603,18 @@ const CustomReactPlayer = ({
                                   ? "?episode=" + episodes[epNumber - 2].id
                                   : ""
                               }
-                              className={!hasPrev ? "pointer-events-none" : ""}
+                              className={cn(
+                                !hasPrev ? "pointer-events-none" : "",
+                                "hidden sm:block",
+                              )}
                             >
                               <Button
                                 variant="button"
                                 size="icon"
                                 className="h-8 w-8 sm:h-10 sm:w-10"
                                 disabled={!hasPrev}
-                                // onClick={() => handleSkip(-5)}
                               >
-                                <SkipBack
-                                  fill="white"
-                                  className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                                />
+                                <SkipBack className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                               </Button>
                             </Link>
                           </TooltipTrigger>
@@ -578,15 +635,9 @@ const CustomReactPlayer = ({
                             onClick={handlePlayPause}
                           >
                             {playing ? (
-                              <Pause
-                                fill="white"
-                                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                              />
+                              <Pause className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                             ) : (
-                              <Play
-                                fill="white"
-                                className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                              />
+                              <Play className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                             )}
                           </Button>
                         </TooltipTrigger>
@@ -604,17 +655,18 @@ const CustomReactPlayer = ({
                                   ? "?episode=" + episodes[epNumber].id
                                   : ""
                               }
+                              className={cn(
+                                !hasNext ? "pointer-events-none" : "",
+                                "hidden sm:block",
+                              )}
                             >
                               <Button
                                 variant="button"
                                 size="icon"
                                 className="h-8 w-8 sm:h-10 sm:w-10"
-                                onClick={() => handleSkip(5)}
+                                disabled={!hasNext}
                               >
-                                <SkipForward
-                                  fill="white"
-                                  className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                                />
+                                <SkipForward className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                               </Button>
                             </Link>
                           </TooltipTrigger>
@@ -636,15 +688,9 @@ const CustomReactPlayer = ({
                               onClick={handleMute}
                             >
                               {muted ? (
-                                <VolumeX
-                                  fill="white"
-                                  className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                                />
+                                <VolumeX className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                               ) : (
-                                <Volume2
-                                  fill="white"
-                                  className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
-                                />
+                                <Volume2 className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                               )}
                             </Button>
                           </TooltipTrigger>
@@ -679,11 +725,12 @@ const CustomReactPlayer = ({
                     </div>
                     <div className="flex items-center space-x-1 sm:space-x-2">
                       <Tooltip>
-                        <TooltipTrigger className="flex items-center">
+                        <TooltipTrigger asChild className="bg-black">
                           <Switch
                             checked={autoPlayNext}
                             onCheckedChange={handleAutoPlayNext}
                             id="autoplay-toggle"
+                            className={autoPlayNext ? "bg-primary" : "bg-input"}
                             Icon={{
                               toggleOff: Pause,
                               toggleOn: Play,

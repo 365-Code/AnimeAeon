@@ -12,6 +12,7 @@ import {
 } from "../ui/breadcrumb";
 import { ITitle } from "@consumet/extensions";
 import VideoPlayer from "./VideoPlayer";
+import EpisodesCombo from "../EpisodesCombo";
 
 const Watch = ({
   anime,
@@ -81,26 +82,33 @@ const Watch = ({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className="line-clamp-1">
+            <BreadcrumbPage className="line-clamp-1 hidden sm:inline">
               {"Episode " + episode.split("-episode-")[1]}
             </BreadcrumbPage>
+            <EpisodesCombo
+              episodeId={episode}
+              episodeList={anime.episodes || []}
+            />
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
         <div className="col-span-2">
-            <VideoPlayer
-              episode={episode}
-              episodes={anime.episodes}
-              totalEpisodes={
-                anime.currentEpisode ||
-                anime.totalEpisodes ||
-                anime.episodes?.length
-              }
-            />
+          <VideoPlayer
+            episode={episode}
+            episodes={anime.episodes}
+            totalEpisodes={
+              anime.currentEpisode ||
+              anime.totalEpisodes ||
+              anime.episodes?.length
+            }
+          />
         </div>
-        <div className="col-span-1">
-          <AnimeEpisodes episodeId={episode} episodeList={anime.episodes || []} />
+        <div className="col-span-1 hidden sm:block">
+          <AnimeEpisodes
+            episodeId={episode}
+            episodeList={anime.episodes || []}
+          />
         </div>
       </section>
     </>

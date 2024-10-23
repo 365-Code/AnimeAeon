@@ -1,11 +1,14 @@
 import React from "react";
 import { Card } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 const StCardSkeleton = () => {
   return (
     <Card className="relative h-[400px] w-full max-w-[300px] overflow-hidden border-none transition-all">
-      <img
+      <Image
+        width={300}
+        height={400}
         src={"/placeholder/loader.jpg"}
         loading="lazy"
         alt="slide_image"
