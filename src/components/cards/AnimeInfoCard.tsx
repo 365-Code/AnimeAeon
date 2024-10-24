@@ -329,6 +329,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
             <Button
               onClick={handleWatchList}
               className="flex items-center gap-1 sm:p-6"
+              variant={inWatch ? "secondary" : "default"}
             >
               {inWatch ? (
                 <>

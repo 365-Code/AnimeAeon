@@ -144,7 +144,6 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
             <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
               <Search />
               <Input
-                autoFocus={true}
                 type="search"
                 value={filter.searchInput}
                 onChange={(e) =>
@@ -199,7 +198,10 @@ const FetchSearch = ({ searchParams }: { searchParams: SearchProps }) => {
         </Card>
       </form>
 
-      <div className="grid flex-1 grid-cols-2 justify-between gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+      <div
+        autoFocus={true}
+        className="grid flex-1 grid-cols-2 justify-between gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4"
+      >
         {searchResults.length > 0 &&
           searchResults.map((anime, i) =>
             i + 1 == page * perPage ? (

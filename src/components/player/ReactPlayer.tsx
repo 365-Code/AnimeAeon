@@ -32,7 +32,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectScrollUpButton,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -41,6 +40,12 @@ import Link from "next/link";
 import { IAnimeEpisode } from "@consumet/extensions";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+
+type PlayerStorageType = {
+  volume: string;
+  quality: string;
+  autoPlay: string;
+};
 
 const formatTime = (value: number) => {
   if (isNaN(value)) {
@@ -105,6 +110,36 @@ const CustomReactPlayer = ({
   const volumeRef = useRef<NodeJS.Timeout | null>(null);
   const thumbnailRef = useRef<ReactPlayer | null>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [showMuteIcon, setShowMuteIcon] = useState("");
+  const [doubleClicked, setDoubleClicked] = useState(false);
+  const [showPlayBackIcon, setShowPlayBackIcon] = useState<
+    "fast" | "slow" | ""
+  >("");
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBuffering, setIsBuffering] = useState(false);
+
+  const [epNumber, setEpNumber] = useState(1);
+  const hasPrev = epNumber <= 1 ? false : true;
+  const hasNext = episodes && epNumber >= episodes.length ? false : true;
+
+  const [playerState, setPlayerState] = useState<PlayerStorageType>({
+    quality: "auto",
+    volume: "1",
+    autoPlay: "true",
+  });
+
+  const updatePlayerState = ({
+    updateState,
+  }: {
+    updateState: { [index: string]: any };
+  }) => {
+    const playerData = { ...playerState, ...updateState };
+    setPlayerState((prev) => ({ ...prev, ...updateState }));
+    localStorage.setItem("player-state", JSON.stringify(playerData));
+  };
 
   const handlePlayPause = () => {
     setPlaying(!playing);
@@ -113,7 +148,6 @@ const CustomReactPlayer = ({
     timeoutRef.current = setTimeout(() => setShowPlayPauseIcon(false), 1000);
   };
 
-  const [showMuteIcon, setShowMuteIcon] = useState("");
   const handleMute = () => {
     setMuted((prev) => !prev);
     setShowMuteIcon(muted ? "unmute" : "mute");
@@ -121,7 +155,7 @@ const CustomReactPlayer = ({
   };
 
   const handleVolumeChange = (newVolume: number[] | number) => {
-    let vol = 0;
+    let vol = 1;
     if (typeof newVolume == "number") {
       setVolume(() => newVolume);
       vol = newVolume;
@@ -129,6 +163,7 @@ const CustomReactPlayer = ({
       setVolume(() => newVolume[0]);
       vol = newVolume[0];
     }
+    updatePlayerState({ updateState: { volume: vol } });
     setShowVolumeIndicator(vol > volume ? "up" : vol < volume ? "down" : "");
     if (volumeRef.current) clearTimeout(volumeRef.current);
     volumeRef.current = setTimeout(() => setShowVolumeIndicator(""), 500);
@@ -147,9 +182,6 @@ const CustomReactPlayer = ({
     if (skipRef.current) clearTimeout(skipRef.current);
     skipRef.current = setTimeout(() => setShowSkipIcon(null), 500);
   };
-
-  const [doubleClicked, setDoubleClicked] = useState(false);
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY } = e;
@@ -195,28 +227,34 @@ const CustomReactPlayer = ({
     setHoverTime(hoverPosition * duration);
   };
 
-  const hlsRef = useRef<Hls | null>(null);
+  const handleMouseMove = () => {
+    setShowControls(true);
+    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    if (isFullscreen) {
+      controlsTimeoutRef.current = setTimeout(
+        () => setShowControls(false),
+        3000,
+      );
+    }
+  };
 
   const handleQualityChange = (quality: string) => {
+    updatePlayerState({ updateState: { quality } });
     setCurrentQuality(() => quality);
-
-    if (hlsRef.current) {
+    const internalPlayer = playerRef.current?.getInternalPlayer("hls") as Hls;
+    if (internalPlayer) {
       if (quality === "auto") {
-        hlsRef.current.currentLevel = -1; // Enable AUTO quality
+        internalPlayer.currentLevel = -1; // Enable AUTO quality
       } else {
-        const levelIndex = hlsRef.current.levels.findIndex(
-          (level) => level.height === parseInt(quality),
-        );
-        if (levelIndex !== -1) {
-          hlsRef.current.currentLevel = levelIndex;
-        }
+        internalPlayer.levels.forEach((level, levelIndex) => {
+          if (level.height === parseInt(quality) && internalPlayer) {
+            internalPlayer.currentLevel = levelIndex;
+          }
+        });
       }
     }
   };
 
-  const [showPlayBackIcon, setShowPlayBackIcon] = useState<
-    "fast" | "slow" | ""
-  >("");
   const handlePlaybackSpeedChange = (speed: string) => {
     const newSpeed = parseFloat(speed);
     setPlaybackSpeed(() => newSpeed);
@@ -231,42 +269,6 @@ const CustomReactPlayer = ({
     }
   };
 
-  const handleMouseMove = () => {
-    setShowControls(true);
-    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
-    if (isFullscreen) {
-      controlsTimeoutRef.current = setTimeout(
-        () => setShowControls(false),
-        3000,
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (Hls.isSupported() && playerRef.current) {
-      const hls = new Hls();
-      hlsRef.current = hls;
-      hls.loadSource(source);
-      hls.attachMedia(
-        playerRef.current.getInternalPlayer() as HTMLVideoElement,
-      );
-
-      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        const availableQualities = data.levels.map((level) =>
-          level.height.toString(),
-        );
-        setQualities(["auto", ...availableQualities]);
-        setCurrentQuality("auto");
-      });
-
-      return () => {
-        if (hlsRef.current) {
-          hlsRef.current.destroy();
-        }
-      };
-    }
-  }, [source]);
-
   const adjustPlaybackSpeed = (increment: boolean) => {
     const speeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
     const currentIndex = speeds.indexOf(playbackSpeed);
@@ -274,6 +276,55 @@ const CustomReactPlayer = ({
     newIndex = Math.max(0, Math.min(newIndex, speeds.length - 1));
     handlePlaybackSpeedChange(speeds[newIndex].toString());
   };
+
+  const handleAutoPlayNext = () => {
+    setAutoPlayNext(!autoPlayNext);
+    updatePlayerState({ updateState: { autoPlay: !autoPlayNext } });
+  };
+
+  const handleReady = () => {
+    setIsLoading(false);
+  };
+
+  const handleBuffer = () => {
+    setIsBuffering(true);
+  };
+
+  const handleBufferEnd = () => {
+    setIsBuffering(false);
+  };
+
+  useEffect(() => {
+    let playerData = localStorage.getItem("player-state");
+    if (playerData) {
+      const playerState = JSON.parse(playerData) as PlayerStorageType;
+      setPlayerState(playerState);
+      setAutoPlayNext(playerState.autoPlay == "true");
+      handleVolumeChange(parseInt(playerState.volume) || 1);
+      setCurrentQuality(playerState.quality);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Hls.isSupported() && playerRef.current) {
+      const internalPlayer = playerRef.current.getInternalPlayer("hls") as Hls;
+
+      if (internalPlayer) {
+        const availableQualities = internalPlayer.levels.map((level) =>
+          level.height.toString(),
+        );
+        setQualities(["auto", ...availableQualities]);
+        setCurrentQuality("auto");
+      }
+    }
+  }, [source]);
+
+  useEffect(() => {
+    if (episodes && episodes.length > 1) {
+      const index = episodes.findIndex((b) => b.id == currentEpisode);
+      if (index != -1) setEpNumber(index + 1);
+    }
+  }, [episodes, currentEpisode]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -344,43 +395,7 @@ const CustomReactPlayer = ({
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       window.removeEventListener("resize", handleResize);
     };
-  }, [currentProgress, duration, muted, volume]);
-
-  const [epNumber, setEpNumber] = useState(1);
-  useEffect(() => {
-    if (episodes && episodes.length > 1) {
-      const index = episodes.findIndex((b) => b.id == currentEpisode);
-      if (index != -1) setEpNumber(index + 1);
-    }
-  }, [episodes, currentEpisode]);
-
-  const handleAutoPlayNext = () => {
-    setAutoPlayNext(!autoPlayNext);
-    localStorage.setItem("auto-play", String(!autoPlayNext));
-  };
-
-  useEffect(() => {
-    const data = localStorage.getItem("auto-play");
-    if (data) setAutoPlayNext(data == "true");
-  }, []);
-
-  const hasPrev = epNumber <= 1 ? false : true;
-  const hasNext = episodes && epNumber >= episodes.length ? false : true;
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleReady = () => {
-    setIsLoading(false);
-  };
-
-  const [isBuffering, setIsBuffering] = useState(false);
-  const handleBuffer = () => {
-    setIsBuffering(true);
-  };
-
-  const handleBufferEnd = () => {
-    setIsBuffering(false);
-  };
+  }, [currentProgress, duration, muted, volume, playbackSpeed]);
 
   return (
     <Card
@@ -577,7 +592,14 @@ const CustomReactPlayer = ({
                           pip={false}
                           ref={thumbnailRef}
                           playing={false}
-                          onReady={() => thumbnailRef.current?.seekTo(1)}
+                          onReady={() => {
+                            (
+                              thumbnailRef.current?.getInternalPlayer(
+                                "hls",
+                              ) as Hls
+                            ).currentLevel = 2;
+                            thumbnailRef.current?.seekTo(1);
+                          }}
                           onSeek={() => thumbnailRef.current?.seekTo(hoverTime)}
                           url={source}
                           muted={true}
@@ -733,7 +755,10 @@ const CustomReactPlayer = ({
                             checked={autoPlayNext}
                             onCheckedChange={handleAutoPlayNext}
                             id="autoplay-toggle"
-                            className={autoPlayNext ? "bg-primary" : "bg-input"}
+                            className={cn(
+                              autoPlayNext ? "bg-primary" : "bg-input",
+                              "mx-2",
+                            )}
                             Icon={{
                               toggleOff: Pause,
                               toggleOn: Play,
@@ -746,6 +771,7 @@ const CustomReactPlayer = ({
                       </Tooltip>
                       <VideoSettingsMenu
                         qualities={qualities}
+                        fullScreen={isFullscreen}
                         onQualityChange={handleQualityChange}
                         currentQuality={currentQuality}
                         playbackSpeed={playbackSpeed}
@@ -788,6 +814,7 @@ interface VideoSettingsMenuProps {
   currentQuality: string;
   onQualityChange: (quality: string) => void;
   playbackSpeed: number;
+  fullScreen?: boolean;
   onPlaybackSpeedChange: (speed: string) => void;
 }
 
@@ -797,6 +824,7 @@ const VideoSettingsMenu = ({
   onQualityChange,
   playbackSpeed,
   onPlaybackSpeedChange,
+  fullScreen,
 }: VideoSettingsMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -817,7 +845,7 @@ const VideoSettingsMenu = ({
   }, []);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative z-40" ref={menuRef}>
       <Button
         variant="button"
         size="icon"
@@ -831,37 +859,41 @@ const VideoSettingsMenu = ({
         />
       </Button>
       <div
-        className={`${
-          isOpen
-            ? "visible opacity-100"
-            : "pointer-events-none invisible opacity-0"
-        } absolute bottom-full right-0 mb-2 w-48 rounded-md bg-black bg-opacity-80 shadow-lg transition-all`}
+        className={cn(
+          `${
+            isOpen
+              ? "visible opacity-100"
+              : "pointer-events-none invisible opacity-0"
+          } absolute bottom-full right-0 mb-2 w-48 rounded-md bg-black bg-opacity-80 shadow-lg transition-all`,
+        )}
       >
         <div className="space-y-2 p-2">
           <div className="flex items-center justify-between">
             <span className="text-sm text-white">Quality</span>
             <Select value={currentQuality} onValueChange={onQualityChange}>
-              <SelectTrigger className="w-24 border-white/20 bg-transparent text-xs text-white">
+              <SelectTrigger
+                onClick={(e) => e.preventDefault()}
+                className="w-24 border-white/20 bg-transparent text-xs text-white"
+              >
                 <SelectValue placeholder="Quality" />
               </SelectTrigger>
               <SelectContent
                 side="top"
                 className="border-white/20 bg-black bg-opacity-80 text-white"
               >
-                <SelectGroup>
-                  {qualities.map((quality) => (
-                    <SelectItem
-                      key={quality}
-                      value={quality}
-                      className="text-white hover:bg-white/10"
-                    >
-                      {quality === "auto" ? "Auto" : `${quality}p`}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
+                {qualities.map((quality) => (
+                  <SelectItem
+                    key={quality}
+                    value={quality}
+                    className="text-white hover:bg-white/10"
+                  >
+                    {quality === "auto" ? "Auto" : `${quality}p`}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-white">Speed</span>
             <Select
@@ -873,10 +905,10 @@ const VideoSettingsMenu = ({
               </SelectTrigger>
               <SelectContent
                 side="top"
-                className="border-white/20 bg-black bg-opacity-80 text-white"
+                className="max-h-[200px] border-white/20 bg-black bg-opacity-80 text-white"
               >
                 <SelectGroup>
-                  {[0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
+                  {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
                     <SelectItem
                       key={speed}
                       value={String(speed)}
