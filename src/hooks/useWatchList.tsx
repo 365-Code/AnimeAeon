@@ -19,7 +19,7 @@ const useWatchList = ({ anime }: { anime: IAnimeResult }) => {
   const handleWatchList = () => {
     const data = localStorage.getItem("watchList");
     if (inWatch) {
-      toast.warning("Removed From WatchList");
+      toast("Removed From WatchList");
       setInWatch(false);
       if (data) {
         const list = JSON.parse(data) as Array<any>;
@@ -32,41 +32,25 @@ const useWatchList = ({ anime }: { anime: IAnimeResult }) => {
     }
 
     setInWatch(true);
+    const watchItem = {
+      id: anime.id,
+      image: anime.image,
+      title: anime.title,
+      genres: anime.genres,
+      description: anime.description,
+      type: anime.type?.toLowerCase(),
+      status: anime.status?.toLowerCase(),
+    };
     if (data) {
       const list = JSON.parse(data) as Array<any>;
       const exist = list.findIndex((v) => v.id == anime.id);
       if (exist == -1) {
         toast.success("Added to WatchList");
-        localStorage.setItem(
-          "watchList",
-          JSON.stringify([
-            ...list,
-            {
-              id: anime.id,
-              image: anime.image,
-              title: anime.title,
-              genres: anime.genres,
-              description: anime.description,
-              type: anime.type?.toLowerCase(),
-            },
-          ]),
-        );
+        localStorage.setItem("watchList", JSON.stringify([...list, watchItem]));
       }
     } else {
       toast.success("Added to WatchList");
-      localStorage.setItem(
-        "watchList",
-        JSON.stringify([
-          {
-            id: anime.id,
-            image: anime.image,
-            title: anime.title,
-            genres: anime.genres,
-            description: anime.description,
-            type: anime.type?.toLowerCase(),
-          },
-        ]),
-      );
+      localStorage.setItem("watchList", JSON.stringify([watchItem]));
     }
   };
 

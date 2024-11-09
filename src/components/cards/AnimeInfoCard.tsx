@@ -14,6 +14,7 @@ import {
 import { Badge } from "../ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
+import useWatchList from "@/hooks/useWatchList";
 
 const screenSize =
   typeof window !== undefined && window.innerWidth <= 500 ? true : false;
@@ -22,12 +23,13 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
   const animeTitle = toAnimeTitle(anime.title as ITitle);
   const banner = anime.artwork
     ? anime.artwork.filter(
-        (art) => art.type == "banner" && art.img && art.providerId != "kitsu",
+        (art, index) =>
+          art.type == "banner" && art.img && art.providerId != "kitsu",
       )
     : [];
 
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [inWatch, setInWatch] = useState(false);
+  // const [inWatch, setInWatch] = useState(false);
 
   const handleSlideShow = (n: 1 | -1) => {
     setCurrentBanner((prev) => (prev + n) % banner.length);
@@ -57,57 +59,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
     }
   }, []);
 
-  const handleWatchList = () => {
-    const data = localStorage.getItem("watchList");
-    if (inWatch) {
-      setInWatch(false);
-      if (data) {
-        const list = JSON.parse(data) as Array<any>;
-        localStorage.setItem(
-          "watchList",
-          JSON.stringify(list.filter((v) => v.id != anime.id)),
-        );
-      }
-      return;
-    }
-
-    setInWatch(true);
-    if (data) {
-      const list = JSON.parse(data) as Array<any>;
-      const exist = list.findIndex((v) => v.id == anime.id);
-      if (exist == -1) {
-        localStorage.setItem(
-          "watchList",
-          JSON.stringify([
-            ...list,
-            {
-              id: anime.id,
-              image: anime.image,
-              title: anime.title,
-              genres: anime.genres,
-              description: anime.description,
-              type: anime.type?.toLowerCase(),
-            },
-          ]),
-        );
-      }
-    } else {
-      localStorage.setItem(
-        "watchList",
-        JSON.stringify([
-          {
-            id: anime.id,
-            image: anime.image,
-            title: anime.title,
-            genres: anime.genres,
-            description: anime.description,
-            type: anime.type?.toLowerCase(),
-          },
-        ]),
-      );
-    }
-  };
-
+  const { inWatch, handleWatchList } = useWatchList({ anime });
   useEffect(() => {
     const interval = setInterval(() => {
       if (banner.length > 1) {
@@ -116,17 +68,6 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
     }, 5000);
     return () => clearInterval(interval);
   }, [currentBanner, banner]);
-
-  useEffect(() => {
-    const data = localStorage.getItem("watchList");
-    if (data && anime) {
-      const list = JSON.parse(data) as Array<any>;
-      const exist = list.findIndex((v) => v.id == anime.id);
-      if (exist != -1) {
-        setInWatch(true);
-      }
-    }
-  }, [anime]);
 
   const paraRef = useRef<HTMLParagraphElement | null>(null);
 
@@ -180,7 +121,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           <div className="mb-4 flex h-fit max-w-full flex-col gap-4 text-wrap sm:basis-1/2">
             <div className="flex flex-wrap items-center gap-2">
               {anime.genres?.map((g, i) => (
-                <Badge key={i} className="rounded-full bg-primary/50">
+                <Badge key={i} className="rounded-full">
                   {g}
                 </Badge>
               ))}
@@ -193,7 +134,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               <div className="flex flex-col gap-2">
                 {anime.studios?.map((studio, i) => (
                   <Badge
-                    className={`w-fit text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
+                    className={`w-fit bg-primary/40 text-base sm:text-lg md:text-xl ${!anime.color && "text-rose-600"} `}
                     key={i}
                     style={{ color: anime.color }}
                   >
@@ -202,7 +143,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                 ))}
                 <MetaDetails anime={anime} />
                 <Badge
-                  className={`w-fit gap-1 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
+                  className={`w-fit gap-1 bg-primary/40 text-sm font-medium sm:text-lg ${anime.color && "fill-rose-600 stroke-rose-600 text-rose-600"}`}
                 >
                   <Star
                     fill={anime.color}
@@ -286,7 +227,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
                 "mb-2 mt-auto hidden overflow-hidden scroll-smooth border-none custom-scrollbar sm:block sm:basis-1/2 md:max-h-[250px]"
               }
             >
-              <CardHeader className="max-h-[260px] flex-1 overflow-hidden">
+              <CardHeader className="w-full max-h-[260px] flex-1 overflow-hidden">
                 <CardTitle>Description</CardTitle>
                 <CardDescription
                   className="h-full overflow-y-auto custom-scrollbar"
@@ -347,6 +288,7 @@ const AnimeInfoCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
               )}
             </Button>
           </div>
+
           <div className="flex items-center gap-4">
             <Button
               onClick={() => handleSlideShow(-1)}

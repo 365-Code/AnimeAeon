@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const StCardSkeleton = () => {
   return (
-    <Card className="relative h-[400px] w-full max-w-[300px] overflow-hidden border-none transition-all">
+    <Card className="relative h-[200px] w-full max-w-[300px] overflow-hidden border-none transition-all min-[400px]:h-[400px]">
       <Image
         width={300}
         height={400}

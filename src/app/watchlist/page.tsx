@@ -78,7 +78,15 @@ const Page = () => {
       setWatchList(() => list);
     }
     if (filterType != "all") {
-      setWatchList(AllWatchList.filter((anime) => anime.type == filterType));
+      if (filterType != "not_yet_aired") {
+        setWatchList(AllWatchList.filter((anime) => anime.type == filterType));
+      } else {
+        setWatchList(
+          AllWatchList.filter(
+            (anime) => anime.status?.toLowerCase() == "not yet aired",
+          ),
+        );
+      }
     }
     if (filterInput) {
       setWatchList(() =>
@@ -104,7 +112,10 @@ const Page = () => {
         <>
           <Card className="mb-4">
             <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Filters</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">
+                Filters
+                <CardContent></CardContent>
+              </CardTitle>
               <Card className="my-2 flex flex-1 items-center gap-2 rounded-xl pl-4 ring-slate-900 transition-all focus-within:ring-1">
                 <Search />
                 <Input
@@ -130,6 +141,16 @@ const Page = () => {
                     {t}
                   </Button>
                 ))}
+                <Button
+                  type="button"
+                  onClick={() => setFilterType("not_yet_aired")}
+                  className="capitalize"
+                  variant={
+                    filterType == "not_yet_aired" ? "default" : "secondary"
+                  }
+                >
+                  To be Aired
+                </Button>
               </div>
             </CardContent>
             <CardContent>

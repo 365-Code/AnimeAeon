@@ -42,9 +42,9 @@ import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
 
 type PlayerStorageType = {
-  volume: string;
+  volume: number;
   quality: string;
-  autoPlay: string;
+  autoPlay: boolean;
 };
 
 const formatTime = (value: number) => {
@@ -75,9 +75,7 @@ const CustomReactPlayer = ({
   source: string;
   currentEpisode?: string;
 }) => {
-  const [autoPlayNext, setAutoPlayNext] = useState(
-    currentEpisode ? true : false,
-  );
+  const [autoPlayNext, setAutoPlayNext] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -127,8 +125,8 @@ const CustomReactPlayer = ({
 
   const [playerState, setPlayerState] = useState<PlayerStorageType>({
     quality: "auto",
-    volume: "1",
-    autoPlay: "true",
+    volume: 1,
+    autoPlay: true,
   });
 
   const updatePlayerState = ({
@@ -151,6 +149,7 @@ const CustomReactPlayer = ({
   const handleMute = () => {
     setMuted((prev) => !prev);
     setShowMuteIcon(muted ? "unmute" : "mute");
+    setVolume(muted ? playerState.volume : 0);
     setTimeout(() => setShowMuteIcon(""), 500);
   };
 
@@ -282,28 +281,20 @@ const CustomReactPlayer = ({
     updatePlayerState({ updateState: { autoPlay: !autoPlayNext } });
   };
 
-  const handleReady = () => {
-    setIsLoading(false);
-  };
-
-  const handleBuffer = () => {
-    setIsBuffering(true);
-  };
-
-  const handleBufferEnd = () => {
-    setIsBuffering(false);
-  };
+  const handleReady = () => setIsLoading(false);
+  const handleBuffer = () => setIsBuffering(true);
+  const handleBufferEnd = () => setIsBuffering(false);
 
   useEffect(() => {
     let playerData = localStorage.getItem("player-state");
-    if (playerData) {
-      const playerState = JSON.parse(playerData) as PlayerStorageType;
-      setPlayerState(playerState);
-      setAutoPlayNext(playerState.autoPlay == "true");
-      handleVolumeChange(parseInt(playerState.volume) || 1);
-      setCurrentQuality(playerState.quality);
+    if (playerData && !isLoading) {
+      const plyrState = JSON.parse(playerData) as PlayerStorageType;
+      setAutoPlayNext(() => plyrState.autoPlay);
+      setPlayerState(() => plyrState);
+      setVolume(plyrState.volume);
+      setCurrentQuality(plyrState.quality);
     }
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     if (Hls.isSupported() && playerRef.current) {
@@ -405,7 +396,7 @@ const CustomReactPlayer = ({
       onMouseMove={handleMouseMove}
     >
       <div
-        className="absolute inset-0 z-10"
+        className={cn("absolute inset-0 z-10", !showControls && "cursor-none")}
         onClick={!isMobile ? handlePlayPause : () => ""}
         onDoubleClick={handleDoubleClick}
         onMouseDown={doubleClicked ? (e) => handleDoubleClick(e) : () => ""}
@@ -566,7 +557,7 @@ const CustomReactPlayer = ({
             <div className="absolute bottom-0 left-0 z-20 w-full">
               <div className="bg-gradient-to-t from-black to-transparent p-2">
                 <div
-                  className="relative mb-2 w-full"
+                  className="relative mb-1 w-full"
                   onMouseMove={handleProgressHover}
                   onMouseLeave={() => setHoverTime(null)}
                 >
@@ -598,7 +589,6 @@ const CustomReactPlayer = ({
                                 "hls",
                               ) as Hls
                             ).currentLevel = 2;
-                            thumbnailRef.current?.seekTo(1);
                           }}
                           onSeek={() => thumbnailRef.current?.seekTo(hoverTime)}
                           url={source}
@@ -606,7 +596,6 @@ const CustomReactPlayer = ({
                           width={"100%"}
                           height={"100%"}
                         />
-                        {formatTime(Math.max(hoverTime, 0))}
                       </Card>
                       <Badge className="mx-auto rounded px-1 py-0.5 text-xs sm:px-2 sm:py-1">
                         {formatTime(Math.max(hoverTime, 0))}
@@ -712,10 +701,12 @@ const CustomReactPlayer = ({
                               className="h-8 w-8 sm:h-10 sm:w-10"
                               onClick={handleMute}
                             >
-                              {muted ? (
+                              {muted || volume == 0 ? (
                                 <VolumeX className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                              ) : (
+                              ) : volume > 0.5 ? (
                                 <Volume2 className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                              ) : (
+                                <Volume1 className="h-4 w-4 fill-white stroke-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                               )}
                             </Button>
                           </TooltipTrigger>
@@ -844,28 +835,27 @@ const VideoSettingsMenu = ({
     };
   }, []);
 
+  // <Settings size={48} color="#ffffff" strokeWidth={1} absoluteStrokeWidth />
+
   return (
     <div className="relative z-40" ref={menuRef}>
       <Button
         variant="button"
         size="icon"
-        className="group/settings h-8 w-8 transition-colors hover:bg-white/10 sm:h-10 sm:w-10"
+        className="group/settings relative h-8 w-8 transition-colors hover:bg-white/10 sm:h-10 sm:w-10"
         onClick={toggleMenu}
       >
         <Settings
           className={`${
             isOpen ? "rotate-45" : "rotate-0"
-          } relative h-4 w-4 transition-all sm:h-5 sm:w-5 md:h-6 md:w-6`}
+          } relative h-4 w-4 fill-white transition-all sm:h-5 sm:w-5 md:h-6 md:w-6`}
         />
+        <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black sm:h-2 sm:w-2" />
       </Button>
       <div
-        className={cn(
-          `${
-            isOpen
-              ? "visible opacity-100"
-              : "pointer-events-none invisible opacity-0"
-          } absolute bottom-full right-0 mb-2 w-48 rounded-md bg-black bg-opacity-80 shadow-lg transition-all`,
-        )}
+        className={`${
+          isOpen ? "visible opacity-100" : "pointer-events-none invisible"
+        } absolute bottom-full right-0 mb-2 w-48 rounded-md bg-black shadow-lg transition-all`}
       >
         <div className="space-y-2 p-2">
           <div className="flex items-center justify-between">

@@ -31,8 +31,8 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
     <div className="snap-start pl-3 pt-3">
       {/* <div className="anime-card"> */}
       <div
-        className="relative flex h-[320px] w-[90vw] max-w-[580px] rounded-br-3xl bg-black/40 backdrop-blur-sm 
-  sm:min-w-[380px]
+        className="relative flex h-[320px] w-[90vw] max-w-[250px] rounded-br-3xl bg-black/40 backdrop-blur-sm sm:min-w-[380px] 
+  sm:max-w-[580px]
   sm:rounded-none
   md:min-h-fit
   md:min-w-[580px]"
@@ -45,7 +45,7 @@ const AnimeCard = ({ anime }: { anime: IAnimeInfoAnilit }) => {
           loading="lazy"
           className="absolute left-0 top-0 -z-10 h-full w-full object-cover object-center opacity-50 sm:opacity-10 sm:blur-sm"
         />
-        <div className="absolute -left-3 -top-3 z-10 flex h-fit w-[250px] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 text-xs font-semibold text-secondary">
+        <div className="absolute -top-3 left-0 z-10 flex h-fit w-[85%] items-center gap-2 rounded-lg rounded-br-[60px] bg-secondary-foreground p-3 text-xs font-semibold text-secondary sm:-left-3 sm:w-[250px]">
           <Button
             className="h-fit p-1 hover:bg-secondary hover:text-secondary-foreground"
             onClick={handleWatchList}

@@ -5,7 +5,14 @@ import Link from "next/link";
 import { Menu, Search, TvMinimal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   Accordion,
   AccordionContent,
@@ -92,7 +99,12 @@ export default function Header() {
               <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
+
           <SheetContent side={"left"}>
+            <SheetHeader className="sr-only">
+              <SheetTitle>AnimeAeon</SheetTitle>
+              <SheetDescription>Your Only Anime Destination</SheetDescription>
+            </SheetHeader>
             <SideNav closeNav={() => setIsNavOpen(false)} />
           </SheetContent>
         </Sheet>
@@ -130,6 +142,10 @@ const Playlist = () => {
         </Button>
       </SheetTrigger>
       <SheetContent className="h-full w-full max-w-[400px]">
+        <SheetHeader className="sr-only">
+          <SheetTitle>Your Playlist</SheetTitle>
+          <SheetDescription>Your Favourite Anime</SheetDescription>
+        </SheetHeader>
         <Accordion
           type="single"
           defaultValue="item-1"
@@ -169,8 +185,4 @@ const sectionList = [
       </ScrollArea>
     ),
   },
-  // {
-  //   title: "WatchList",
-  //   component: <FetchWatchList />,
-  // },
 ];

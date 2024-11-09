@@ -1,7 +1,7 @@
 "use client";
 import StAnimeCard from "@/components/cards/StAnimeCard";
 import { animeGenres, perPage } from "@/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import StCardSkeleton from "../skeletons/StCardSkeleton";
 import { IAnimeResult } from "@consumet/extensions";

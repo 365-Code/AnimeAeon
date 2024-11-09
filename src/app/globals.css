@@ -31,6 +31,12 @@ body {
   animation-fill-mode: forwards;
 }
 
+.masonry{
+  column-count: 2;
+  column-gap: 4px;
+  break-inside: avoid;
+}
+
 @keyframes animation-fade {
   0% {
     opacity: 0.3;

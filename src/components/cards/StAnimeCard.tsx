@@ -27,11 +27,6 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
           className="h-full w-full object-cover object-center"
         />
         <div className="absolute bottom-0 left-0 mx-auto h-fit w-full">
-          <div className="mx-auto w-full border-none bg-primary-foreground/80 p-2 min-[400px]:hidden">
-            <p className="line-clamp-2 text-sm sm:text-base md:text-lg">
-              {toAnimeTitle(anime.title as ITitle)}
-            </p>
-          </div>
           <Card className="mx-auto hidden w-full rounded-none border-none bg-primary-foreground/80 min-[400px]:block sm:rounded-xl">
             <CardHeader>
               <div className="flex items-center gap-2 text-sm text-muted">
@@ -47,7 +42,7 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
                   </Badge>
                 )}
                 {anime.status && (
-                  <Badge className="flex w-fit items-center gap-1 rounded-full font-medium">
+                  <Badge className="flex w-fit items-center gap-1 rounded-full font-medium capitalize">
                     {anime.status}
                   </Badge>
                 )}
@@ -62,6 +57,9 @@ const StAnimeCard = ({ anime }: { anime: IAnimeResult }) => {
           </Card>
         </div>
       </Card>
+      <h2 className="py-2 text-sm min-[400px]:hidden sm:text-base md:text-lg">
+        {toAnimeTitle(anime.title as ITitle)}
+      </h2>
     </Link>
   );
 };

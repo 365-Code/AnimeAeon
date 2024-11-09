@@ -1,6 +1,5 @@
 import { IAnimeCharacter } from "@/utils";
 import React from "react";
-import CharacterCard from "../cards/CharacterCard";
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +22,7 @@ const DisplayCharacters = ({
             // <CharacterCard key={character.id} character={character} />
             character.image !=
               "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg" && (
-              <RoundCharacterCard key={character.id} character={character} />
+              <CharacterCard key={character.id} character={character} />
             ),
         )}
       </div>
@@ -33,7 +32,7 @@ const DisplayCharacters = ({
 
 export default DisplayCharacters;
 
-const RoundCharacterCard = ({ character }: { character: IAnimeCharacter }) => {
+const CharacterCard = ({ character }: { character: IAnimeCharacter }) => {
   const charName =
     character.name.full ||
     String(character.name.first) + String(character.name.last) ||
@@ -42,13 +41,13 @@ const RoundCharacterCard = ({ character }: { character: IAnimeCharacter }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <div className="">
+          <div className="mx-auto">
             <img
               width={400}
               height={400}
               alt={charName}
               src={character.image}
-              className="h-[7rem] w-[7rem] overflow-hidden rounded-full object-cover object-center"
+              className="mx-auto h-[7rem] w-[7rem] overflow-hidden rounded-full object-cover object-center"
             />
             <div className="text-center sm:hidden">
               <Badge className="block text-center">{charName}</Badge>
@@ -56,7 +55,7 @@ const RoundCharacterCard = ({ character }: { character: IAnimeCharacter }) => {
             </div>
           </div>
         </TooltipTrigger>
-        <TooltipContent className="sm:block hidden">
+        <TooltipContent className="hidden sm:block">
           <p className="text-center">{charName}</p>
           <p className="text-center text-xs">{character.role}</p>
         </TooltipContent>

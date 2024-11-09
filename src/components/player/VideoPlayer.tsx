@@ -1,5 +1,4 @@
 import { IAnimeEpisode } from "@consumet/extensions";
-import EpisodeHandler from "./EpisodeHandler";
 import { toast } from "sonner";
 import PlayerSkeleton from "../skeletons/PlayerSkeleton";
 import dynamic from "next/dynamic";
@@ -7,14 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import VideoPlayerSkeleton from "../skeletons/ReactPlayerSkeleton";
 
-const DynamicPlayer = dynamic(() => import("./Player2"), {
-  ssr: false,
-  loading: () => <PlayerSkeleton loading={true} />,
-});
-
 const DynamicReactPlayer = dynamic(() => import("./ReactPlayer"), {
   ssr: false,
-  // loading: () => <PlayerSkeleton loading={true} />,
   loading: () => <VideoPlayerSkeleton />,
 });
 
@@ -83,7 +76,6 @@ const VideoPlayer = ({
           />
         </div>
       )}
-      {/* </div> */}
     </div>
   );
 };
