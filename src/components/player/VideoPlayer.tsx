@@ -11,6 +11,17 @@ const DynamicReactPlayer = dynamic(() => import("./ReactPlayer"), {
   loading: () => <VideoPlayerSkeleton />,
 });
 
+type EpisodeSource = {
+  success: boolean;
+  headers: { Referer: string };
+  sources: {
+    url: string;
+    isM3U8: boolean;
+    quality: string;
+  }[];
+  download: string;
+};
+
 const VideoPlayer = ({
   episodes,
   totalEpisodes,
@@ -20,7 +31,11 @@ const VideoPlayer = ({
   totalEpisodes?: number;
   episode: string;
 }) => {
-  const [epSource, setEpSource] = useState(" ");
+  const [epData, setEpData] = useState({
+    source: " ",
+    referer: " ",
+    download: " ",
+  });
 
   const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
     mutationKey: ["fetch-episode"],
@@ -32,10 +47,15 @@ const VideoPlayer = ({
         );
         if (!response.ok) {
           toast.error("Couldn't Fetch The episode");
-          setEpSource(process.env.NEXT_PUBLIC_SOURCE || "");
+          setEpData((prev) => ({
+            referer: "",
+            download: "",
+            source: process.env.NEXT_PUBLIC_SOURCE || "",
+          }));
           return;
         }
-        const res = await response.json();
+        const res = (await response.json()) as EpisodeSource;
+
         if (res.success) {
           const epSources = res.sources as { quality: string; url: string }[];
           const source =
@@ -44,9 +64,17 @@ const VideoPlayer = ({
             epSources.find((e) => e.quality == "480")?.url ||
             epSources.find((e) => e.quality == "720")?.url ||
             "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
-          setEpSource(source);
+          setEpData((prev) => ({
+            referer: res.headers.Referer,
+            download: res.download,
+            source: source,
+          }));
         } else {
-          setEpSource("");
+          setEpData((prev) => ({
+            referer: "",
+            download: "",
+            source: process.env.NEXT_PUBLIC_SOURCE || "",
+          }));
         }
       } catch (error) {
         throw error;
@@ -61,7 +89,7 @@ const VideoPlayer = ({
     return () => clearTimeout(debounce);
   }, [episode]);
 
-  if (!isLoading && !epSource) return <PlayerSkeleton />;
+  if (!isLoading && !epData.source) return <PlayerSkeleton />;
 
   return (
     <div className="relative my-auto flex h-fit w-full flex-col">
@@ -70,8 +98,9 @@ const VideoPlayer = ({
       ) : (
         <div className="relative">
           <DynamicReactPlayer
-            source={String(epSource)}
+            source={String(epData.source)}
             episodes={episodes}
+            referer={epData.referer}
             currentEpisode={episode}
           />
         </div>

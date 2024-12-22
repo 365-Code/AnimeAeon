@@ -69,11 +69,13 @@ const skipSecs = 5;
 const CustomReactPlayer = ({
   source = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
   episodes,
+  referer,
   currentEpisode,
 }: {
   episodes?: IAnimeEpisode[];
   source: string;
   currentEpisode?: string;
+  referer: string;
 }) => {
   const [autoPlayNext, setAutoPlayNext] = useState(true);
   const [playing, setPlaying] = useState(false);
@@ -299,7 +301,8 @@ const CustomReactPlayer = ({
   useEffect(() => {
     if (Hls.isSupported() && playerRef.current) {
       const internalPlayer = playerRef.current.getInternalPlayer("hls") as Hls;
-
+      // For proxy
+      // https://github.com/Sudhanshu-Bharti/hanime-frontend/blob/main/components/video.tsx
       if (internalPlayer) {
         const availableQualities = internalPlayer.levels.map((level) =>
           level.height.toString(),
@@ -388,6 +391,18 @@ const CustomReactPlayer = ({
     };
   }, [currentProgress, duration, muted, volume, playbackSpeed]);
 
+  // const config = {
+  //   file: {
+  //     hlsOptions: {
+  //       xhrSetup: (xhr: XMLHttpRequest) => {
+  //         xhr.setRequestHeader("Referer", referer as string);
+  //       },
+  //     },
+  //   },
+  // };
+
+  const proxyUrl = `/api/proxy?url=${encodeURIComponent(source)}&referer=${encodeURIComponent(referer)}`;
+
   return (
     <Card
       className="relative aspect-video w-full overflow-hidden rounded-xl border-none outline-none"
@@ -410,7 +425,9 @@ const CustomReactPlayer = ({
         }}
         width="100%"
         height="100%"
-        url={source}
+        // url={source}
+        // config={config}
+        url={proxyUrl}
         playing={playing}
         volume={volume}
         muted={muted}
@@ -578,7 +595,7 @@ const CustomReactPlayer = ({
                       }}
                       className="absolute bottom-full mb-1 flex w-fit flex-col sm:mb-2"
                     >
-                      <Card className="mb-1 hidden aspect-video w-[200px] overflow-hidden sm:mb-2 sm:block">
+                      {/* <Card className="mb-1 hidden aspect-video w-[200px] overflow-hidden sm:mb-2 sm:block">
                         <ReactPlayer
                           pip={false}
                           ref={thumbnailRef}
@@ -596,7 +613,7 @@ const CustomReactPlayer = ({
                           width={"100%"}
                           height={"100%"}
                         />
-                      </Card>
+                      </Card> */}
                       <Badge className="mx-auto rounded px-1 py-0.5 text-xs sm:px-2 sm:py-1">
                         {formatTime(Math.max(hoverTime, 0))}
                       </Badge>
