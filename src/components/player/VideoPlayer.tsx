@@ -32,9 +32,9 @@ const VideoPlayer = ({
   episode: string;
 }) => {
   const [epData, setEpData] = useState({
-    source: " ",
-    referer: " ",
-    download: " ",
+    source: "",
+    referer: "",
+    download: "",
   });
 
   const { mutateAsync: fetchEpisode, isPending: isLoading } = useMutation({
@@ -64,13 +64,13 @@ const VideoPlayer = ({
             epSources.find((e) => e.quality == "480")?.url ||
             epSources.find((e) => e.quality == "720")?.url ||
             "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
-          setEpData((prev) => ({
+          setEpData(() => ({
             referer: res.headers.Referer,
             download: res.download,
             source: source,
           }));
         } else {
-          setEpData((prev) => ({
+          setEpData(() => ({
             referer: "",
             download: "",
             source: process.env.NEXT_PUBLIC_SOURCE || "",

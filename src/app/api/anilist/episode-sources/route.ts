@@ -11,12 +11,10 @@ export async function GET(req: NextRequest) {
     if (!result) {
       return NextResponse.json({ success: false }, { status: 404 });
     }
- 
+
     return NextResponse.json(
       {
         success: true,
-        // headers: result.headers,
-        // sources: result.sources,
         ...result
       },
       { status: 200 },

@@ -81,16 +81,22 @@ const Watch = ({
               {toAnimeTitle(anime.title as ITitle)}
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="line-clamp-1 hidden sm:inline">
-              {"Episode " + episode.split("-episode-")[1]}
-            </BreadcrumbPage>
-            <EpisodesCombo
-              episodeId={episode}
-              episodeList={anime.episodes || []}
-            />
-          </BreadcrumbItem>
+          {Number(anime.totalEpisodes) > 1 ? (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="line-clamp-1 hidden sm:inline">
+                  {"Episode " + episode.split("-episode-")[1]}
+                </BreadcrumbPage>
+                <EpisodesCombo
+                  episodeId={episode}
+                  episodeList={anime.episodes || []}
+                />
+              </BreadcrumbItem>
+            </>
+          ) : (
+            ""
+          )}
         </BreadcrumbList>
       </Breadcrumb>
       <section className="relative flex flex-col gap-4 md:grid md:grid-cols-3">
